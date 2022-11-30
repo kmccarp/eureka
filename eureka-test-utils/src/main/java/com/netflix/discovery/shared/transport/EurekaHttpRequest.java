@@ -32,7 +32,7 @@ public class EurekaHttpRequest {
     public EurekaHttpRequest(String requestMethod, URI requestURI, Map<String, String> headers) {
         this.requestMethod = requestMethod;
         this.requestURI = requestURI;
-        this.headers = Collections.unmodifiableMap(new HashMap<String, String>(headers));
+        this.headers = Collections.unmodifiableMap(new HashMap<>(headers));
     }
 
     public String getRequestMethod() {

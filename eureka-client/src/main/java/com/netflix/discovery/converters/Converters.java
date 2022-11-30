@@ -500,13 +500,7 @@ public final class Converters {
                     } else {
                         final DataCenterInfo.Name name =
                                 DataCenterInfo.Name.valueOf(dataCenterName);
-                        info = new DataCenterInfo() {
-
-                            @Override
-                            public Name getName() {
-                                return name;
-                            }
-                        };
+                        info = () -> name;
                     }
                 } else if (NODE_METADATA.equals(reader.getNodeName())) {
                     if (info.getName() == Name.Amazon) {
@@ -700,8 +694,8 @@ public final class Converters {
             Map<String, String> map = Collections.emptyMap();
 
             while (reader.hasMoreChildren()) {
-                if (map == Collections.EMPTY_MAP) {
-                    map = new HashMap<String, String>();
+                if (map == Collections.emptyMap()) {
+                    map = new HashMap<>();
                 }
                 reader.moveDown();
                 String key = reader.getNodeName();

@@ -174,79 +174,67 @@ public class CodecLoadTester {
         int call(T data);
     }
 
-    Func0 legacyJacksonAction = new Func0<Object>() {
-        @Override
-        public int call(Object object) {
-            ByteArrayOutputStream captureStream = new ByteArrayOutputStream();
-            try {
-                legacyJacksonCodec.writeTo(object, captureStream);
-                byte[] bytes = captureStream.toByteArray();
-                InputStream source = new ByteArrayInputStream(bytes);
-                legacyJacksonCodec.readValue(object.getClass(), source);
+    Func0 legacyJacksonAction = object -> {
+        ByteArrayOutputStream captureStream = new ByteArrayOutputStream();
+        try {
+            legacyJacksonCodec.writeTo(object, captureStream);
+            byte[] bytes = captureStream.toByteArray();
+            InputStream source = new ByteArrayInputStream(bytes);
+            legacyJacksonCodec.readValue(object.getClass(), source);
 
-                return bytes.length;
-            } catch (IOException e) {
-                throw new RuntimeException("unexpected", e);
-            }
+            return bytes.length;
+        } catch (IOException e) {
+            throw new RuntimeException("unexpected", e);
         }
     };
 
-    Func0 xstreamJsonAction = new Func0<Object>() {
-        @Override
-        public int call(Object object) {
-            ByteArrayOutputStream captureStream = new ByteArrayOutputStream();
-            try {
-                xstreamCodec.write(object, captureStream, MediaType.APPLICATION_JSON_TYPE);
-                byte[] bytes = captureStream.toByteArray();
-                InputStream source = new ByteArrayInputStream(bytes);
-                xstreamCodec.read(source, InstanceInfo.class, MediaType.APPLICATION_JSON_TYPE);
+    Func0 xstreamJsonAction = object -> {
+        ByteArrayOutputStream captureStream = new ByteArrayOutputStream();
+        try {
+            xstreamCodec.write(object, captureStream, MediaType.APPLICATION_JSON_TYPE);
+            byte[] bytes = captureStream.toByteArray();
+            InputStream source = new ByteArrayInputStream(bytes);
+            xstreamCodec.read(source, InstanceInfo.class, MediaType.APPLICATION_JSON_TYPE);
 
-                return bytes.length;
-            } catch (IOException e) {
-                throw new RuntimeException("unexpected", e);
-            }
+            return bytes.length;
+        } catch (IOException e) {
+            throw new RuntimeException("unexpected", e);
         }
     };
 
-    Func0 xstreamXmlAction = new Func0<Object>() {
-        @Override
-        public int call(Object object) {
-            ByteArrayOutputStream captureStream = new ByteArrayOutputStream();
-            try {
-                xstreamCodec.write(object, captureStream, MediaType.APPLICATION_XML_TYPE);
-                byte[] bytes = captureStream.toByteArray();
-                InputStream source = new ByteArrayInputStream(bytes);
-                xstreamCodec.read(source, InstanceInfo.class, MediaType.APPLICATION_XML_TYPE);
+    Func0 xstreamXmlAction = object -> {
+        ByteArrayOutputStream captureStream = new ByteArrayOutputStream();
+        try {
+            xstreamCodec.write(object, captureStream, MediaType.APPLICATION_XML_TYPE);
+            byte[] bytes = captureStream.toByteArray();
+            InputStream source = new ByteArrayInputStream(bytes);
+            xstreamCodec.read(source, InstanceInfo.class, MediaType.APPLICATION_XML_TYPE);
 
-                return bytes.length;
-            } catch (IOException e) {
-                throw new RuntimeException("unexpected", e);
-            }
+            return bytes.length;
+        } catch (IOException e) {
+            throw new RuntimeException("unexpected", e);
         }
     };
 
     Func0 createJacksonNgAction(final MediaType mediaType, final boolean compact) {
-        return new Func0<Object>() {
-            @Override
-            public int call(Object object) {
-                AbstractEurekaJacksonCodec codec;
-                if (mediaType.equals(MediaType.APPLICATION_JSON_TYPE)) {
-                    codec = compact ? jsonCodecNgCompact : jsonCodecNG;
-                } else {
-                    codec = compact ? xmlCodecNgCompact : xmlCodecNG;
-                }
-                ByteArrayOutputStream captureStream = new ByteArrayOutputStream();
-                try {
-                    codec.writeTo(object, captureStream);
-                    byte[] bytes = captureStream.toByteArray();
-                    InputStream source = new ByteArrayInputStream(bytes);
-                    Applications readValue = codec.getObjectMapper(object.getClass()).readValue(source, Applications.class);
-                    secondHolder.value = readValue;
+        return object -> {
+            AbstractEurekaJacksonCodec codec;
+            if (mediaType.equals(MediaType.APPLICATION_JSON_TYPE)) {
+                codec = compact ? jsonCodecNgCompact : jsonCodecNG;
+            } else {
+                codec = compact ? xmlCodecNgCompact : xmlCodecNG;
+            }
+            ByteArrayOutputStream captureStream = new ByteArrayOutputStream();
+            try {
+                codec.writeTo(object, captureStream);
+                byte[] bytes = captureStream.toByteArray();
+                InputStream source = new ByteArrayInputStream(bytes);
+                Applications readValue = codec.getObjectMapper(object.getClass()).readValue(source, Applications.class);
+                secondHolder.value = readValue;
 
-                    return bytes.length;
-                } catch (IOException e) {
-                    throw new RuntimeException("unexpected", e);
-                }
+                return bytes.length;
+            } catch (IOException e) {
+                throw new RuntimeException("unexpected", e);
             }
         };
     }

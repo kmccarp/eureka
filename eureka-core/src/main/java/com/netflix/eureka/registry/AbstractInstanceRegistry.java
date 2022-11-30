@@ -78,8 +78,8 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
 
     private static final String[] EMPTY_STR_ARRAY = new String[0];
     private final ConcurrentHashMap<String, Map<String, Lease<InstanceInfo>>> registry
-            = new ConcurrentHashMap<String, Map<String, Lease<InstanceInfo>>>();
-    protected Map<String, RemoteRegionRegistry> regionNameVSRemoteRegistry = new HashMap<String, RemoteRegionRegistry>();
+            = new ConcurrentHashMap<>();
+    protected Map<String, RemoteRegionRegistry> regionNameVSRemoteRegistry = new HashMap<>();
     protected final ConcurrentMap<String, InstanceStatus> overriddenInstanceStatusMap = CacheBuilder
             .newBuilder().initialCapacity(500)
             .expireAfterAccess(1, TimeUnit.HOURS)
@@ -117,8 +117,8 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
         this.serverConfig = serverConfig;
         this.clientConfig = clientConfig;
         this.serverCodecs = serverCodecs;
-        this.recentCanceledQueue = new CircularQueue<Pair<Long, String>>(1000);
-        this.recentRegisteredQueue = new CircularQueue<Pair<Long, String>>(1000);
+        this.recentCanceledQueue = new CircularQueue<>(1000);
+        this.recentRegisteredQueue = new CircularQueue<>(1000);
 
         this.renewsLastMin = new MeasuredRate(1000 * 60 * 1);
 
@@ -196,7 +196,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
             Map<String, Lease<InstanceInfo>> gMap = registry.get(registrant.getAppName());
             REGISTER.increment(isReplication);
             if (gMap == null) {
-                final ConcurrentHashMap<String, Lease<InstanceInfo>> gNewMap = new ConcurrentHashMap<String, Lease<InstanceInfo>>();
+                final ConcurrentHashMap<String, Lease<InstanceInfo>> gNewMap = new ConcurrentHashMap<>();
                 gMap = registry.putIfAbsent(registrant.getAppName(), gNewMap);
                 if (gMap == null) {
                     gMap = gNewMap;
@@ -233,7 +233,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                 lease.setServiceUpTimestamp(existingLease.getServiceUpTimestamp());
             }
             gMap.put(registrant.getId(), lease);
-            recentRegisteredQueue.add(new Pair<Long, String>(
+            recentRegisteredQueue.add(new Pair<>(
                     System.currentTimeMillis(),
                     registrant.getAppName() + "(" + registrant.getId() + ")"));
             // This is where the initial state transfer of overridden status happens
@@ -303,7 +303,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
             if (gMap != null) {
                 leaseToCancel = gMap.remove(id);
             }
-            recentCanceledQueue.add(new Pair<Long, String>(System.currentTimeMillis(), appName + "(" + id + ")"));
+            recentCanceledQueue.add(new Pair<>(System.currentTimeMillis(), appName + "(" + id + ")"));
             InstanceStatus instanceStatus = overriddenInstanceStatusMap.remove(id);
             if (instanceStatus != null) {
                 logger.debug("Removed instance id {} from the overridden map which has value {}", id, instanceStatus.name());
@@ -873,7 +873,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
         GET_ALL_CACHE_MISS_DELTA.increment();
         Applications apps = new Applications();
         apps.setVersion(responseCache.getVersionDelta().get());
-        Map<String, Application> applicationInstancesMap = new HashMap<String, Application>();
+        Map<String, Application> applicationInstancesMap = new HashMap<>();
         write.lock();
         try {
             Iterator<RecentlyChangedItem> iter = this.recentlyChangedQueue.iterator();
@@ -953,7 +953,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
 
         Applications apps = new Applications();
         apps.setVersion(responseCache.getVersionDeltaWithRegions().get());
-        Map<String, Application> applicationInstancesMap = new HashMap<String, Application>();
+        Map<String, Application> applicationInstancesMap = new HashMap<>();
         write.lock();
         try {
             Iterator<RecentlyChangedItem> iter = this.recentlyChangedQueue.iterator();
@@ -1085,7 +1085,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                     continue;
                 }
 
-                if (list == Collections.EMPTY_LIST) {
+                if (list == Collections.emptyList()) {
                     list = new ArrayList<>();
                 }
                 list.add(decorateInstanceInfo(lease));

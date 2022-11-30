@@ -48,16 +48,22 @@ public class AwsEndpoint extends DefaultEndpoint {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AwsEndpoint)) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AwsEndpoint)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         AwsEndpoint that = (AwsEndpoint) o;
 
-        if (region != null ? !region.equals(that.region) : that.region != null) return false;
-        if (zone != null ? !zone.equals(that.zone) : that.zone != null) return false;
-
-        return true;
+        if (region != null ? !region.equals(that.region) : that.region != null) {
+            return false;
+        }
+        return !(zone != null ? !zone.equals(that.zone) : that.zone != null);
     }
 
     @Override

@@ -159,11 +159,8 @@ public class Jersey2ApplicationClientFactory implements TransportClientFactory {
 
             // Common properties to all clients
             final String fullUserAgentName = (userAgent == null ? clientName : userAgent) + "/v" + buildVersion();
-            clientBuilder.register(new ClientRequestFilter() { // Can we do it better, without filter?
-                @Override
-                public void filter(ClientRequestContext requestContext) {
-                    requestContext.getHeaders().put(HttpHeaders.USER_AGENT, Collections.<Object>singletonList(fullUserAgentName));
-                }
+            clientBuilder.register(requestContext -> {
+                requestContext.getHeaders().put(HttpHeaders.USER_AGENT, Collections.<Object>singletonList(fullUserAgentName));
             });
             clientConfig.property(ClientProperties.FOLLOW_REDIRECTS, allowRedirect);
             clientConfig.property(ClientProperties.READ_TIMEOUT, readTimeout);

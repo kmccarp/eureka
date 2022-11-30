@@ -492,7 +492,7 @@ public class EurekaJacksonCodec {
             this.mapper = mapper;
         }
 
-        final static Function<String,String> self = s->s;
+        static final Function<String,String> self = s->s;
         @SuppressWarnings("deprecation")
         @Override
         public InstanceInfo deserialize(JsonParser jp, DeserializationContext context) throws IOException {
@@ -547,11 +547,15 @@ public class EurekaJacksonCodec {
                             PortField field = PortField.lookup.find(jp);
                             switch(field) {
                             case PORT:
-                                if (jsonToken == JsonToken.FIELD_NAME) jp.nextToken();
+                                if (jsonToken == JsonToken.FIELD_NAME) {
+                                    jp.nextToken();
+                                }
                                 builder.setPort(jp.getValueAsInt());
                                 break;
-                            case ENABLED:                            
-                                if (jsonToken == JsonToken.FIELD_NAME) jp.nextToken();
+                            case ENABLED:
+                                if (jsonToken == JsonToken.FIELD_NAME) {
+                                    jp.nextToken();
+                                }
                                 builder.enablePort(PortType.UNSECURE, jp.getValueAsBoolean());
                                 break;
                             default:
@@ -563,11 +567,15 @@ public class EurekaJacksonCodec {
                             PortField field = PortField.lookup.find(jp);
                             switch(field) {
                             case PORT:
-                                if (jsonToken == JsonToken.FIELD_NAME) jp.nextToken();
+                                if (jsonToken == JsonToken.FIELD_NAME) {
+                                    jp.nextToken();
+                                }
                                 builder.setSecurePort(jp.getValueAsInt());
                                 break;
-                            case ENABLED:                            
-                                if (jsonToken == JsonToken.FIELD_NAME) jp.nextToken();
+                            case ENABLED:
+                                if (jsonToken == JsonToken.FIELD_NAME) {
+                                    jp.nextToken();
+                                }
                                 builder.enablePort(PortType.SECURE, jp.getValueAsBoolean());
                                 break;
                             default:
@@ -656,7 +664,9 @@ public class EurekaJacksonCodec {
         }
 
         void autoUnmarshalEligible(String fieldName, String value, Object o) {
-            if (value == null || o == null) return; // early out
+            if (value == null || o == null) {
+                return;
+            } // early out
             Class<?> c = o.getClass();
             String cacheKey = c.getName() + ":" + fieldName;
             BiConsumer<Object, String> action = autoUnmarshalActions.computeIfAbsent(cacheKey, k-> {
@@ -742,22 +752,18 @@ public class EurekaJacksonCodec {
                         ApplicationField field = ApplicationField.lookup.find(jp);
                         jsonToken = jp.nextToken();
                         if (field != null) {
-                            switch(field) {
-                            case NAME:
+                            if (field == EurekaJacksonCodec.ApplicationDeserializer.ApplicationField.NAME) {
                                 application.setName(jp.getText());
-                                break;
-                            case INSTANCE:
+                            } else if (field == EurekaJacksonCodec.ApplicationDeserializer.ApplicationField.INSTANCE) {
                                 ObjectReader instanceInfoReader = DeserializerStringCache.init(mapper.readerFor(InstanceInfo.class), context);
                                 if (jsonToken == JsonToken.START_ARRAY) {
                                     // messages is array, loop until token equal to "]"
                                     while (jp.nextToken() != JsonToken.END_ARRAY) {
                                         application.addInstance(instanceInfoReader.readValue(jp));
                                     }
-                                }
-                                else if (jsonToken == JsonToken.START_OBJECT) {
+                                } else if (jsonToken == JsonToken.START_OBJECT) {
                                     application.addInstance(instanceInfoReader.readValue(jp));
                                 }
-                                break;
                             }
                          }
                     }

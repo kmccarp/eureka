@@ -37,12 +37,7 @@ public class InternalEurekaStatusModule extends AbstractModule {
         @Override
         public Supplier<Boolean> get() {
             final EurekaUpStatusResolver resolver = upStatus.get();
-            return new Supplier<Boolean>() {
-                @Override
-                public Boolean get() {
-                    return resolver.getStatus().equals(InstanceInfo.InstanceStatus.UP);
-                }
-            };
+            return () -> resolver.getStatus().equals(InstanceInfo.InstanceStatus.UP);
         }
     }
 
@@ -54,12 +49,7 @@ public class InternalEurekaStatusModule extends AbstractModule {
         @Override
         public Supplier<Boolean> get() {
             final EurekaUpStatusResolver resolver = upStatus.get();
-            return new Supplier<Boolean>() {
-                @Override
-                public Boolean get() {
-                    return !resolver.getStatus().equals(InstanceInfo.InstanceStatus.UP);
-                }
-            };
+            return () -> !resolver.getStatus().equals(InstanceInfo.InstanceStatus.UP);
         }
     }
 

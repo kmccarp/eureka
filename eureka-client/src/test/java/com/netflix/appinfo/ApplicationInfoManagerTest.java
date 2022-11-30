@@ -79,12 +79,7 @@ public class ApplicationInfoManagerTest {
     @Test
     public void testCustomInstanceStatusMapper() {
         ApplicationInfoManager.OptionalArgs optionalArgs = new ApplicationInfoManager.OptionalArgs();
-        optionalArgs.setInstanceStatusMapper(new ApplicationInfoManager.InstanceStatusMapper() {
-            @Override
-            public InstanceInfo.InstanceStatus map(InstanceInfo.InstanceStatus prev) {
-                return InstanceInfo.InstanceStatus.UNKNOWN;
-            }
-        });
+        optionalArgs.setInstanceStatusMapper(prev -> InstanceInfo.InstanceStatus.UNKNOWN);
 
         applicationInfoManager = new ApplicationInfoManager(config, instanceInfo, optionalArgs);
         InstanceInfo.InstanceStatus existingStatus = applicationInfoManager.getInfo().getStatus();
@@ -98,12 +93,7 @@ public class ApplicationInfoManagerTest {
     @Test
     public void testNullResultInstanceStatusMapper() {
         ApplicationInfoManager.OptionalArgs optionalArgs = new ApplicationInfoManager.OptionalArgs();
-        optionalArgs.setInstanceStatusMapper(new ApplicationInfoManager.InstanceStatusMapper() {
-            @Override
-            public InstanceInfo.InstanceStatus map(InstanceInfo.InstanceStatus prev) {
-                return null;
-            }
-        });
+        optionalArgs.setInstanceStatusMapper(prev -> null);
 
         applicationInfoManager = new ApplicationInfoManager(config, instanceInfo, optionalArgs);
         InstanceInfo.InstanceStatus existingStatus1 = applicationInfoManager.getInfo().getStatus();

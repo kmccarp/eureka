@@ -65,16 +65,16 @@ task ExampleClientStartScript(type: CreateStartScripts) {
 
 applicationDistribution.into("bin") {
     from(ExampleServiceStartScript)
-    fileMode = 0755
+    fileMode = 493
 
     from(ExampleGovernatedServiceStartScript)
-    fileMode = 0755
+    fileMode = 493
 
     from(ExampleClientStartScript)
-    fileMode = 0755
+    fileMode = 493
 }
 
 applicationDistribution.into("lib/conf") {
     from("conf")
-    fileMode = 0755
+    fileMode = 493
 }
