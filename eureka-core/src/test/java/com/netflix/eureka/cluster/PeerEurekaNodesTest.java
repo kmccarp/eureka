@@ -100,7 +100,7 @@ public class PeerEurekaNodesTest {
 
     static class TestablePeerEurekaNodes extends PeerEurekaNodes {
 
-        private AtomicReference<List<String>> peerUrlsRef = new AtomicReference<>(Collections.<String>emptyList());
+        private final AtomicReference<List<String>> peerUrlsRef = new AtomicReference<>(Collections.<String>emptyList());
         private final ConcurrentHashMap<String, PeerEurekaNode> peerEurekaNodeByUrl = new ConcurrentHashMap<>();
         private final AtomicInteger reloadCounter = new AtomicInteger();
 

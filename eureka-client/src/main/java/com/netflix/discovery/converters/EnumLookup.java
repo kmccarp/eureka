@@ -68,7 +68,9 @@ public class EnumLookup<T extends Enum<T>> {
     }
 
     public T find(char[] a, int offset, int length, T defaultValue) {
-        if (length < this.minLength || length > this.maxLength) return defaultValue;
+        if (length < this.minLength || length > this.maxLength) {
+            return defaultValue;
+        }
         
         int hash = hashCode(a, offset, length);
         int index = Arrays.binarySearch(sortedHashes, hash);
@@ -83,18 +85,21 @@ public class EnumLookup<T extends Enum<T>> {
     }
 
     public static boolean equals(char[] a1, char[] a2, int a2Offset, int a2Length) {
-        if (a1.length != a2Length)
+        if (a1.length != a2Length) {
             return false;
+        }
         for (int i = 0; i < a2Length; i++) {
-            if (a1[i] != a2[i + a2Offset])
+            if (a1[i] != a2[i + a2Offset]) {
                 return false;
+            }
         }
         return true;
     }
 
     public static int hashCode(char[] a, int offset, int length) {
-        if (a == null)
+        if (a == null) {
             return 0;
+        }
         int result = 1;
         for (int i = 0; i < length; i++) {
             result = 31 * result + a[i + offset];

@@ -200,21 +200,18 @@ public class AsyncResolver<T extends EurekaEndpoint> implements ClosableResolver
         return resultsRef.get().size();  // return directly from the ref and not the method so as to not trigger warming
     }
 
-    private final Runnable updateTask = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                List<T> newList = delegate.getClusterEndpoints();
-                if (newList != null) {
-                    resultsRef.getAndSet(newList);
-                    lastLoadTimestamp = System.currentTimeMillis();
-                } else {
-                    logger.warn("Delegate returned null list of cluster endpoints");
-                }
-                logger.debug("Resolved to {}", newList);
-            } catch (Exception e) {
-                logger.warn("Failed to retrieve cluster endpoints from the delegate", e);
+    private final Runnable updateTask = () -> {
+        try {
+            List<T> newList = delegate.getClusterEndpoints();
+            if (newList != null) {
+                resultsRef.getAndSet(newList);
+                lastLoadTimestamp = System.currentTimeMillis();
+            } else {
+                logger.warn("Delegate returned null list of cluster endpoints");
             }
+            logger.debug("Resolved to {}", newList);
+        } catch (Exception e) {
+            logger.warn("Failed to retrieve cluster endpoints from the delegate", e);
         }
     };
 }

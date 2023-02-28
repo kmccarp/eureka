@@ -16,7 +16,7 @@ public class OverrideExistsRule implements InstanceStatusOverrideRule {
 
     private static final Logger logger = LoggerFactory.getLogger(OverrideExistsRule.class);
 
-    private Map<String, InstanceInfo.InstanceStatus> statusOverrides;
+    private final Map<String, InstanceInfo.InstanceStatus> statusOverrides;
 
     public OverrideExistsRule(Map<String, InstanceInfo.InstanceStatus> statusOverrides) {
         this.statusOverrides = statusOverrides;

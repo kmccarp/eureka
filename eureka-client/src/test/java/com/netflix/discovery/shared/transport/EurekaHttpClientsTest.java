@@ -104,7 +104,7 @@ public class EurekaHttpClientsTest {
         when(transportConfig.getSessionedClientReconnectIntervalSeconds()).thenReturn(10);
 
         writeServer = new SimpleEurekaHttpServer(writeRequestHandler);
-        clusterResolver = new StaticClusterResolver<EurekaEndpoint>("regionA", new DefaultEndpoint("localhost", writeServer.getServerPort(), false, "/v2/"));
+        clusterResolver = new StaticClusterResolver<>("regionA", new DefaultEndpoint("localhost", writeServer.getServerPort(), false, "/v2/"));
 
         readServer = new SimpleEurekaHttpServer(readRequestHandler);
         readServerURI = "http://localhost:" + readServer.getServerPort();

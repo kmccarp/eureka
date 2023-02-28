@@ -49,12 +49,7 @@ public abstract class EurekaHttpClientCompatibilityTestSuite {
     private final EurekaHttpClient requestHandler = mock(EurekaHttpClient.class);
 
     private final List<EurekaHttpRequest> observedHttpRequests = new CopyOnWriteArrayList<>();
-    private final EurekaTransportEventListener transportEventListener = new EurekaTransportEventListener() {
-        @Override
-        public void onHttpRequest(EurekaHttpRequest request) {
-            observedHttpRequests.add(request);
-        }
-    };
+    private final EurekaTransportEventListener transportEventListener = observedHttpRequests::add;
 
     private SimpleEurekaHttpServer httpServer;
 

@@ -111,12 +111,7 @@ public class AbstractTester {
     }
 
     protected DataCenterInfo getDataCenterInfo() {
-        return new DataCenterInfo() {
-            @Override
-            public Name getName() {
-                return Name.MyOwn;
-            }
-        };
+        return () -> Name.MyOwn;
     }
 
     protected PeerAwareInstanceRegistryImpl makePeerAwareInstanceRegistry(EurekaServerConfig serverConfig,
@@ -247,12 +242,12 @@ public class AbstractTester {
 
     protected void registerInstanceLocally(InstanceInfo remoteInstance) {
         registry.register(remoteInstance, 10000000, false);
-        registeredApps.add(new Pair<String, String>(LOCAL_REGION_APP_NAME, remoteInstance.getId()));
+        registeredApps.add(new Pair<>(LOCAL_REGION_APP_NAME, remoteInstance.getId()));
     }
 
     protected void registerInstanceLocallyWithLeaseDurationInSecs(InstanceInfo remoteInstance, int leaseDurationInSecs) {
         registry.register(remoteInstance, leaseDurationInSecs, false);
-        registeredApps.add(new Pair<String, String>(LOCAL_REGION_APP_NAME, remoteInstance.getId()));
+        registeredApps.add(new Pair<>(LOCAL_REGION_APP_NAME, remoteInstance.getId()));
     }
 
 
@@ -262,13 +257,10 @@ public class AbstractTester {
      * @return action.
      */
     protected SingleEvent.Action renewPartOfTheWholeInstancesAction() {
-        return new SingleEvent.Action() {
-            @Override
-            public void execute() {
-                for (int j = 0; j < 45; j++) {
-                    registry.renew(LOCAL_REGION_APP_NAME,
+        return () -> {
+            for (int j = 0; j < 45; j++) {
+                registry.renew(LOCAL_REGION_APP_NAME,
                         LOCAL_REGION_INSTANCE_1_HOSTNAME + j, false);
-                }
             }
         };
     }

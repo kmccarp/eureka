@@ -32,13 +32,7 @@ public class InstanceInfoTest {
     @Test
     public void testCopyConstructor() {
 
-        DataCenterInfo myDCI = new DataCenterInfo() {
-
-            public DataCenterInfo.Name getName() {
-                return DataCenterInfo.Name.MyOwn;
-            }
-
-        };
+        DataCenterInfo myDCI = () -> DataCenterInfo.Name.MyOwn;
 
 
         InstanceInfo smallII1 = newBuilder().setAppName("test").setDataCenterInfo(myDCI).build();

@@ -228,7 +228,7 @@ public class ElasticNetworkInterfaceBinder implements AwsBinder {
                 ? getIPsForZoneFromDNS(myZone)
                 : getIPsForZoneFromConfig(myZone);
 
-        if (candidates == null || candidates.size() == 0) {
+        if (candidates == null || candidates.isEmpty()) {
             throw new RuntimeException("Could not get any ips from the pool for zone :" + myZone);
         }
         List<String> ips = Lists.newArrayList();
