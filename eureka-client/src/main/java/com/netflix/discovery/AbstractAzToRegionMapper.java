@@ -3,12 +3,10 @@ package com.netflix.discovery;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.google.common.base.Supplier;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import org.slf4j.Logger;
@@ -32,14 +30,9 @@ public abstract class AbstractAzToRegionMapper implements AzToRegionMapper {
      * will not be used.
      */
     private final Multimap<String, String> defaultRegionVsAzMap =
-            Multimaps.newListMultimap(new HashMap<String, Collection<String>>(), new Supplier<List<String>>() {
-                @Override
-                public List<String> get() {
-                    return new ArrayList<String>();
-                }
-            });
+            Multimaps.newListMultimap(new HashMap<>(), ArrayList::new);
 
-    private final Map<String, String> availabilityZoneVsRegion = new ConcurrentHashMap<String, String>();
+    private final Map<String, String> availabilityZoneVsRegion = new ConcurrentHashMap<>();
     private String[] regionsToFetch;
 
     protected AbstractAzToRegionMapper(EurekaClientConfig clientConfig) {

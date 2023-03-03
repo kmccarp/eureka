@@ -7,7 +7,6 @@ import java.util.UUID;
 import com.google.inject.util.Providers;
 import com.netflix.appinfo.AmazonInfo;
 import com.netflix.appinfo.ApplicationInfoManager;
-import com.netflix.appinfo.DataCenterInfo;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.appinfo.MyDataCenterInstanceConfig;
 import com.netflix.config.ConfigurationManager;
@@ -58,12 +57,7 @@ public class BackUpRegistryTest {
         builder.setIPAddr("10.10.101.00");
         builder.setHostName("Hosttt");
         builder.setAppName("EurekaTestApp-" + UUID.randomUUID());
-        builder.setDataCenterInfo(new DataCenterInfo() {
-            @Override
-            public Name getName() {
-                return Name.MyOwn;
-            }
-        });
+        builder.setDataCenterInfo(() -> Name.MyOwn);
 
         ApplicationInfoManager applicationInfoManager = new ApplicationInfoManager(new MyDataCenterInstanceConfig(), builder.build());
 

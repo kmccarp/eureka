@@ -391,7 +391,7 @@ public class DefaultEurekaClientConfig implements EurekaClientConfig {
             return Arrays.asList(serviceUrls.split(URL_SEPARATOR));
         }
 
-        return new ArrayList<String>();
+        return new ArrayList<>();
     }
 
     /*

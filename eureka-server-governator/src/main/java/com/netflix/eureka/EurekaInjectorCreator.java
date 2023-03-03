@@ -37,7 +37,7 @@ public class EurekaInjectorCreator {
                                     //filter("/*").through(RateLimitingFilter.class);  // enable if needed
 
                                     // REST
-                                    Map<String, String> params = new HashMap<String, String>();
+                                    Map<String, String> params = new HashMap<>();
                                     params.put(PackagesResourceConfig.PROPERTY_PACKAGES, "com.sun.jersey");
                                     params.put(PackagesResourceConfig.PROPERTY_PACKAGES, "com.netflix");
                                     params.put("com.sun.jersey.config.property.WebPageContentRegex", "/(flex|images|js|css|jsp)/.*");

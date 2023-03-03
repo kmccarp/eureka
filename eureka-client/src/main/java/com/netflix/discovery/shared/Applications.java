@@ -103,10 +103,10 @@ public class Applications {
     public Applications(@JsonProperty("appsHashCode") String appsHashCode,
             @JsonProperty("versionDelta") Long versionDelta,
             @JsonProperty("application") List<Application> registeredApplications) {
-        this.applications = new ConcurrentLinkedQueue<Application>();
-        this.appNameApplicationMap = new ConcurrentHashMap<String, Application>();
-        this.virtualHostNameAppMap = new ConcurrentHashMap<String, VipIndexSupport>();
-        this.secureVirtualHostNameAppMap = new ConcurrentHashMap<String, VipIndexSupport>();
+        this.applications = new ConcurrentLinkedQueue<>();
+        this.appNameApplicationMap = new ConcurrentHashMap<>();
+        this.virtualHostNameAppMap = new ConcurrentHashMap<>();
+        this.secureVirtualHostNameAppMap = new ConcurrentHashMap<>();
         this.appsHashCode = appsHashCode;
         this.versionDelta = versionDelta;
 
@@ -134,7 +134,7 @@ public class Applications {
      */
     @JsonProperty("application")
     public List<Application> getRegisteredApplications() {
-        return new ArrayList<Application>(this.applications);
+        return new ArrayList<>(this.applications);
     }
 
     /**
@@ -231,7 +231,7 @@ public class Applications {
      */
     @JsonIgnore
     public String getReconcileHashCode() {
-        TreeMap<String, AtomicInteger> instanceCountMap = new TreeMap<String, AtomicInteger>();
+        TreeMap<String, AtomicInteger> instanceCountMap = new TreeMap<>();
         populateInstanceCountMap(instanceCountMap);
         return getReconcileHashCode(instanceCountMap);
     }
@@ -336,7 +336,7 @@ public class Applications {
      * @return AtomicLong value representing the next round-robin index.
      */
     public AtomicLong getNextIndex(String virtualHostname, boolean secure) {
-        Map<String, VipIndexSupport> index = (secure) ? secureVirtualHostNameAppMap : virtualHostNameAppMap;
+        Map<String, VipIndexSupport> index = secure ? secureVirtualHostNameAppMap : virtualHostNameAppMap;
         return Optional.ofNullable(index.get(virtualHostname.toUpperCase(Locale.ROOT)))
                 .map(VipIndexSupport::getRoundRobinIndex)
                 .orElse(null);
@@ -358,7 +358,7 @@ public class Applications {
                 filteredInstances = vipInstances.stream().filter(ii -> ii.getStatus() == InstanceStatus.UP)
                         .collect(Collectors.toCollection(() -> new ArrayList<>(vipInstances.size())));
             } else {
-                filteredInstances = new ArrayList<InstanceInfo>(vipInstances);
+                filteredInstances = new ArrayList<>(vipInstances);
             }
             Collections.shuffle(filteredInstances, shuffleRandom);
             vipIndexSupport.vipList.set(filteredInstances);

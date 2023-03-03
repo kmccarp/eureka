@@ -176,7 +176,7 @@ public class JerseyEurekaHttpClientFactory implements TransportClientFactory {
     public static class JerseyEurekaHttpClientFactoryBuilder extends EurekaClientFactoryBuilder<JerseyEurekaHttpClientFactory, JerseyEurekaHttpClientFactoryBuilder> {
 
         private Collection<ClientFilter> additionalFilters = Collections.emptyList();
-        private boolean experimental = false;
+        private boolean experimental;
 
         public JerseyEurekaHttpClientFactoryBuilder withAdditionalFilters(Collection<ClientFilter> additionalFilters) {
             this.additionalFilters = additionalFilters;

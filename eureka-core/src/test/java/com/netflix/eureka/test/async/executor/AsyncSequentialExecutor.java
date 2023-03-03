@@ -32,18 +32,15 @@ public class AsyncSequentialExecutor {
      * @return result holder.
      */
     public AsyncResult<ResultStatus> run(SequentialEvents events) {
-        return run(new Callable<ResultStatus>() {
-            @Override
-            public ResultStatus call() throws Exception {
-                if (events == null || CollectionUtils.isNullOrEmpty(events.getEventList())) {
-                    throw new IllegalArgumentException("SequentialEvents does not contain any event to run");
-                }
-                for (SingleEvent singleEvent : events.getEventList()) {
-                    new Backoff(singleEvent.getIntervalTimeInMs()).backoff();
-                    singleEvent.getAction().execute();
-                }
-                return ResultStatus.DONE;
+        return run(() -> {
+            if (events == null || CollectionUtils.isNullOrEmpty(events.getEventList())) {
+                throw new IllegalArgumentException("SequentialEvents does not contain any event to run");
             }
+            for (SingleEvent singleEvent : events.getEventList()) {
+                new Backoff(singleEvent.getIntervalTimeInMs()).backoff();
+                singleEvent.getAction().execute();
+            }
+            return ResultStatus.DONE;
         });
     }
 
@@ -54,18 +51,15 @@ public class AsyncSequentialExecutor {
      */
     protected <T> AsyncResult<T> run(Callable<T> task) {
         final AsyncResult<T> result = new ConcreteAsyncResult<>();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                T value = null;
-                Optional<Exception> e = Optional.absent();
-                try {
-                    value = task.call();
-                    result.handleResult(value);
-                } catch (Exception e1) {
-                    e = Optional.of(e1);
-                    result.handleError(e1);
-                }
+        new Thread(() -> {
+            T value = null;
+            Optional<Exception> e = Optional.absent();
+            try {
+                value = task.call();
+                result.handleResult(value);
+            } catch (Exception e1) {
+                e = Optional.of(e1);
+                result.handleError(e1);
             }
         }, "AsyncSequentialExecutor-" + INDEX.incrementAndGet()).start();
         return result;

@@ -6,9 +6,6 @@ import com.netflix.discovery.shared.transport.jersey.Jersey1DiscoveryClientOptio
 import org.junit.Before;
 import org.junit.Test;
 
-import com.netflix.appinfo.HealthCheckCallback;
-import com.netflix.appinfo.HealthCheckHandler;
-
 /**
  * @author Matt Nelson
  */
@@ -23,22 +20,22 @@ public class Jersey1DiscoveryClientOptionalArgsTest {
     
     @Test
     public void testHealthCheckCallbackGuiceProvider() {
-        args.setHealthCheckCallbackProvider(new GuiceProvider<HealthCheckCallback>());
+        args.setHealthCheckCallbackProvider(new GuiceProvider<>());
     }
     
     @Test
     public void testHealthCheckCallbackJavaxProvider() {
-        args.setHealthCheckCallbackProvider(new JavaxProvider<HealthCheckCallback>());
+        args.setHealthCheckCallbackProvider(new JavaxProvider<>());
     }
     
     @Test
     public void testHealthCheckHandlerGuiceProvider() {
-        args.setHealthCheckHandlerProvider(new GuiceProvider<HealthCheckHandler>());
+        args.setHealthCheckHandlerProvider(new GuiceProvider<>());
     }
     
     @Test
     public void testHealthCheckHandlerJavaxProvider() {
-        args.setHealthCheckHandlerProvider(new JavaxProvider<HealthCheckHandler>());
+        args.setHealthCheckHandlerProvider(new JavaxProvider<>());
     }
     
     private class JavaxProvider<T> implements Provider<T> {
