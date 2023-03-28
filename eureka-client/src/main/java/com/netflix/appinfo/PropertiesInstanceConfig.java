@@ -25,7 +25,31 @@ import com.netflix.discovery.CommonConstants;
 import com.netflix.discovery.internal.util.Archaius1Utils;
 import org.apache.commons.configuration.Configuration;
 
-import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.*;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.APP_GROUP_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.APP_NAME_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.ASG_NAME_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.BROADCAST_PUBLIC_IPV4_ADDR_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.DEFAULT_ADDRESS_RESOLUTION_ORDER_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.FALLBACK_APP_GROUP_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.HEALTHCHECK_URL_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.HEALTHCHECK_URL_PATH_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.HOME_PAGE_URL_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.HOME_PAGE_URL_PATH_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.INSTANCE_ID_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.INSTANCE_METADATA_PREFIX;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.LEASE_EXPIRATION_DURATION_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.LEASE_RENEWAL_INTERVAL_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.PORT_ENABLED_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.PORT_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.SECURE_HEALTHCHECK_URL_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.SECURE_PORT_ENABLED_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.SECURE_PORT_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.SECURE_VIRTUAL_HOSTNAME_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.STATUS_PAGE_URL_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.STATUS_PAGE_URL_PATH_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.TRAFFIC_ENABLED_ON_INIT_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.VIRTUAL_HOSTNAME_KEY;
+import static com.netflix.appinfo.PropertyBasedInstanceConfigConstants.Values;
 
 /**
  * A properties based {@link InstanceInfo} configuration.
@@ -59,12 +83,7 @@ public abstract class PropertiesInstanceConfig extends AbstractInstanceConfig im
     }
 
     public PropertiesInstanceConfig(String namespace) {
-        this(namespace, new DataCenterInfo() {
-            @Override
-            public Name getName() {
-                return Name.MyOwn;
-            }
-        });
+        this(namespace, () -> Name.MyOwn);
     }
 
     public PropertiesInstanceConfig(String namespace, DataCenterInfo info) {

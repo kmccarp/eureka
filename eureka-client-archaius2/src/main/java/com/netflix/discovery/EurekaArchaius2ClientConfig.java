@@ -162,7 +162,7 @@ public class EurekaArchaius2ClientConfig implements EurekaClientConfig {
 
         return serviceUrls != null
                 ? Arrays.asList(serviceUrls.split(","))
-                : Collections.<String>emptyList();
+                : Collections.emptyList();
     }
 
     public boolean shouldFilterOnlyUpInstances() {

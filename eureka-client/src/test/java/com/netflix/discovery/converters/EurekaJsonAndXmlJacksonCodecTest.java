@@ -80,12 +80,7 @@ public class EurekaJsonAndXmlJacksonCodecTest {
     }
 
     private void doMyDataCenterInfoEncodeDecodeTest(AbstractEurekaJacksonCodec codec) throws Exception {
-        DataCenterInfo myDataCenterInfo = new DataCenterInfo() {
-            @Override
-            public Name getName() {
-                return Name.MyOwn;
-            }
-        };
+        DataCenterInfo myDataCenterInfo = () -> Name.MyOwn;
 
         String encodedString = codec.getObjectMapper(DataCenterInfo.class).writeValueAsString(myDataCenterInfo);
         DataCenterInfo decodedValue = codec.getObjectMapper(DataCenterInfo.class).readValue(encodedString, DataCenterInfo.class);

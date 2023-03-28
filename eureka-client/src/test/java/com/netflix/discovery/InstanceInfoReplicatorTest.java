@@ -1,7 +1,5 @@
 package com.netflix.discovery;
 
-import com.netflix.appinfo.DataCenterInfo;
-import com.netflix.appinfo.HealthCheckHandler;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.appinfo.LeaseInfo;
 import org.junit.After;
@@ -12,11 +10,9 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * @author David Liu
@@ -37,12 +33,7 @@ public class InstanceInfoReplicatorTest {
                 .setIPAddr("10.10.101.00")
                 .setHostName("Hosttt")
                 .setAppName("EurekaTestApp-" + UUID.randomUUID())
-                .setDataCenterInfo(new DataCenterInfo() {
-                    @Override
-                    public Name getName() {
-                        return Name.MyOwn;
-                    }
-                })
+                .setDataCenterInfo(() -> Name.MyOwn)
                 .setLeaseInfo(LeaseInfo.Builder.newBuilder().setRenewalIntervalInSecs(30).build());
 
         InstanceInfo instanceInfo = builder.build();

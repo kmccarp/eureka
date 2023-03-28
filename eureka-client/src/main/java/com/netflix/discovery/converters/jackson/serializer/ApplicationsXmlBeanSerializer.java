@@ -29,6 +29,7 @@ import com.netflix.discovery.shared.Applications;
  * Support custom formatting of {@link Applications#appsHashCode} and {@link Applications#versionDelta}.
  */
 public class ApplicationsXmlBeanSerializer extends XmlBeanSerializer {
+    private static final long serialVersionUID = 1;
     private final String versionKey;
     private final String appsHashCodeKey;
 
