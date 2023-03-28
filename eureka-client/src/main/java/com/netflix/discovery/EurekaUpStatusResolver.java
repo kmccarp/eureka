@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  */
 @Singleton
 public class EurekaUpStatusResolver {
-    private static Logger LOG = LoggerFactory.getLogger(EurekaUpStatusResolver.class);
+    private static Logger log = LoggerFactory.getLogger(EurekaUpStatusResolver.class);
 
     private volatile InstanceInfo.InstanceStatus currentStatus = InstanceInfo.InstanceStatus.UNKNOWN;
     private final EventBus eventBus;
@@ -41,7 +41,7 @@ public class EurekaUpStatusResolver {
 
     @Subscribe
     public void onStatusChange(StatusChangeEvent event) {
-        LOG.info("Eureka status changed from {} to {}", event.getPreviousStatus(), event.getStatus());
+        log.info("Eureka status changed from {} to {}", event.getPreviousStatus(), event.getStatus());
         currentStatus = event.getStatus();
         counter.incrementAndGet();
     }
@@ -52,10 +52,10 @@ public class EurekaUpStatusResolver {
             // Must set the initial status
             currentStatus = client.getInstanceRemoteStatus();
 
-            LOG.info("Initial status set to {}", currentStatus);
+            log.info("Initial status set to {}", currentStatus);
             eventBus.registerSubscriber(this);
         } catch (InvalidSubscriberException e) {
-            LOG.error("Error registring for discovery status change events.", e);
+            log.error("Error registring for discovery status change events.", e);
         }
     }
 

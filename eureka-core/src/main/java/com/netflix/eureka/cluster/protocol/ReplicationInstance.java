@@ -9,13 +9,13 @@ import com.netflix.eureka.registry.PeerAwareInstanceRegistryImpl.Action;
  * The jersey resource class that generates a particular replication event
  */
 public class ReplicationInstance {
-    private String appName;
-    private String id;
-    private Long lastDirtyTimestamp;
-    private String overriddenStatus;
-    private String status;
-    private InstanceInfo instanceInfo;
-    private Action action;
+    private final String appName;
+    private final String id;
+    private final Long lastDirtyTimestamp;
+    private final String overriddenStatus;
+    private final String status;
+    private final InstanceInfo instanceInfo;
+    private final Action action;
 
     @JsonCreator
     public ReplicationInstance(@JsonProperty("appName") String appName,
@@ -64,25 +64,33 @@ public class ReplicationInstance {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
-        if (o == null || getClass() != o.getClass())
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
+        }
 
         ReplicationInstance that = (ReplicationInstance) o;
 
-        if (appName != null ? !appName.equals(that.appName) : that.appName != null)
+        if (appName != null ? !appName.equals(that.appName) : that.appName != null) {
             return false;
-        if (id != null ? !id.equals(that.id) : that.id != null)
+        }
+        if (id != null ? !id.equals(that.id) : that.id != null) {
             return false;
-        if (lastDirtyTimestamp != null ? !lastDirtyTimestamp.equals(that.lastDirtyTimestamp) : that.lastDirtyTimestamp != null)
+        }
+        if (lastDirtyTimestamp != null ? !lastDirtyTimestamp.equals(that.lastDirtyTimestamp) : that.lastDirtyTimestamp != null) {
             return false;
-        if (overriddenStatus != null ? !overriddenStatus.equals(that.overriddenStatus) : that.overriddenStatus != null)
+        }
+        if (overriddenStatus != null ? !overriddenStatus.equals(that.overriddenStatus) : that.overriddenStatus != null) {
             return false;
-        if (status != null ? !status.equals(that.status) : that.status != null)
+        }
+        if (status != null ? !status.equals(that.status) : that.status != null) {
             return false;
-        if (instanceInfo != null ? !instanceInfo.equals(that.instanceInfo) : that.instanceInfo != null)
+        }
+        if (instanceInfo != null ? !instanceInfo.equals(that.instanceInfo) : that.instanceInfo != null) {
             return false;
+        }
         return action == that.action;
 
     }
@@ -103,7 +111,7 @@ public class ReplicationInstance {
         return ReplicationInstanceBuilder.aReplicationInstance();
     }
 
-    public static class ReplicationInstanceBuilder {
+    public static final class ReplicationInstanceBuilder {
         private String appName;
         private String id;
         private Long lastDirtyTimestamp;

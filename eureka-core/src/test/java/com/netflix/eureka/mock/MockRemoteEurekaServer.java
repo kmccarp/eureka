@@ -150,7 +150,7 @@ public class MockRemoteEurekaServer extends ExternalResource {
                     sendOkResponseWithContent((Request) request, response, toJson(apps));
                     handled = true;
                     sentDelta = true;
-                } else if (request.getMethod().equals("PUT") && pathInfo.startsWith("apps")) {
+                } else if ("PUT".equals(request.getMethod()) && pathInfo.startsWith("apps")) {
                     InstanceInfo instanceInfo = InstanceInfo.Builder.newBuilder()
                         .setAppName("TEST-APP").build();
                     sendOkResponseWithContent((Request) request, response,

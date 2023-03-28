@@ -48,12 +48,7 @@ import org.slf4j.LoggerFactory;
 public class ApplicationInfoManager {
     private static final Logger logger = LoggerFactory.getLogger(ApplicationInfoManager.class);
 
-    private static final InstanceStatusMapper NO_OP_MAPPER = new InstanceStatusMapper() {
-        @Override
-        public InstanceStatus map(InstanceStatus prev) {
-            return prev;
-        }
-    };
+    private static final InstanceStatusMapper NO_OP_MAPPER = prev -> prev;
 
     private static ApplicationInfoManager instance = new ApplicationInfoManager(null, null, null);
 
@@ -84,7 +79,7 @@ public class ApplicationInfoManager {
     public ApplicationInfoManager(EurekaInstanceConfig config, InstanceInfo instanceInfo, OptionalArgs optionalArgs) {
         this.config = config;
         this.instanceInfo = instanceInfo;
-        this.listeners = new ConcurrentHashMap<String, StatusChangeListener>();
+        this.listeners = new ConcurrentHashMap<>();
         if (optionalArgs != null) {
             this.instanceStatusMapper = optionalArgs.getInstanceStatusMapper();
         } else {
