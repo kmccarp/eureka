@@ -30,6 +30,8 @@ import com.netflix.appinfo.InstanceInfo;
  */
 public class PortWrapperXmlDeserializer extends StdDeserializer<InstanceInfo.PortWrapper> {
 
+    private static final long serialVersionUID = 1;
+
     public PortWrapperXmlDeserializer() {
         super(InstanceInfo.PortWrapper.class);
     }

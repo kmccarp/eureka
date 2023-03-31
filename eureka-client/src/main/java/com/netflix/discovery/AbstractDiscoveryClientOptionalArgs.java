@@ -56,11 +56,8 @@ public abstract class AbstractDiscoveryClientOptionalArgs<T> {
             eventListeners = new HashSet<>();
         }
         
-        eventListeners.add(new EurekaEventListener() {
-            @Override
-            public void onEvent(EurekaEvent event) {
-                eventBus.publish(event);
-            }
+        eventListeners.add(event -> {
+            eventBus.publish(event);
         });
     }
 
@@ -91,7 +88,7 @@ public abstract class AbstractDiscoveryClientOptionalArgs<T> {
     }
     
     Set<EurekaEventListener> getEventListeners() {
-        return eventListeners == null ? Collections.<EurekaEventListener>emptySet() : eventListeners;
+        return eventListeners == null ? Collections.emptySet() : eventListeners;
     }
     
     public TransportClientFactories getTransportClientFactories() {

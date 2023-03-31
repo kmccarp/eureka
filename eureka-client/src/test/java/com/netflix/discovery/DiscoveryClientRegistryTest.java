@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import com.netflix.appinfo.DataCenterInfo;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.appinfo.InstanceInfo.InstanceStatus;
 import com.netflix.discovery.junit.resource.DiscoveryClientResource;
@@ -262,12 +261,7 @@ public class DiscoveryClientRegistryTest {
 
         // Delta with one add
         InstanceInfo second = new InstanceInfo.Builder(instanceGen.take(1)).setInstanceId("foo1").setStatus(InstanceStatus.DOWN).setDataCenterInfo(null).build();
-        InstanceInfo third = new InstanceInfo.Builder(instanceGen.take(1)).setInstanceId("foo2").setStatus(InstanceStatus.UP).setDataCenterInfo(new DataCenterInfo() {
-            @Override
-            public Name getName() {
-                return null;
-            }
-        }).build();
+        InstanceInfo third = new InstanceInfo.Builder(instanceGen.take(1)).setInstanceId("foo2").setStatus(InstanceStatus.UP).setDataCenterInfo(() -> null).build();
         Applications delta = toApplications(second, third);
         delta.setAppsHashCode("DOWN_1_UP_2_");
 

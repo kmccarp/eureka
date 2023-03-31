@@ -15,6 +15,6 @@ public class PropertyBasedAzToRegionMapper extends AbstractAzToRegionMapper {
 
     @Override
     protected Set<String> getZonesForARegion(String region) {
-        return new HashSet<String>(Arrays.asList(clientConfig.getAvailabilityZones(region)));
+        return new HashSet<>(Arrays.asList(clientConfig.getAvailabilityZones(region)));
     }
 }

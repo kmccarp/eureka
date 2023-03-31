@@ -122,7 +122,7 @@ class AcceptorExecutor<ID, T> {
     }
 
     void process(ID id, T task, long expiryTime) {
-        acceptorQueue.add(new TaskHolder<ID, T>(id, task, expiryTime));
+        acceptorQueue.add(new TaskHolder<>(id, task, expiryTime));
         acceptedTasks++;
     }
 

@@ -27,10 +27,8 @@ import com.netflix.appinfo.InstanceInfo;
 import com.netflix.appinfo.AmazonInfo.MetaDataKey;
 import com.netflix.appinfo.InstanceInfo.InstanceStatus;
 import com.netflix.discovery.AzToRegionMapper;
-import com.netflix.discovery.DefaultEurekaClientConfig;
 import com.netflix.discovery.EurekaClientConfig;
 import com.netflix.discovery.InstanceRegionChecker;
-import com.netflix.discovery.InstanceRegionCheckerTest;
 import com.netflix.discovery.PropertyBasedAzToRegionMapper;
 
 public class ApplicationsTest {
@@ -54,11 +52,7 @@ public class ApplicationsTest {
      */
     @Test
     public void shuffleVirtualHostNameMapLastInstanceTest() {
-        DataCenterInfo myDCI = new DataCenterInfo() {
-            public DataCenterInfo.Name getName() {
-                return DataCenterInfo.Name.MyOwn;
-            }
-        };
+        DataCenterInfo myDCI = () -> DataCenterInfo.Name.MyOwn;
         InstanceInfo instanceInfo = InstanceInfo.Builder.newBuilder().setAppName("test")
                 .setVIPAddress("test.testname:1").setDataCenterInfo(myDCI).setHostName("test.hostname").build();
 
@@ -88,11 +82,7 @@ public class ApplicationsTest {
      */
     @Test
     public void shuffleSecureVirtualHostNameMapLastInstanceTest() {
-        DataCenterInfo myDCI = new DataCenterInfo() {
-            public DataCenterInfo.Name getName() {
-                return DataCenterInfo.Name.MyOwn;
-            }
-        };
+        DataCenterInfo myDCI = () -> DataCenterInfo.Name.MyOwn;
         InstanceInfo instanceInfo = InstanceInfo.Builder.newBuilder().setAppName("test")
                 .setVIPAddress("test.testname:1").setSecureVIPAddress("securetest.testname:7102")
                 .setDataCenterInfo(myDCI).setHostName("test.hostname").build();
@@ -182,11 +172,7 @@ public class ApplicationsTest {
     @Test
     public void testInfoDetailApplications(){
 
-        DataCenterInfo myDCI = new DataCenterInfo() {
-            public DataCenterInfo.Name getName() {
-                return DataCenterInfo.Name.MyOwn;
-            }
-        };
+        DataCenterInfo myDCI = () -> DataCenterInfo.Name.MyOwn;
         InstanceInfo instanceInfo = InstanceInfo.Builder.newBuilder()
                 .setInstanceId("test.id")
                 .setAppName("test")
@@ -216,11 +202,7 @@ public class ApplicationsTest {
 
     @Test
     public void testRegisteredApplications() {
-        DataCenterInfo myDCI = new DataCenterInfo() {
-            public DataCenterInfo.Name getName() {
-                return DataCenterInfo.Name.MyOwn;
-            }
-        };
+        DataCenterInfo myDCI = () -> DataCenterInfo.Name.MyOwn;
         InstanceInfo instanceInfo = InstanceInfo.Builder.newBuilder()
                 .setAppName("test")
                 .setVIPAddress("test.testname:1")
@@ -243,11 +225,7 @@ public class ApplicationsTest {
     
     @Test
     public void testRegisteredApplicationsConstructor() {
-        DataCenterInfo myDCI = new DataCenterInfo() {
-            public DataCenterInfo.Name getName() {
-                return DataCenterInfo.Name.MyOwn;
-            }
-        };
+        DataCenterInfo myDCI = () -> DataCenterInfo.Name.MyOwn;
         InstanceInfo instanceInfo = InstanceInfo.Builder.newBuilder()
                 .setAppName("test")
                 .setVIPAddress("test.testname:1")
@@ -276,11 +254,7 @@ public class ApplicationsTest {
     
     @Test
     public void testPopulateInstanceCount() {
-        DataCenterInfo myDCI = new DataCenterInfo() {
-            public DataCenterInfo.Name getName() {
-                return DataCenterInfo.Name.MyOwn;
-            }
-        };
+        DataCenterInfo myDCI = () -> DataCenterInfo.Name.MyOwn;
         InstanceInfo instanceInfo = InstanceInfo.Builder.newBuilder()
                 .setAppName("test")
                 .setVIPAddress("test.testname:1")
@@ -306,11 +280,7 @@ public class ApplicationsTest {
     
     @Test
     public void testGetNextIndex() {
-        DataCenterInfo myDCI = new DataCenterInfo() {
-            public DataCenterInfo.Name getName() {
-                return DataCenterInfo.Name.MyOwn;
-            }
-        };
+        DataCenterInfo myDCI = () -> DataCenterInfo.Name.MyOwn;
         InstanceInfo instanceInfo = InstanceInfo.Builder.newBuilder()
                 .setAppName("test")
                 .setVIPAddress("test.testname:1")
@@ -335,11 +305,7 @@ public class ApplicationsTest {
     
     @Test
     public void testReconcileHashcode() {
-        DataCenterInfo myDCI = new DataCenterInfo() {
-            public DataCenterInfo.Name getName() {
-                return DataCenterInfo.Name.MyOwn;
-            }
-        };
+        DataCenterInfo myDCI = () -> DataCenterInfo.Name.MyOwn;
         InstanceInfo instanceInfo = InstanceInfo.Builder.newBuilder()
                 .setAppName("test")
                 .setVIPAddress("test.testname:1")
@@ -365,11 +331,7 @@ public class ApplicationsTest {
     
     @Test
     public void testInstanceFiltering() {
-        DataCenterInfo myDCI = new DataCenterInfo() {
-            public DataCenterInfo.Name getName() {
-                return DataCenterInfo.Name.MyOwn;
-            }
-        };
+        DataCenterInfo myDCI = () -> DataCenterInfo.Name.MyOwn;
         InstanceInfo instanceInfo = InstanceInfo.Builder.newBuilder()
                 .setAppName("test")
                 .setVIPAddress("test.testname:1")

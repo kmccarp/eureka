@@ -21,7 +21,7 @@ package com.netflix.eureka;
  *
  * @author David Liu
  */
-public class EurekaServerContextHolder {
+public final class EurekaServerContextHolder {
 
     private final EurekaServerContext serverContext;
 

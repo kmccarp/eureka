@@ -21,8 +21,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import com.netflix.discovery.shared.transport.EurekaHttpClient;
 import com.netflix.discovery.shared.transport.EurekaHttpClientFactory;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -41,12 +39,7 @@ public class SessionedEurekaHttpClientTest {
     @Test
     public void testReconnectIsEnforcedAtConfiguredInterval() throws Exception {
         final AtomicReference<EurekaHttpClient> clientRef = new AtomicReference<>(firstClient);
-        when(factory.newClient()).thenAnswer(new Answer<EurekaHttpClient>() {
-            @Override
-            public EurekaHttpClient answer(InvocationOnMock invocation) throws Throwable {
-                return clientRef.get();
-            }
-        });
+        when(factory.newClient()).thenAnswer(invocation -> clientRef.get());
 
         SessionedEurekaHttpClient httpClient = null;
         try {
