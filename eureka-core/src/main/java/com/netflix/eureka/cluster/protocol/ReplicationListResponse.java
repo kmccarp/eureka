@@ -15,7 +15,7 @@ public class ReplicationListResponse {
     private List<ReplicationInstanceResponse> responseList;
 
     public ReplicationListResponse() {
-        this.responseList = new ArrayList<ReplicationInstanceResponse>();
+        this.responseList = new ArrayList<>();
     }
 
     @JsonCreator
@@ -33,10 +33,12 @@ public class ReplicationListResponse {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
-        if (o == null || getClass() != o.getClass())
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
+        }
 
         ReplicationListResponse that = (ReplicationListResponse) o;
 

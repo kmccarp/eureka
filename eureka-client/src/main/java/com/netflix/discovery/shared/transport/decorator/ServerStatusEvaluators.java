@@ -23,30 +23,22 @@ import com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorato
  */
 public final class ServerStatusEvaluators {
 
-    private static final ServerStatusEvaluator LEGACY_EVALUATOR = new ServerStatusEvaluator() {
-        @Override
-        public boolean accept(int statusCode, RequestType requestType) {
-            if (statusCode >= 200 && statusCode < 300 || statusCode == 302) {
-                return true;
-            } else if (requestType == RequestType.Register && statusCode == 404) {
-                return true;
-            } else if (requestType == RequestType.SendHeartBeat && statusCode == 404) {
-                return true;
-            } else if (requestType == RequestType.Cancel) {  // cancel is best effort
-                return true;
-            } else if (requestType == RequestType.GetDelta && (statusCode == 403 || statusCode == 404)) {
-                return true;
-            }
-            return false;
+    private static final ServerStatusEvaluator LEGACY_EVALUATOR = (statusCode, requestType) -> {
+        if (statusCode >= 200 && statusCode < 300 || statusCode == 302) {
+            return true;
+        } else if (requestType == RequestType.Register && statusCode == 404) {
+            return true;
+        } else if (requestType == RequestType.SendHeartBeat && statusCode == 404) {
+            return true;
+        } else if (requestType == RequestType.Cancel) {  // cancel is best effort
+            return true;
+        } else if (requestType == RequestType.GetDelta && (statusCode == 403 || statusCode == 404)) {
+            return true;
         }
+        return false;
     };
 
-    private static final ServerStatusEvaluator HTTP_SUCCESS_EVALUATOR = new ServerStatusEvaluator() {
-        @Override
-        public boolean accept(int statusCode, RequestType requestType) {
-            return statusCode >= 200 && statusCode < 300;
-        }
-    };
+    private static final ServerStatusEvaluator HTTP_SUCCESS_EVALUATOR = (statusCode, requestType) -> statusCode >= 200 && statusCode < 300;
 
 
     private ServerStatusEvaluators() {

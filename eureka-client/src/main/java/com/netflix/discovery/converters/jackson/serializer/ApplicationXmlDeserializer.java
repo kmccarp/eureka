@@ -35,6 +35,8 @@ import com.netflix.discovery.shared.Application;
  */
 public class ApplicationXmlDeserializer extends StdDeserializer<Application> {
 
+    private static final long serialVersionUID = 1;
+
     public ApplicationXmlDeserializer() {
         super(Application.class);
     }

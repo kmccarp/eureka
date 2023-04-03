@@ -60,16 +60,13 @@ public class EurekaCodecCompatibilityTest {
     @Test
     public void testInstanceInfoEncodeDecodeLegacyJacksonToJackson() throws Exception {
         final InstanceInfo instanceInfo = infoIterator.next();
-        Action2 codingAction = new Action2() {
-            @Override
-            public void call(EncoderWrapper encodingCodec, DecoderWrapper decodingCodec) throws IOException {
-                String encodedString = encodingCodec.encode(instanceInfo);
-                // convert the field from the json string to what the legacy json would encode as
-                encodedString = encodedString.replaceFirst("lastRenewalTimestamp", "renewalTimestamp");
-                InstanceInfo decodedValue = decodingCodec.decode(encodedString, InstanceInfo.class);
-                assertThat(EurekaEntityComparators.equal(instanceInfo, decodedValue, new EurekaEntityComparators.RawIdEqualFunc()), is(true));
-                assertThat(EurekaEntityComparators.equal(instanceInfo, decodedValue), is(true));
-            }
+        Action2 codingAction = (encodingCodec, decodingCodec) -> {
+            String encodedString = encodingCodec.encode(instanceInfo);
+            // convert the field from the json string to what the legacy json would encode as
+            encodedString = encodedString.replaceFirst("lastRenewalTimestamp", "renewalTimestamp");
+            InstanceInfo decodedValue = decodingCodec.decode(encodedString, InstanceInfo.class);
+            assertThat(EurekaEntityComparators.equal(instanceInfo, decodedValue, new EurekaEntityComparators.RawIdEqualFunc()), is(true));
+            assertThat(EurekaEntityComparators.equal(instanceInfo, decodedValue), is(true));
         };
 
         verifyForPair(
@@ -84,16 +81,13 @@ public class EurekaCodecCompatibilityTest {
     public void testInstanceInfoEncodeDecodeJsonWithEmptyMetadataMap() throws Exception {
         final InstanceInfo base = infoIterator.next();
         final InstanceInfo instanceInfo = new InstanceInfo.Builder(base)
-                .setMetadata(Collections.EMPTY_MAP)
+                .setMetadata(Collections.emptyMap())
                 .build();
 
-        Action2 codingAction = new Action2() {
-            @Override
-            public void call(EncoderWrapper encodingCodec, DecoderWrapper decodingCodec) throws IOException {
-                String encodedString = encodingCodec.encode(instanceInfo);
-                InstanceInfo decodedValue = decodingCodec.decode(encodedString, InstanceInfo.class);
-                assertThat(EurekaEntityComparators.equal(instanceInfo, decodedValue), is(true));
-            }
+        Action2 codingAction = (encodingCodec, decodingCodec) -> {
+            String encodedString = encodingCodec.encode(instanceInfo);
+            InstanceInfo decodedValue = decodingCodec.decode(encodedString, InstanceInfo.class);
+            assertThat(EurekaEntityComparators.equal(instanceInfo, decodedValue), is(true));
         };
 
         verifyAllPairs(codingAction, Application.class, availableJsonWrappers);
@@ -107,13 +101,10 @@ public class EurekaCodecCompatibilityTest {
     @Test
     public void testInstanceInfoFullEncodeMiniDecodeJackson() throws Exception {
         final InstanceInfo instanceInfo = infoIterator.next();
-        Action2 codingAction = new Action2() {
-            @Override
-            public void call(EncoderWrapper encodingCodec, DecoderWrapper decodingCodec) throws IOException {
-                String encodedString = encodingCodec.encode(instanceInfo);
-                InstanceInfo decodedValue = decodingCodec.decode(encodedString, InstanceInfo.class);
-                assertThat(EurekaEntityComparators.equalMini(instanceInfo, decodedValue), is(true));
-            }
+        Action2 codingAction = (encodingCodec, decodingCodec) -> {
+            String encodedString = encodingCodec.encode(instanceInfo);
+            InstanceInfo decodedValue = decodingCodec.decode(encodedString, InstanceInfo.class);
+            assertThat(EurekaEntityComparators.equalMini(instanceInfo, decodedValue), is(true));
         };
 
         verifyForPair(
@@ -131,13 +122,10 @@ public class EurekaCodecCompatibilityTest {
                 .setDataCenterInfo(new MyDataCenterInfo(DataCenterInfo.Name.MyOwn))
                 .build();
 
-        Action2 codingAction = new Action2() {
-            @Override
-            public void call(EncoderWrapper encodingCodec, DecoderWrapper decodingCodec) throws IOException {
-                String encodedString = encodingCodec.encode(instanceInfo);
-                InstanceInfo decodedValue = decodingCodec.decode(encodedString, InstanceInfo.class);
-                assertThat(EurekaEntityComparators.equalMini(instanceInfo, decodedValue), is(true));
-            }
+        Action2 codingAction = (encodingCodec, decodingCodec) -> {
+            String encodedString = encodingCodec.encode(instanceInfo);
+            InstanceInfo decodedValue = decodingCodec.decode(encodedString, InstanceInfo.class);
+            assertThat(EurekaEntityComparators.equalMini(instanceInfo, decodedValue), is(true));
         };
 
         verifyForPair(
@@ -151,13 +139,10 @@ public class EurekaCodecCompatibilityTest {
     @Test
     public void testInstanceInfoMiniEncodeMiniDecodeJackson() throws Exception {
         final InstanceInfo instanceInfo = infoIterator.next();
-        Action2 codingAction = new Action2() {
-            @Override
-            public void call(EncoderWrapper encodingCodec, DecoderWrapper decodingCodec) throws IOException {
-                String encodedString = encodingCodec.encode(instanceInfo);
-                InstanceInfo decodedValue = decodingCodec.decode(encodedString, InstanceInfo.class);
-                assertThat(EurekaEntityComparators.equalMini(instanceInfo, decodedValue), is(true));
-            }
+        Action2 codingAction = (encodingCodec, decodingCodec) -> {
+            String encodedString = encodingCodec.encode(instanceInfo);
+            InstanceInfo decodedValue = decodingCodec.decode(encodedString, InstanceInfo.class);
+            assertThat(EurekaEntityComparators.equalMini(instanceInfo, decodedValue), is(true));
         };
 
         verifyForPair(
@@ -171,15 +156,12 @@ public class EurekaCodecCompatibilityTest {
     @Test
     public void testInstanceInfoEncodeDecode() throws Exception {
         final InstanceInfo instanceInfo = infoIterator.next();
-        Action2 codingAction = new Action2() {
-            @Override
-            public void call(EncoderWrapper encodingCodec, DecoderWrapper decodingCodec) throws IOException {
-                String encodedString = encodingCodec.encode(instanceInfo);
+        Action2 codingAction = (encodingCodec, decodingCodec) -> {
+            String encodedString = encodingCodec.encode(instanceInfo);
 
-                InstanceInfo decodedValue = decodingCodec.decode(encodedString, InstanceInfo.class);
-                assertThat(EurekaEntityComparators.equal(instanceInfo, decodedValue), is(true));
-                assertThat(EurekaEntityComparators.equal(instanceInfo, decodedValue, new EurekaEntityComparators.RawIdEqualFunc()), is(true));
-            }
+            InstanceInfo decodedValue = decodingCodec.decode(encodedString, InstanceInfo.class);
+            assertThat(EurekaEntityComparators.equal(instanceInfo, decodedValue), is(true));
+            assertThat(EurekaEntityComparators.equal(instanceInfo, decodedValue, new EurekaEntityComparators.RawIdEqualFunc()), is(true));
         };
 
         verifyAllPairs(codingAction, InstanceInfo.class, availableJsonWrappers);
@@ -193,17 +175,14 @@ public class EurekaCodecCompatibilityTest {
         final InstanceInfo instanceInfo = infoIterator.next();
         new InstanceInfo.Builder(instanceInfo).setOverriddenStatus(InstanceInfo.InstanceStatus.OUT_OF_SERVICE);
 
-        Action2 codingAction = new Action2() {
-            @Override
-            public void call(EncoderWrapper encodingCodec, DecoderWrapper decodingCodec) throws IOException {
-                String encodedString = encodingCodec.encode(instanceInfo);
-                // sed to older naming to test
-                encodedString = encodedString.replace("overriddenStatus", "overriddenstatus");
+        Action2 codingAction = (encodingCodec, decodingCodec) -> {
+            String encodedString = encodingCodec.encode(instanceInfo);
+            // sed to older naming to test
+            encodedString = encodedString.replace("overriddenStatus", "overriddenstatus");
 
-                InstanceInfo decodedValue = decodingCodec.decode(encodedString, InstanceInfo.class);
-                assertThat(EurekaEntityComparators.equal(instanceInfo, decodedValue), is(true));
-                assertThat(EurekaEntityComparators.equal(instanceInfo, decodedValue, new EurekaEntityComparators.RawIdEqualFunc()), is(true));
-            }
+            InstanceInfo decodedValue = decodingCodec.decode(encodedString, InstanceInfo.class);
+            assertThat(EurekaEntityComparators.equal(instanceInfo, decodedValue), is(true));
+            assertThat(EurekaEntityComparators.equal(instanceInfo, decodedValue, new EurekaEntityComparators.RawIdEqualFunc()), is(true));
         };
 
         verifyAllPairs(codingAction, Application.class, availableJsonWrappers);
@@ -216,17 +195,14 @@ public class EurekaCodecCompatibilityTest {
         final InstanceInfo instanceInfo = infoIterator.next();
         new InstanceInfo.Builder(instanceInfo).setOverriddenStatus(InstanceInfo.InstanceStatus.OUT_OF_SERVICE);
 
-        Action2 codingAction = new Action2() {
-            @Override
-            public void call(EncoderWrapper encodingCodec, DecoderWrapper decodingCodec) throws IOException {
-                String encodedString = encodingCodec.encode(instanceInfo);
-                // sed to older naming to test
-                encodedString = encodedString.replace("overriddenstatus", "overriddenStatus");
+        Action2 codingAction = (encodingCodec, decodingCodec) -> {
+            String encodedString = encodingCodec.encode(instanceInfo);
+            // sed to older naming to test
+            encodedString = encodedString.replace("overriddenstatus", "overriddenStatus");
 
-                InstanceInfo decodedValue = decodingCodec.decode(encodedString, InstanceInfo.class);
-                assertThat(EurekaEntityComparators.equal(instanceInfo, decodedValue), is(true));
-                assertThat(EurekaEntityComparators.equal(instanceInfo, decodedValue, new EurekaEntityComparators.RawIdEqualFunc()), is(true));
-            }
+            InstanceInfo decodedValue = decodingCodec.decode(encodedString, InstanceInfo.class);
+            assertThat(EurekaEntityComparators.equal(instanceInfo, decodedValue), is(true));
+            assertThat(EurekaEntityComparators.equal(instanceInfo, decodedValue, new EurekaEntityComparators.RawIdEqualFunc()), is(true));
         };
 
         verifyAllPairs(codingAction, Application.class, availableJsonWrappers);
@@ -239,13 +215,10 @@ public class EurekaCodecCompatibilityTest {
         application.addInstance(infoIterator.next());
         application.addInstance(infoIterator.next());
 
-        Action2 codingAction = new Action2() {
-            @Override
-            public void call(EncoderWrapper encodingCodec, DecoderWrapper decodingCodec) throws IOException {
-                String encodedString = encodingCodec.encode(application);
-                Application decodedValue = decodingCodec.decode(encodedString, Application.class);
-                assertThat(EurekaEntityComparators.equal(application, decodedValue), is(true));
-            }
+        Action2 codingAction = (encodingCodec, decodingCodec) -> {
+            String encodedString = encodingCodec.encode(application);
+            Application decodedValue = decodingCodec.decode(encodedString, Application.class);
+            assertThat(EurekaEntityComparators.equal(application, decodedValue), is(true));
         };
 
         verifyAllPairs(codingAction, Application.class, availableJsonWrappers);
@@ -256,13 +229,10 @@ public class EurekaCodecCompatibilityTest {
     public void testApplicationsEncodeDecode() throws Exception {
         final Applications applications = infoGenerator.takeDelta(2);
 
-        Action2 codingAction = new Action2() {
-            @Override
-            public void call(EncoderWrapper encodingCodec, DecoderWrapper decodingCodec) throws IOException {
-                String encodedString = encodingCodec.encode(applications);
-                Applications decodedValue = decodingCodec.decode(encodedString, Applications.class);
-                assertThat(EurekaEntityComparators.equal(applications, decodedValue), is(true));
-            }
+        Action2 codingAction = (encodingCodec, decodingCodec) -> {
+            String encodedString = encodingCodec.encode(applications);
+            Applications decodedValue = decodingCodec.decode(encodedString, Applications.class);
+            assertThat(EurekaEntityComparators.equal(applications, decodedValue), is(true));
         };
 
         verifyAllPairs(codingAction, Applications.class, availableJsonWrappers);
@@ -276,16 +246,13 @@ public class EurekaCodecCompatibilityTest {
     public void testApplicationsJsonEncodeDecodeWithSingleAppItem() throws Exception {
         final Applications applications = infoGenerator.takeDelta(1);
 
-        Action2 codingAction = new Action2() {
-            @Override
-            public void call(EncoderWrapper encodingCodec, DecoderWrapper decodingCodec) throws IOException {
-                String encodedString = encodingCodec.encode(applications);
+        Action2 codingAction = (encodingCodec, decodingCodec) -> {
+            String encodedString = encodingCodec.encode(applications);
 
-                assertThat(encodedString.contains("\"application\":[{"), is(true));
+            assertThat(encodedString.contains("\"application\":[{"), is(true));
 
-                Applications decodedValue = decodingCodec.decode(encodedString, Applications.class);
-                assertThat(EurekaEntityComparators.equal(applications, decodedValue), is(true));
-            }
+            Applications decodedValue = decodingCodec.decode(encodedString, Applications.class);
+            assertThat(EurekaEntityComparators.equal(applications, decodedValue), is(true));
         };
 
         List<CodecWrapper> jsonCodes = Arrays.asList(
@@ -311,14 +278,11 @@ public class EurekaCodecCompatibilityTest {
         ));
         final ReplicationList replicationList = new ReplicationList(replicationInstances);
 
-        Action2 codingAction = new Action2() {
-            @Override
-            public void call(EncoderWrapper encodingCodec, DecoderWrapper decodingCodec) throws IOException {
-                String encodedString = encodingCodec.encode(replicationList);
+        Action2 codingAction = (encodingCodec, decodingCodec) -> {
+            String encodedString = encodingCodec.encode(replicationList);
 
-                ReplicationList decodedValue = decodingCodec.decode(encodedString, ReplicationList.class);
-                assertThat(decodedValue.getReplicationList().size(), is(equalTo(1)));
-            }
+            ReplicationList decodedValue = decodingCodec.decode(encodedString, ReplicationList.class);
+            assertThat(decodedValue.getReplicationList().size(), is(equalTo(1)));
         };
 
         // In replication channel we use JSON only
@@ -336,14 +300,11 @@ public class EurekaCodecCompatibilityTest {
         responseList.add(new ReplicationInstanceResponse(200, InstanceInfoGenerator.takeOne()));
         final ReplicationListResponse replicationListResponse = new ReplicationListResponse(responseList);
 
-        Action2 codingAction = new Action2() {
-            @Override
-            public void call(EncoderWrapper encodingCodec, DecoderWrapper decodingCodec) throws IOException {
-                String encodedString = encodingCodec.encode(replicationListResponse);
+        Action2 codingAction = (encodingCodec, decodingCodec) -> {
+            String encodedString = encodingCodec.encode(replicationListResponse);
 
-                ReplicationListResponse decodedValue = decodingCodec.decode(encodedString, ReplicationListResponse.class);
-                assertThat(decodedValue.getResponseList().size(), is(equalTo(1)));
-            }
+            ReplicationListResponse decodedValue = decodingCodec.decode(encodedString, ReplicationListResponse.class);
+            assertThat(decodedValue.getResponseList().size(), is(equalTo(1)));
         };
 
         // In replication channel we use JSON only

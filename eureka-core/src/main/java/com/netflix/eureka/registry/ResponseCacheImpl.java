@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -32,11 +31,9 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.zip.GZIPOutputStream;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Supplier;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
@@ -107,14 +104,9 @@ public class ResponseCacheImpl implements ResponseCache {
      * around till expiry. Github issue: https://github.com/Netflix/eureka/issues/118
      */
     private final Multimap<Key, Key> regionSpecificKeys =
-            Multimaps.newListMultimap(new ConcurrentHashMap<Key, Collection<Key>>(), new Supplier<List<Key>>() {
-                @Override
-                public List<Key> get() {
-                    return new CopyOnWriteArrayList<Key>();
-                }
-            });
+            Multimaps.newListMultimap(new ConcurrentHashMap<>(), () -> new CopyOnWriteArrayList<>());
 
-    private final ConcurrentMap<Key, Value> readOnlyCacheMap = new ConcurrentHashMap<Key, Value>();
+    private final ConcurrentMap<Key, Value> readOnlyCacheMap = new ConcurrentHashMap<>();
 
     private final LoadingCache<Key, Value> readWriteCacheMap;
     private final boolean shouldUseReadOnlyResponseCache;
@@ -132,14 +124,11 @@ public class ResponseCacheImpl implements ResponseCache {
         this.readWriteCacheMap =
                 CacheBuilder.newBuilder().initialCapacity(serverConfig.getInitialCapacityOfResponseCache())
                         .expireAfterWrite(serverConfig.getResponseCacheAutoExpirationInSeconds(), TimeUnit.SECONDS)
-                        .removalListener(new RemovalListener<Key, Value>() {
-                            @Override
-                            public void onRemoval(RemovalNotification<Key, Value> notification) {
-                                Key removedKey = notification.getKey();
-                                if (removedKey.hasRegions()) {
-                                    Key cloneWithNoRegions = removedKey.cloneWithoutRegions();
-                                    regionSpecificKeys.remove(cloneWithNoRegions, removedKey);
-                                }
+                        .removalListener(notification -> {
+                            Key removedKey = notification.getKey();
+                            if (removedKey.hasRegions()) {
+                                Key cloneWithNoRegions = removedKey.cloneWithoutRegions();
+                                regionSpecificKeys.remove(cloneWithNoRegions, removedKey);
                             }
                         })
                         .build(new CacheLoader<Key, Value>() {
@@ -149,8 +138,7 @@ public class ResponseCacheImpl implements ResponseCache {
                                     Key cloneWithNoRegions = key.cloneWithoutRegions();
                                     regionSpecificKeys.put(cloneWithNoRegions, key);
                                 }
-                                Value value = generatePayload(key);
-                                return value;
+                                return generatePayload(key);
                             }
                         });
 

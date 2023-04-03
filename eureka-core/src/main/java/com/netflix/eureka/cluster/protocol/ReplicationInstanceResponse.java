@@ -30,19 +30,19 @@ public class ReplicationInstanceResponse {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
-        if (o == null || getClass() != o.getClass())
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
+        }
 
         ReplicationInstanceResponse that = (ReplicationInstanceResponse) o;
 
-        if (statusCode != that.statusCode)
+        if (statusCode != that.statusCode) {
             return false;
-        if (responseEntity != null ? !responseEntity.equals(that.responseEntity) : that.responseEntity != null)
-            return false;
-
-        return true;
+        }
+        return !(responseEntity != null ? !responseEntity.equals(that.responseEntity) : that.responseEntity != null);
     }
 
     @Override
