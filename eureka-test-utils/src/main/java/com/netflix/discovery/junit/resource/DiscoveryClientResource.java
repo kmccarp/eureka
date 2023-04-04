@@ -13,7 +13,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import com.google.common.base.Preconditions;
 import com.netflix.appinfo.ApplicationInfoManager;
-import com.netflix.appinfo.DataCenterInfo;
 import com.netflix.appinfo.EurekaInstanceConfig;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.appinfo.LeaseInfo;
@@ -252,8 +251,7 @@ public class DiscoveryClientResource extends ExternalResource {
         ApplicationInfoManager applicationInfoManager = new ApplicationInfoManager(new MyDataCenterInstanceConfig(), clientInstanceInfo);
 
         DiscoveryManager.getInstance().setEurekaClientConfig(config);
-        EurekaClient client = new DiscoveryClient(applicationInfoManager, config);
-        return client;
+        return new DiscoveryClient(applicationInfoManager, config);
     }
 
     public static EurekaClient setupInjector(InstanceInfo clientInstanceInfo) {
@@ -272,12 +270,7 @@ public class DiscoveryClientResource extends ExternalResource {
         builder.setIPAddr("10.10.101.00");
         builder.setHostName("Hosttt");
         builder.setAppName("EurekaTestApp-" + UUID.randomUUID());
-        builder.setDataCenterInfo(new DataCenterInfo() {
-            @Override
-            public Name getName() {
-                return Name.MyOwn;
-            }
-        });
+        builder.setDataCenterInfo(() -> Name.MyOwn);
         builder.setLeaseInfo(LeaseInfo.Builder.newBuilder().setRenewalIntervalInSecs(renewalIntervalInSecs).build());
         return builder;
     }

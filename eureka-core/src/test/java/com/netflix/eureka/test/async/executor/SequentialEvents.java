@@ -10,12 +10,12 @@ import com.google.common.base.Preconditions;
  * SequentialEvents represents multiple events which should be executed in a
  * sequential manner.
  */
-public class SequentialEvents {
+public final class SequentialEvents {
 
     /**
      * Multiple single events.
      */
-    private List<SingleEvent> eventList;
+    private final List<SingleEvent> eventList;
 
     /**
      * Default constructor.

@@ -35,7 +35,7 @@ public class EurekaConfigBasedInstanceInfoProvider implements Provider<InstanceI
     private InstanceInfo instanceInfo;
 
     @Inject(optional = true)
-    private VipAddressResolver vipAddressResolver = null;
+    private VipAddressResolver vipAddressResolver;
 
     @Inject
     public EurekaConfigBasedInstanceInfoProvider(EurekaInstanceConfig config) {

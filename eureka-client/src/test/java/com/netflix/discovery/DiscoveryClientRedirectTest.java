@@ -53,24 +53,14 @@ public class DiscoveryClientRedirectTest {
     public DiscoveryClientResource registryFetchClientRule = DiscoveryClientResource.newBuilder()
             .withRegistration(false)
             .withRegistryFetch(true)
-            .withPortResolver(new Callable<Integer>() {
-                @Override
-                public Integer call() throws Exception {
-                    return redirectServerMockRule.getHttpPort();
-                }
-            })
+            .withPortResolver(redirectServerMockRule::getHttpPort)
             .withInstanceInfo(myInstanceInfo)
             .build();
     @Rule
     public DiscoveryClientResource registeringClientRule = DiscoveryClientResource.newBuilder()
             .withRegistration(true)
             .withRegistryFetch(false)
-            .withPortResolver(new Callable<Integer>() {
-                @Override
-                public Integer call() throws Exception {
-                    return redirectServerMockRule.getHttpPort();
-                }
-            })
+            .withPortResolver(redirectServerMockRule::getHttpPort)
             .withInstanceInfo(myInstanceInfo)
             .build();
 
@@ -133,12 +123,9 @@ public class DiscoveryClientRedirectTest {
 
         final EurekaClient client = registryFetchClientRule.getClient();
 
-        await(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                List<Application> applicationList = client.getApplications().getRegisteredApplications();
-                return !applicationList.isEmpty() && applicationList.get(0).getInstances().size() == 2;
-            }
+        await(() -> {
+            List<Application> applicationList = client.getApplications().getRegisteredApplications();
+            return !applicationList.isEmpty() && applicationList.get(0).getInstances().size() == 2;
         }, 1, TimeUnit.MINUTES);
 
         redirectServerMockClient.verify(request().withMethod("GET").withPath("/eureka/v2/apps/"), exactly(1));
@@ -202,12 +189,9 @@ public class DiscoveryClientRedirectTest {
 
         final EurekaClient client = registryFetchClientRule.getClient();
 
-        await(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                List<Application> applicationList = client.getApplications().getRegisteredApplications();
-                return !applicationList.isEmpty() && applicationList.get(0).getInstances().size() == 2;
-            }
+        await(() -> {
+            List<Application> applicationList = client.getApplications().getRegisteredApplications();
+            return !applicationList.isEmpty() && applicationList.get(0).getInstances().size() == 2;
         }, 1, TimeUnit.MINUTES);
 
         redirectServerMockClient.verify(request().withMethod("GET").withPath("/eureka/v2/apps/"), exactly(1));

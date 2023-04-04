@@ -24,7 +24,6 @@ import com.netflix.discovery.CommonConstants;
 import com.netflix.discovery.DefaultEurekaClientConfig;
 import com.netflix.discovery.EurekaNamespace;
 import com.netflix.governator.guice.BootstrapBinder;
-import com.netflix.governator.guice.BootstrapModule;
 import com.netflix.governator.guice.LifecycleInjector;
 import org.junit.Test;
 
@@ -44,11 +43,8 @@ public class DefaultEurekaClientConfigProviderTest {
         ConfigurationManager.getConfigInstance().setProperty("testnamespace.serviceUrl.default", SERVICE_URI);
 
         Injector injector = LifecycleInjector.builder()
-                .withBootstrapModule(new BootstrapModule() {
-                    @Override
-                    public void configure(BootstrapBinder binder) {
-                        binder.bind(String.class).annotatedWith(EurekaNamespace.class).toInstance("testnamespace.");
-                    }
+                .withBootstrapModule(binder -> {
+                    binder.bind(String.class).annotatedWith(EurekaNamespace.class).toInstance("testnamespace.");
                 })
                 .build()
                 .createInjector();
