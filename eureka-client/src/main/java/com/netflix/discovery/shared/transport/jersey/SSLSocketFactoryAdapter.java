@@ -133,8 +133,8 @@ public class SSLSocketFactoryAdapter extends SSLSocketFactory {
         }
 
     }
-    
-    private static class WrappedX509HostnameVerifier extends DummyX509HostnameVerifier {
+
+    private static final class WrappedX509HostnameVerifier extends DummyX509HostnameVerifier {
         HostnameVerifier hostnameVerifier;
         private WrappedX509HostnameVerifier(HostnameVerifier hostnameVerifier) {
             this.hostnameVerifier = hostnameVerifier;

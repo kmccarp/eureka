@@ -322,7 +322,7 @@ public class EurekaJersey2ClientImpl implements EurekaJersey2Client {
         }
     }
 
-    private class ConnectionCleanerTask implements Runnable {
+    private final class ConnectionCleanerTask implements Runnable {
 
         private final int connectionIdleTimeout;
         private final BasicTimer executionTimeStats;

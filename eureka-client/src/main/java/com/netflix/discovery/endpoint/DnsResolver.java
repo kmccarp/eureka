@@ -40,7 +40,7 @@ public final class DnsResolver {
      * Load up the DNS JNDI context provider.
      */
     public static DirContext getDirContext() {
-        Hashtable<String, String> env = new Hashtable<String, String>();
+        Hashtable<String, String> env = new Hashtable<>();
         env.put(JAVA_NAMING_FACTORY_INITIAL, DNS_NAMING_FACTORY);
         env.put(JAVA_NAMING_PROVIDER_URL, DNS_PROVIDER_URL);
 
@@ -117,10 +117,7 @@ public final class DnsResolver {
         if ("localhost".equals(currentHost)) {
             return true;
         }
-        if ("127.0.0.1".equals(currentHost)) {
-            return true;
-        }
-        return false;
+        return "127.0.0.1".equals(currentHost);
     }
 
     /**

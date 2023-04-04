@@ -33,6 +33,8 @@ import com.netflix.appinfo.InstanceInfo.PortType;
  */
 public class InstanceInfoJsonBeanSerializer extends BeanSerializer {
 
+    private static final long serialVersionUID = 1;
+
     private static final Map<String, String> EMPTY_MAP = Collections.singletonMap("@class", "java.util.Collections$EmptyMap");
 
     /**

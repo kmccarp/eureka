@@ -1,7 +1,6 @@
 package com.netflix.discovery.util;
 
 import com.netflix.appinfo.AmazonInfo;
-import com.netflix.appinfo.DataCenterInfo;
 import com.netflix.appinfo.InstanceInfo;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,12 +12,7 @@ public class EurekaUtilsTest {
     @Test
     public void testIsInEc2() {
         InstanceInfo instanceInfo1 = new InstanceInfo.Builder(InstanceInfoGenerator.takeOne())
-                .setDataCenterInfo(new DataCenterInfo() {
-                    @Override
-                    public Name getName() {
-                        return Name.MyOwn;
-                    }
-                })
+                .setDataCenterInfo(() -> Name.MyOwn)
                 .build();
 
         Assert.assertFalse(EurekaUtils.isInEc2(instanceInfo1));
@@ -30,12 +24,7 @@ public class EurekaUtilsTest {
     @Test
     public void testIsInVpc() {
         InstanceInfo instanceInfo1 = new InstanceInfo.Builder(InstanceInfoGenerator.takeOne())
-                .setDataCenterInfo(new DataCenterInfo() {
-                    @Override
-                    public Name getName() {
-                        return Name.MyOwn;
-                    }
-                })
+                .setDataCenterInfo(() -> Name.MyOwn)
                 .build();
 
         Assert.assertFalse(EurekaUtils.isInVpc(instanceInfo1));

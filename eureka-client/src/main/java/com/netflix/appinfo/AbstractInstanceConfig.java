@@ -50,12 +50,7 @@ public abstract class AbstractInstanceConfig implements EurekaInstanceConfig {
     private static final int SECURE_PORT = 443;
     private static final boolean INSTANCE_ENABLED_ON_INIT = false;
     private static final Pair<String, String> hostInfo = getHostInfo();
-    private DataCenterInfo info = new DataCenterInfo() {
-        @Override
-        public Name getName() {
-            return Name.MyOwn;
-        }
-    };
+    private DataCenterInfo info = () -> Name.MyOwn;
 
     protected AbstractInstanceConfig() {
 
@@ -145,7 +140,7 @@ public abstract class AbstractInstanceConfig implements EurekaInstanceConfig {
      */
     @Override
     public String getVirtualHostName() {
-        return (getHostName(false) + ":" + getNonSecurePort());
+        return getHostName(false) + ":" + getNonSecurePort();
     }
 
     /*
@@ -155,7 +150,7 @@ public abstract class AbstractInstanceConfig implements EurekaInstanceConfig {
      */
     @Override
     public String getSecureVirtualHostName() {
-        return (getHostName(false) + ":" + getSecurePort());
+        return getHostName(false) + ":" + getSecurePort();
     }
 
     /*
@@ -217,10 +212,10 @@ public abstract class AbstractInstanceConfig implements EurekaInstanceConfig {
         Pair<String, String> pair;
         try {
             InetAddress localHost = InetAddress.getLocalHost();
-            pair = new Pair<String, String>(localHost.getHostAddress(), localHost.getHostName());
+            pair = new Pair<>(localHost.getHostAddress(), localHost.getHostName());
         } catch (UnknownHostException e) {
             logger.error("Cannot get host info", e);
-            pair = new Pair<String, String>("", "");
+            pair = new Pair<>("", "");
         }
         return pair;
     }

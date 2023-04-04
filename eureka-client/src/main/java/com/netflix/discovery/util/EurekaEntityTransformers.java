@@ -48,37 +48,23 @@ public class EurekaEntityTransformers {
         throw new IllegalStateException("Unhandled ActionType value " + actionType);
     }
 
-    private static final Transformer<Object> IDENTITY_TRANSFORMER = new Transformer<Object>() {
-        @Override
-        public Object apply(Object value) {
-            return value;
-        }
+    private static final Transformer<Object> IDENTITY_TRANSFORMER = value -> value;
+
+    private static final Transformer<InstanceInfo> ADD_ACTION_SETTER_TRANSFORMER = instance -> {
+        InstanceInfo copy = new InstanceInfo(instance);
+        copy.setActionType(ActionType.ADDED);
+        return copy;
     };
 
-    private static final Transformer<InstanceInfo> ADD_ACTION_SETTER_TRANSFORMER = new Transformer<InstanceInfo>() {
-        @Override
-        public InstanceInfo apply(InstanceInfo instance) {
-            InstanceInfo copy = new InstanceInfo(instance);
-            copy.setActionType(ActionType.ADDED);
-            return copy;
-        }
+    private static final Transformer<InstanceInfo> MODIFIED_ACTION_SETTER_TRANSFORMER = instance -> {
+        InstanceInfo copy = new InstanceInfo(instance);
+        copy.setActionType(ActionType.MODIFIED);
+        return copy;
     };
 
-    private static final Transformer<InstanceInfo> MODIFIED_ACTION_SETTER_TRANSFORMER = new Transformer<InstanceInfo>() {
-        @Override
-        public InstanceInfo apply(InstanceInfo instance) {
-            InstanceInfo copy = new InstanceInfo(instance);
-            copy.setActionType(ActionType.MODIFIED);
-            return copy;
-        }
-    };
-
-    private static final Transformer<InstanceInfo> DELETED_ACTION_SETTER_TRANSFORMER = new Transformer<InstanceInfo>() {
-        @Override
-        public InstanceInfo apply(InstanceInfo instance) {
-            InstanceInfo copy = new InstanceInfo(instance);
-            copy.setActionType(ActionType.DELETED);
-            return copy;
-        }
+    private static final Transformer<InstanceInfo> DELETED_ACTION_SETTER_TRANSFORMER = instance -> {
+        InstanceInfo copy = new InstanceInfo(instance);
+        copy.setActionType(ActionType.DELETED);
+        return copy;
     };
 }

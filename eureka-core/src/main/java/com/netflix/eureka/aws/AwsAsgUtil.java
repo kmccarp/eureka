@@ -24,10 +24,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -92,14 +90,11 @@ public class AwsAsgUtil implements AsgClient {
 
     private final ExecutorService cacheReloadExecutor = new ThreadPoolExecutor(
             1, 10, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(),
-            new ThreadFactory() {
-                @Override
-                public Thread newThread(Runnable r) {
-                    Thread thread = new Thread(r, "Eureka-AWS-isASGEnabled");
-                    thread.setDaemon(true);
-                    return thread;
-                }
-    });
+            r -> {
+                Thread thread = new Thread(r, "Eureka-AWS-isASGEnabled");
+                thread.setDaemon(true);
+                return thread;
+            });
 
     private ListeningExecutorService listeningCacheReloadExecutor = MoreExecutors.listeningDecorator(cacheReloadExecutor);
 
@@ -130,12 +125,7 @@ public class AwsAsgUtil implements AsgClient {
                     }
                     @Override
                     public ListenableFuture<Boolean> reload(final CacheKey key, Boolean oldValue) throws Exception {
-                        return listeningCacheReloadExecutor.submit(new Callable<Boolean>() {
-                            @Override
-                            public Boolean call() throws Exception {
-                                return load(key);
-                            }
-                        });
+                        return listeningCacheReloadExecutor.submit(() -> load(key));
                     }
                 });
 
@@ -263,7 +253,7 @@ public class AwsAsgUtil implements AsgClient {
     private Credentials initializeStsSession(String asgAccount) {
         AWSSecurityTokenService sts = new AWSSecurityTokenServiceClient(new InstanceProfileCredentialsProvider());
         String region = clientConfig.getRegion();
-        if (!region.equals("us-east-1")) {
+        if (!"us-east-1".equals(region)) {
             sts.setEndpoint("sts." + region + ".amazonaws.com");
         }
 
@@ -301,7 +291,7 @@ public class AwsAsgUtil implements AsgClient {
         );
 
         String region = clientConfig.getRegion();
-        if (!region.equals("us-east-1")) {
+        if (!"us-east-1".equals(region)) {
             autoScalingClient.setEndpoint("autoscaling." + region + ".amazonaws.com");
         }
 
@@ -516,16 +506,19 @@ public class AwsAsgUtil implements AsgClient {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof CacheKey)) return false;
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof CacheKey)) {
+                return false;
+            }
 
             CacheKey cacheKey = (CacheKey) o;
 
-            if (asgAccountId != null ? !asgAccountId.equals(cacheKey.asgAccountId) : cacheKey.asgAccountId != null)
+            if (asgAccountId != null ? !asgAccountId.equals(cacheKey.asgAccountId) : cacheKey.asgAccountId != null) {
                 return false;
-            if (asgName != null ? !asgName.equals(cacheKey.asgName) : cacheKey.asgName != null) return false;
-
-            return true;
+            }
+            return !(asgName != null ? !asgName.equals(cacheKey.asgName) : cacheKey.asgName != null);
         }
 
         @Override
