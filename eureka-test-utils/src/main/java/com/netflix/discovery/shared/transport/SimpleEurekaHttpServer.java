@@ -91,40 +91,37 @@ public class SimpleEurekaHttpServer {
     }
 
     private HttpHandler createEurekaV2Handle() {
-        return new HttpHandler() {
-            @Override
-            public void handle(HttpExchange httpExchange) throws IOException {
-                if(eventListener != null) {
-                    eventListener.onHttpRequest(mapToEurekaHttpRequest(httpExchange));
-                }
-                try {
-                    String method = httpExchange.getRequestMethod();
-                    String path = httpExchange.getRequestURI().getPath();
-                    if (path.startsWith("/v2/apps")) {
-                        if ("GET".equals(method)) {
-                            handleAppsGET(httpExchange);
-                        } else if ("POST".equals(method)) {
-                            handleAppsPost(httpExchange);
-                        } else if ("PUT".equals(method)) {
-                            handleAppsPut(httpExchange);
-                        } else if ("DELETE".equals(method)) {
-                            handleAppsDelete(httpExchange);
-                        } else {
-                            httpExchange.sendResponseHeaders(HttpServletResponse.SC_NOT_FOUND, 0);
-                        }
-                    } else if (path.startsWith("/v2/vips")) {
-                        handleVipsGET(httpExchange);
-                    } else if (path.startsWith("/v2/svips")) {
-                        handleSecureVipsGET(httpExchange);
-                    } else if (path.startsWith("/v2/instances")) {
-                        handleInstanceGET(httpExchange);
-                    }
-                } catch (Exception e) {
-                    logger.error("HttpServer error", e);
-                    httpExchange.sendResponseHeaders(500, 0);
-                }
-                httpExchange.close();
+        return httpExchange -> {
+            if (eventListener != null) {
+                eventListener.onHttpRequest(mapToEurekaHttpRequest(httpExchange));
             }
+            try {
+                String method = httpExchange.getRequestMethod();
+                String path = httpExchange.getRequestURI().getPath();
+                if (path.startsWith("/v2/apps")) {
+                    if ("GET".equals(method)) {
+                        handleAppsGET(httpExchange);
+                    } else if ("POST".equals(method)) {
+                        handleAppsPost(httpExchange);
+                    } else if ("PUT".equals(method)) {
+                        handleAppsPut(httpExchange);
+                    } else if ("DELETE".equals(method)) {
+                        handleAppsDelete(httpExchange);
+                    } else {
+                        httpExchange.sendResponseHeaders(HttpServletResponse.SC_NOT_FOUND, 0);
+                    }
+                } else if (path.startsWith("/v2/vips")) {
+                    handleVipsGET(httpExchange);
+                } else if (path.startsWith("/v2/svips")) {
+                    handleSecureVipsGET(httpExchange);
+                } else if (path.startsWith("/v2/instances")) {
+                    handleInstanceGET(httpExchange);
+                }
+            } catch (Exception e) {
+                logger.error("HttpServer error", e);
+                httpExchange.sendResponseHeaders(500, 0);
+            }
+            httpExchange.close();
         };
     }
 

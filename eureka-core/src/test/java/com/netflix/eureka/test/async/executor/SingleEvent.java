@@ -10,12 +10,12 @@ public class SingleEvent {
     /**
      * Interval time between the previous event.
      */
-    private int intervalTimeInMs;
+    private final int intervalTimeInMs;
 
     /**
      * Action to take.
      */
-    private Action action;
+    private final Action action;
 
     /**
      * Constructor.

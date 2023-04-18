@@ -13,7 +13,7 @@ public class ConcreteAsyncResult<T> implements AsyncResult<T> {
 
     private T result = null;
 
-    private Throwable error = null;
+    private Throwable error;
 
     public ConcreteAsyncResult() {
 

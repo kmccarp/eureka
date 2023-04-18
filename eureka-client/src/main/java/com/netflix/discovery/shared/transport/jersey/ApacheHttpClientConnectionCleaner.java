@@ -63,11 +63,8 @@ public class ApacheHttpClientConnectionCleaner {
     public ApacheHttpClientConnectionCleaner(ApacheHttpClient4 apacheHttpClient, final long connectionIdleTimeout) {
         this.apacheHttpClient = apacheHttpClient;
         this.eurekaConnCleaner.scheduleWithFixedDelay(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        cleanIdle(connectionIdleTimeout);
-                    }
+                () -> {
+                    cleanIdle(connectionIdleTimeout);
                 },
                 HTTP_CONNECTION_CLEANER_INTERVAL_MS,
                 HTTP_CONNECTION_CLEANER_INTERVAL_MS,

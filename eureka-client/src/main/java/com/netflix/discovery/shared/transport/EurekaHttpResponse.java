@@ -67,7 +67,7 @@ public class EurekaHttpResponse<T> {
     }
 
     public Map<String, String> getHeaders() {
-        return headers == null ? Collections.<String, String>emptyMap() : headers;
+        return headers == null ? Collections.emptyMap() : headers;
     }
 
     public T getEntity() {
@@ -83,14 +83,14 @@ public class EurekaHttpResponse<T> {
     }
 
     public static <T> EurekaHttpResponseBuilder<T> anEurekaHttpResponse(int statusCode, Class<T> entityType) {
-        return new EurekaHttpResponseBuilder<T>(statusCode);
+        return new EurekaHttpResponseBuilder<>(statusCode);
     }
 
     public static <T> EurekaHttpResponseBuilder<T> anEurekaHttpResponse(int statusCode, T entity) {
         return new EurekaHttpResponseBuilder<T>(statusCode).entity(entity);
     }
 
-    public static class EurekaHttpResponseBuilder<T> {
+    public static final class EurekaHttpResponseBuilder<T> {
 
         private final int statusCode;
         private T entity;
@@ -128,7 +128,7 @@ public class EurekaHttpResponse<T> {
         }
 
         public EurekaHttpResponse<T> build() {
-            return new EurekaHttpResponse<T>(this);
+            return new EurekaHttpResponse<>(this);
         }
     }
 }

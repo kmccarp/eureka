@@ -20,7 +20,7 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
  */
 @Serializer("com.netflix.discovery.converters.EntityBodyConverter")
 @XStreamAlias("status")
-public class StatusInfo {
+public final class StatusInfo {
     private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss Z";
     private static final boolean ARCHAIUS_EXISTS = classExists("com.netflix.config.ConfigurationManager");
 
@@ -52,7 +52,7 @@ public class StatusInfo {
          */
         public Builder add(String key, String value) {
             if (result.applicationStats == null) {
-                result.applicationStats = new HashMap<String, String>();
+                result.applicationStats = new HashMap<>();
             }
             result.applicationStats.put(key, value);
             return this;
@@ -76,21 +76,21 @@ public class StatusInfo {
             Runtime runtime = Runtime.getRuntime();
             int totalMem = (int) (runtime.totalMemory() / 1048576);
             int freeMem = (int) (runtime.freeMemory() / 1048576);
-            int usedPercent = (int) (((float) totalMem - freeMem) / (totalMem) * 100.0);
+            int usedPercent = (int) (((float) totalMem - freeMem) / totalMem * 100.0);
 
             result.generalStats.put("num-of-cpus",
                     String.valueOf(runtime.availableProcessors()));
             result.generalStats.put("total-avail-memory",
-                    String.valueOf(totalMem) + "mb");
+                    totalMem + "mb");
             result.generalStats.put("current-memory-usage",
-                    String.valueOf(totalMem - freeMem) + "mb" + " ("
+                    totalMem - freeMem + "mb" + " ("
                             + usedPercent + "%)");
 
             return result;
         }
     }
 
-    private Map<String, String> generalStats = new HashMap<String, String>();
+    private Map<String, String> generalStats = new HashMap<>();
     private Map<String, String> applicationStats;
     private InstanceInfo instanceInfo;
     private Boolean isHeathly;
@@ -132,7 +132,7 @@ public class StatusInfo {
         if (days == 1) {
             buf.append("1 day ");
         } else if (days > 1) {
-            buf.append(Long.valueOf(days).toString()).append(" days ");
+            buf.append(Long.toString(days)).append(" days ");
         }
         DecimalFormat format = new DecimalFormat();
         format.setMinimumIntegerDigits(2);
