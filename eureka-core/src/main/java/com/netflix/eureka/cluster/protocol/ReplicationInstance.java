@@ -19,12 +19,12 @@ public class ReplicationInstance {
 
     @JsonCreator
     public ReplicationInstance(@JsonProperty("appName") String appName,
-                               @JsonProperty("id") String id,
-                               @JsonProperty("lastDirtyTimestamp") Long lastDirtyTimestamp,
-                               @JsonProperty("overriddenStatus") String overriddenStatus,
-                               @JsonProperty("status") String status,
-                               @JsonProperty("instanceInfo") InstanceInfo instanceInfo,
-                               @JsonProperty("action") Action action) {
+            @JsonProperty("id") String id,
+            @JsonProperty("lastDirtyTimestamp") Long lastDirtyTimestamp,
+            @JsonProperty("overriddenStatus") String overriddenStatus,
+            @JsonProperty("status") String status,
+            @JsonProperty("instanceInfo") InstanceInfo instanceInfo,
+            @JsonProperty("action") Action action) {
         this.appName = appName;
         this.id = id;
         this.lastDirtyTimestamp = lastDirtyTimestamp;

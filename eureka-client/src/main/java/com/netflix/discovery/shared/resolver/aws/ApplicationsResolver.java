@@ -26,15 +26,15 @@ public class ApplicationsResolver implements ClusterResolver<AwsEndpoint> {
 
     @Deprecated
     public ApplicationsResolver(EurekaClientConfig clientConfig,
-                                EurekaTransportConfig transportConfig,
-                                ApplicationsSource applicationsSource) {
+            EurekaTransportConfig transportConfig,
+            ApplicationsSource applicationsSource) {
         this(clientConfig, transportConfig, applicationsSource, transportConfig.getReadClusterVip());
     }
 
     public ApplicationsResolver(EurekaClientConfig clientConfig,
-                                EurekaTransportConfig transportConfig,
-                                ApplicationsSource applicationsSource,
-                                String vipAddress) {
+            EurekaTransportConfig transportConfig,
+            ApplicationsSource applicationsSource,
+            String vipAddress) {
         this.clientConfig = clientConfig;
         this.transportConfig = transportConfig;
         this.applicationsSource = applicationsSource;

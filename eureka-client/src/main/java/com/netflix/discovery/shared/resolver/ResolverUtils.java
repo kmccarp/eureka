@@ -89,7 +89,7 @@ public final class ResolverUtils {
         if (randomList.size() < 2) {
             return randomList;
         }
-        Collections.shuffle(randomList,ThreadLocalRandom.current());
+        Collections.shuffle(randomList, ThreadLocalRandom.current());
         return randomList;
     }
 
@@ -106,8 +106,8 @@ public final class ResolverUtils {
     }
 
     public static AwsEndpoint instanceInfoToEndpoint(EurekaClientConfig clientConfig,
-                                                     EurekaTransportConfig transportConfig,
-                                                     InstanceInfo instanceInfo) {
+            EurekaTransportConfig transportConfig,
+            InstanceInfo instanceInfo) {
         String zone = null;
         DataCenterInfo dataCenterInfo = instanceInfo.getDataCenterInfo();
         if (dataCenterInfo instanceof AmazonInfo) {

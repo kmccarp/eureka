@@ -51,9 +51,9 @@ public class VIPResource extends AbstractVIPResource {
     @GET
     @Path("{vipAddress}")
     public Response statusUpdate(@PathParam("version") String version,
-                                 @PathParam("vipAddress") String vipAddress,
-                                 @HeaderParam("Accept") final String acceptHeader,
-                                 @HeaderParam(EurekaAccept.HTTP_X_EUREKA_ACCEPT) String eurekaAccept) {
+            @PathParam("vipAddress") String vipAddress,
+            @HeaderParam("Accept") final String acceptHeader,
+            @HeaderParam(EurekaAccept.HTTP_X_EUREKA_ACCEPT) String eurekaAccept) {
         return getVipResponse(version, vipAddress, acceptHeader,
                 EurekaAccept.fromString(eurekaAccept), Key.EntityType.VIP);
     }

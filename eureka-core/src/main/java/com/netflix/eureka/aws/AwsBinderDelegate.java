@@ -17,9 +17,9 @@ public class AwsBinderDelegate implements AwsBinder {
 
     @Inject
     public AwsBinderDelegate(EurekaServerConfig serverConfig,
-                             EurekaClientConfig clientConfig,
-                             PeerAwareInstanceRegistry registry,
-                             ApplicationInfoManager applicationInfoManager) {
+            EurekaClientConfig clientConfig,
+            PeerAwareInstanceRegistry registry,
+            ApplicationInfoManager applicationInfoManager) {
         AwsBindingStrategy bindingStrategy = serverConfig.getBindingStrategy();
         switch (bindingStrategy) {
             case ROUTE53:
@@ -48,7 +48,7 @@ public class AwsBinderDelegate implements AwsBinder {
 
     @Override
     @PreDestroy
-    public void shutdown()  {
+    public void shutdown() {
         try {
             delegate.shutdown();
         } catch (Exception e) {

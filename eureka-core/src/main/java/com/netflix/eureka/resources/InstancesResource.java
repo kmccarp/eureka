@@ -59,7 +59,7 @@ public class InstancesResource {
     @GET
     @Path("{id}")
     public Response getById(@PathParam("version") String version,
-                            @PathParam("id") String id) {
+            @PathParam("id") String id) {
         CurrentRequestVersion.set(Version.toEnum(version));
         List<InstanceInfo> list = registry.getInstancesById(id);
         CurrentRequestVersion.remove();

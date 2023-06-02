@@ -90,11 +90,11 @@ class AcceptorExecutor<ID, T> {
     private final Timer batchSizeMetric;
 
     AcceptorExecutor(String id,
-                     int maxBufferSize,
-                     int maxBatchingSize,
-                     long maxBatchingDelay,
-                     long congestionRetryDelayMs,
-                     long networkFailureRetryMs) {
+            int maxBufferSize,
+            int maxBatchingSize,
+            long maxBatchingDelay,
+            long congestionRetryDelayMs,
+            long networkFailureRetryMs) {
         this.id = id;
         this.maxBufferSize = maxBufferSize;
         this.maxBatchingSize = maxBatchingSize;

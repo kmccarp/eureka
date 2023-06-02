@@ -24,7 +24,7 @@ import com.netflix.archaius.api.Config;
 public class Ec2EurekaArchaius2InstanceConfig extends EurekaArchaius2InstanceConfig implements RefreshableInstanceConfig {
     private static final Logger LOG = LoggerFactory.getLogger(Ec2EurekaArchaius2InstanceConfig.class);
 
-    private static final String[] DEFAULT_AWS_ADDRESS_RESOLUTION_ORDER = new String[] {
+    private static final String[] DEFAULT_AWS_ADDRESS_RESOLUTION_ORDER = new String[]{
             MetaDataKey.publicHostname.name(),
             MetaDataKey.localIpv4.name()
     };
@@ -58,10 +58,10 @@ public class Ec2EurekaArchaius2InstanceConfig extends EurekaArchaius2InstanceCon
     }
 
     /* visible for testing */ Ec2EurekaArchaius2InstanceConfig(Config configInstance,
-                                                               AmazonInfoConfig amazonInfoConfig,
-                                                               String namespace,
-                                                               AmazonInfo initialInfo,
-                                                               boolean eagerInit) {
+            AmazonInfoConfig amazonInfoConfig,
+            String namespace,
+            AmazonInfo initialInfo,
+            boolean eagerInit) {
         super(configInstance, namespace);
         this.amazonInfoConfig = amazonInfoConfig;
 
@@ -83,11 +83,11 @@ public class Ec2EurekaArchaius2InstanceConfig extends EurekaArchaius2InstanceCon
             this.amazonInfoHolder = new RefreshableAmazonInfoProvider(initialInfo, amazonInfoConfig);
         }
     }
-    
+
     @Override
     public String getHostName(boolean refresh) {
         if (refresh && this.amazonInfoHolder instanceof RefreshableAmazonInfoProvider) {
-            ((RefreshableAmazonInfoProvider)amazonInfoHolder).refresh();
+            ((RefreshableAmazonInfoProvider) amazonInfoHolder).refresh();
         }
         return amazonInfoHolder.get().get(MetaDataKey.publicHostname);
     }
@@ -112,7 +112,7 @@ public class Ec2EurekaArchaius2InstanceConfig extends EurekaArchaius2InstanceCon
     @Deprecated
     public synchronized void refreshAmazonInfo() {
         if (this.amazonInfoHolder instanceof RefreshableAmazonInfoProvider) {
-            ((RefreshableAmazonInfoProvider)amazonInfoHolder).refresh();
+            ((RefreshableAmazonInfoProvider) amazonInfoHolder).refresh();
         }
     }
 

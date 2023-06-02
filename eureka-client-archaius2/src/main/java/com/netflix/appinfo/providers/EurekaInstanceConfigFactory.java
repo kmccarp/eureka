@@ -12,7 +12,7 @@ import com.netflix.appinfo.EurekaInstanceConfig;
  * @author David Liu
  */
 public interface EurekaInstanceConfigFactory {
-    
+
     EurekaInstanceConfig get();
 
 }

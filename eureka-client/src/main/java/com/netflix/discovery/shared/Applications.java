@@ -160,9 +160,9 @@ public class Applications {
      */
     public List<InstanceInfo> getInstancesByVirtualHostName(String virtualHostName) {
         return Optional.ofNullable(this.virtualHostNameAppMap.get(virtualHostName.toUpperCase(Locale.ROOT)))
-            .map(VipIndexSupport::getVipList)
-            .map(AtomicReference::get)
-            .orElseGet(Collections::emptyList); 
+                .map(VipIndexSupport::getVipList)
+                .map(AtomicReference::get)
+                .orElseGet(Collections::emptyList);
     }
 
     /**
@@ -178,7 +178,7 @@ public class Applications {
         return Optional.ofNullable(this.secureVirtualHostNameAppMap.get(secureVirtualHostName.toUpperCase(Locale.ROOT)))
                 .map(VipIndexSupport::getVipList)
                 .map(AtomicReference::get)
-                .orElseGet(Collections::emptyList);        
+                .orElseGet(Collections::emptyList);
     }
 
     /**
@@ -300,9 +300,9 @@ public class Applications {
                 instanceRegionChecker);
     }
 
-    private void shuffleInstances(boolean filterUpInstances, 
+    private void shuffleInstances(boolean filterUpInstances,
             boolean indexByRemoteRegions,
-            @Nullable Map<String, Applications> remoteRegionsRegistry, 
+            @Nullable Map<String, Applications> remoteRegionsRegistry,
             @Nullable EurekaClientConfig clientConfig,
             @Nullable InstanceRegionChecker instanceRegionChecker) {
         Map<String, VipIndexSupport> secureVirtualHostNameAppMap = new HashMap<>();

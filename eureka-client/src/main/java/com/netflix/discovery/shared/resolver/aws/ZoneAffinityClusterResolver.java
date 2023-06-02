@@ -49,7 +49,7 @@ public class ZoneAffinityClusterResolver implements ClusterResolver<AwsEndpoint>
             String myZone,
             boolean zoneAffinity,
             EndpointRandomizer randomizer
-    ) {
+        ) {
         this.delegate = delegate;
         this.myZone = myZone;
         this.zoneAffinity = zoneAffinity;

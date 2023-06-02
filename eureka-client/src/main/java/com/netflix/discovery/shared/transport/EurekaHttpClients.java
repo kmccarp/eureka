@@ -49,13 +49,13 @@ public final class EurekaHttpClients {
     }
 
     public static EurekaHttpClientFactory queryClientFactory(ClusterResolver bootstrapResolver,
-                                                             TransportClientFactory transportClientFactory,
-                                                             EurekaClientConfig clientConfig,
-                                                             EurekaTransportConfig transportConfig,
-                                                             InstanceInfo myInstanceInfo,
-                                                             ApplicationsResolver.ApplicationsSource applicationsSource,
-                                                             EndpointRandomizer randomizer
-    ) {
+            TransportClientFactory transportClientFactory,
+            EurekaClientConfig clientConfig,
+            EurekaTransportConfig transportConfig,
+            InstanceInfo myInstanceInfo,
+            ApplicationsResolver.ApplicationsSource applicationsSource,
+            EndpointRandomizer randomizer
+        ) {
 
         ClosableResolver queryResolver = transportConfig.useBootstrapResolverForQuery()
                 ? wrapClosable(bootstrapResolver)
@@ -65,15 +65,15 @@ public final class EurekaHttpClients {
     }
 
     public static EurekaHttpClientFactory registrationClientFactory(ClusterResolver bootstrapResolver,
-                                                                    TransportClientFactory transportClientFactory,
-                                                                    EurekaTransportConfig transportConfig) {
+            TransportClientFactory transportClientFactory,
+            EurekaTransportConfig transportConfig) {
         return canonicalClientFactory(EurekaClientNames.REGISTRATION, transportConfig, bootstrapResolver, transportClientFactory);
     }
 
     static EurekaHttpClientFactory canonicalClientFactory(final String name,
-                                                          final EurekaTransportConfig transportConfig,
-                                                          final ClusterResolver<EurekaEndpoint> clusterResolver,
-                                                          final TransportClientFactory transportClientFactory) {
+            final EurekaTransportConfig transportConfig,
+            final ClusterResolver<EurekaEndpoint> clusterResolver,
+            final TransportClientFactory transportClientFactory) {
 
         return new EurekaHttpClientFactory() {
             @Override
@@ -135,8 +135,8 @@ public final class EurekaHttpClients {
      *         depending on configuration for one or the other. This resolver will warm up at the start.
      */
     static ClosableResolver<AwsEndpoint> defaultBootstrapResolver(final EurekaClientConfig clientConfig,
-                                                                  final InstanceInfo myInstanceInfo,
-                                                                  final EndpointRandomizer randomizer) {
+            final InstanceInfo myInstanceInfo,
+            final EndpointRandomizer randomizer) {
         String[] availZones = clientConfig.getAvailabilityZones(clientConfig.getRegion());
         String myZone = InstanceInfo.getZone(availZones, myInstanceInfo);
 
@@ -232,12 +232,12 @@ public final class EurekaHttpClients {
      * @return a resolver that resolves eureka server endpoints for query operations
      */
     static ClosableResolver<AwsEndpoint> queryClientResolver(final ClusterResolver bootstrapResolver,
-                                                             final TransportClientFactory transportClientFactory,
-                                                             final EurekaClientConfig clientConfig,
-                                                             final EurekaTransportConfig transportConfig,
-                                                             final InstanceInfo myInstanceInfo,
-                                                             final ApplicationsResolver.ApplicationsSource applicationsSource,
-                                                             final EndpointRandomizer randomizer) {
+            final TransportClientFactory transportClientFactory,
+            final EurekaClientConfig clientConfig,
+            final EurekaTransportConfig transportConfig,
+            final InstanceInfo myInstanceInfo,
+            final ApplicationsResolver.ApplicationsSource applicationsSource,
+            final EndpointRandomizer randomizer) {
         final EurekaHttpResolver remoteResolver = new EurekaHttpResolver(
                 clientConfig,
                 transportConfig,

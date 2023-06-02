@@ -40,37 +40,37 @@ public class NamedConnectionPool extends ConnPoolByRoute {
     private String name;
 
     public NamedConnectionPool(String name, ClientConnectionOperator operator,
-                               ConnPerRoute connPerRoute, int maxTotalConnections, long connTTL,
-                               TimeUnit connTTLTimeUnit) {
+            ConnPerRoute connPerRoute, int maxTotalConnections, long connTTL,
+            TimeUnit connTTLTimeUnit) {
         super(operator, connPerRoute, maxTotalConnections, connTTL, connTTLTimeUnit);
         initMonitors(name);
     }
 
     public NamedConnectionPool(String name, ClientConnectionOperator operator,
-                               ConnPerRoute connPerRoute, int maxTotalConnections) {
+            ConnPerRoute connPerRoute, int maxTotalConnections) {
         super(operator, connPerRoute, maxTotalConnections);
         initMonitors(name);
     }
 
     public NamedConnectionPool(String name, ClientConnectionOperator operator,
-                               HttpParams params) {
+            HttpParams params) {
         super(operator, params);
         initMonitors(name);
     }
 
     NamedConnectionPool(ClientConnectionOperator operator,
-                        ConnPerRoute connPerRoute, int maxTotalConnections, long connTTL,
-                        TimeUnit connTTLTimeUnit) {
+            ConnPerRoute connPerRoute, int maxTotalConnections, long connTTL,
+            TimeUnit connTTLTimeUnit) {
         super(operator, connPerRoute, maxTotalConnections, connTTL, connTTLTimeUnit);
     }
 
     NamedConnectionPool(ClientConnectionOperator operator,
-                        ConnPerRoute connPerRoute, int maxTotalConnections) {
+            ConnPerRoute connPerRoute, int maxTotalConnections) {
         super(operator, connPerRoute, maxTotalConnections);
     }
 
     NamedConnectionPool(ClientConnectionOperator operator,
-                        HttpParams params) {
+            HttpParams params) {
         super(operator, params);
     }
 
@@ -104,7 +104,7 @@ public class NamedConnectionPool extends ConnPoolByRoute {
 
     @Override
     protected BasicPoolEntry createEntry(RouteSpecificPool rospl,
-                                         ClientConnectionOperator op) {
+            ClientConnectionOperator op) {
         createEntryCounter.increment();
         Stopwatch stopWatch = creationTimer.start();
         try {
@@ -116,7 +116,7 @@ public class NamedConnectionPool extends ConnPoolByRoute {
 
     @Override
     protected BasicPoolEntry getEntryBlocking(HttpRoute route, Object state,
-                                              long timeout, TimeUnit tunit, WaitingThreadAborter aborter)
+            long timeout, TimeUnit tunit, WaitingThreadAborter aborter)
             throws ConnectionPoolTimeoutException, InterruptedException {
         Stopwatch stopWatch = requestTimer.start();
         try {
@@ -128,7 +128,7 @@ public class NamedConnectionPool extends ConnPoolByRoute {
 
     @Override
     public void freeEntry(BasicPoolEntry entry, boolean reusable,
-                          long validDuration, TimeUnit timeUnit) {
+            long validDuration, TimeUnit timeUnit) {
         releaseCounter.increment();
         super.freeEntry(entry, reusable, validDuration, timeUnit);
     }
@@ -167,7 +167,7 @@ public class NamedConnectionPool extends ConnPoolByRoute {
     @Override
     public void shutdown() {
         super.shutdown();
-        if(Monitors.isObjectRegistered(name, this)) {
+        if (Monitors.isObjectRegistered(name, this)) {
             Monitors.unregisterObject(name, this);
         }
     }

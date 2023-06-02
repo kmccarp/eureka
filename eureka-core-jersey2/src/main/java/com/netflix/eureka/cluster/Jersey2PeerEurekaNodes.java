@@ -17,7 +17,7 @@ public class Jersey2PeerEurekaNodes extends PeerEurekaNodes {
             EurekaClientConfig clientConfig, ServerCodecs serverCodecs, ApplicationInfoManager applicationInfoManager) {
         super(registry, serverConfig, clientConfig, serverCodecs, applicationInfoManager);
     }
-    
+
     @Override
     protected PeerEurekaNode createPeerEurekaNode(String peerEurekaNodeUrl) {
         HttpReplicationClient replicationClient = Jersey2ReplicationClient.createReplicationClient(serverConfig, serverCodecs, peerEurekaNodeUrl);

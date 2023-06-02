@@ -225,9 +225,9 @@ public class ApplicationInfoManager {
                 logger.info(String.format("The spot instance termination action changed from: %s => %s",
                         existingSpotInstanceAction,
                         newSpotInstanceAction));
-                updateInstanceInfo(null , null );
+                updateInstanceInfo(null, null);
             }
-        }        
+        }
     }
 
     private void updateInstanceInfo(String newAddress, String newIp) {

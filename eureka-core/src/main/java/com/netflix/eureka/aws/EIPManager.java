@@ -86,9 +86,9 @@ public class EIPManager implements AwsBinder {
 
     @Inject
     public EIPManager(EurekaServerConfig serverConfig,
-                      EurekaClientConfig clientConfig,
-                      PeerAwareInstanceRegistry registry,
-                      ApplicationInfoManager applicationInfoManager) {
+            EurekaClientConfig clientConfig,
+            PeerAwareInstanceRegistry registry,
+            ApplicationInfoManager applicationInfoManager) {
         this.serverConfig = serverConfig;
         this.clientConfig = clientConfig;
         this.registry = registry;
@@ -313,8 +313,8 @@ public class EIPManager implements AwsBinder {
         }
 
         Collection<String> eipCandidates = clientConfig.shouldUseDnsForFetchingServiceUrls()
-                        ? getEIPsForZoneFromDNS(myZone)
-                        : getEIPsForZoneFromConfig(myZone);
+                ? getEIPsForZoneFromDNS(myZone)
+                : getEIPsForZoneFromConfig(myZone);
 
         if (eipCandidates == null || eipCandidates.size() == 0) {
             throw new RuntimeException("Could not get any elastic ips from the EIP pool for zone :" + myZone);
@@ -359,7 +359,7 @@ public class EIPManager implements AwsBinder {
                 String eip = eipStr.replaceAll("\\-", ".");
                 returnedUrls.add(eip);
             }
-            
+
             // Otherwise, if CNAME doesn't contain, do nothing.
             // Handle case where there are no cnames containing "ec2-". Reasons include:
             //  Systems without public addresses - purely attached to corp lan via AWS Direct Connect
@@ -453,5 +453,5 @@ public class EIPManager implements AwsBinder {
                 }
             }
         }
-    };
+    }
 }

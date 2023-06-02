@@ -88,8 +88,8 @@ public class DiscoveryJerseyProvider implements MessageBodyWriter<Object>, Messa
 
     @Override
     public Object readFrom(Class serializableClass, Type type,
-                           Annotation[] annotations, MediaType mediaType,
-                           MultivaluedMap headers, InputStream inputStream) throws IOException {
+            Annotation[] annotations, MediaType mediaType,
+            MultivaluedMap headers, InputStream inputStream) throws IOException {
         DecoderWrapper decoder;
         if (MediaType.MEDIA_TYPE_WILDCARD.equals(mediaType.getSubtype())) {
             decoder = xmlDecoder;
@@ -123,8 +123,8 @@ public class DiscoveryJerseyProvider implements MessageBodyWriter<Object>, Messa
 
     @Override
     public void writeTo(Object serializableObject, Class serializableClass,
-                        Type type, Annotation[] annotations, MediaType mediaType,
-                        MultivaluedMap headers, OutputStream outputStream) throws IOException, WebApplicationException {
+            Type type, Annotation[] annotations, MediaType mediaType,
+            MultivaluedMap headers, OutputStream outputStream) throws IOException, WebApplicationException {
         EncoderWrapper encoder = "json".equalsIgnoreCase(mediaType.getSubtype()) ? jsonEncoder : xmlEncoder;
 
         // XML codec may not be available

@@ -13,7 +13,8 @@ class TestableInstanceReplicationTask extends InstanceReplicationTask {
 
     public static final String APP_NAME = "testableReplicationTaskApp";
 
-    public enum ProcessingState {Pending, Finished, Failed}
+    public enum ProcessingState {Pending, Finished, Failed
+    }
 
     private final int replyStatusCode;
     private final int networkFailuresRepeatCount;
@@ -23,11 +24,11 @@ class TestableInstanceReplicationTask extends InstanceReplicationTask {
     private volatile int triggeredNetworkFailures;
 
     TestableInstanceReplicationTask(String peerNodeName,
-                                    String appName,
-                                    String id,
-                                    Action action,
-                                    int replyStatusCode,
-                                    int networkFailuresRepeatCount) {
+            String appName,
+            String id,
+            Action action,
+            int replyStatusCode,
+            int networkFailuresRepeatCount) {
         super(peerNodeName, action, appName, id);
         this.replyStatusCode = replyStatusCode;
         this.networkFailuresRepeatCount = networkFailuresRepeatCount;

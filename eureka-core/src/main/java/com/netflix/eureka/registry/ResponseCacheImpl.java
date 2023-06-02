@@ -383,7 +383,7 @@ public class ResponseCacheImpl implements ResponseCache {
             logger.error("Failed to encode the payload for all apps", e);
             return "";
         }
-        if(logger.isDebugEnabled()) {
+        if (logger.isDebugEnabled()) {
             logger.debug("New application cache entry {} with apps hashcode {}", key.toStringCompact(), apps.getAppsHashCode());
         }
         return result;

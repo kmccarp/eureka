@@ -171,7 +171,7 @@ public class EurekaJsonAndXmlJacksonCodecTest {
     }
 
     public void doInstanceInfoIgnoredFieldsAreFilteredOutDuringDeserializationProcess(AbstractEurekaJacksonCodec fullCodec,
-                                                                                      AbstractEurekaJacksonCodec compactCodec) throws Exception {
+            AbstractEurekaJacksonCodec compactCodec) throws Exception {
         InstanceInfo instanceInfo = infoIterator.next();
 
         // We use regular codec here to have all fields serialized

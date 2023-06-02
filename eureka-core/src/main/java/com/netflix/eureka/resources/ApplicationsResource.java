@@ -115,11 +115,11 @@ public class ApplicationsResource {
      */
     @GET
     public Response getContainers(@PathParam("version") String version,
-                                  @HeaderParam(HEADER_ACCEPT) String acceptHeader,
-                                  @HeaderParam(HEADER_ACCEPT_ENCODING) String acceptEncoding,
-                                  @HeaderParam(EurekaAccept.HTTP_X_EUREKA_ACCEPT) String eurekaAccept,
-                                  @Context UriInfo uriInfo,
-                                  @Nullable @QueryParam("regions") String regionsStr) {
+            @HeaderParam(HEADER_ACCEPT) String acceptHeader,
+            @HeaderParam(HEADER_ACCEPT_ENCODING) String acceptEncoding,
+            @HeaderParam(EurekaAccept.HTTP_X_EUREKA_ACCEPT) String eurekaAccept,
+            @Context UriInfo uriInfo,
+            @Nullable @QueryParam("regions") String regionsStr) {
 
         boolean isRemoteRegionRequested = null != regionsStr && !regionsStr.isEmpty();
         String[] regions = null;
@@ -234,7 +234,7 @@ public class ApplicationsResource {
         final Response response;
 
         if (acceptEncoding != null && acceptEncoding.contains(HEADER_GZIP_VALUE)) {
-             response = Response.ok(responseCache.getGZIP(cacheKey))
+            response = Response.ok(responseCache.getGZIP(cacheKey))
                     .header(HEADER_CONTENT_ENCODING, HEADER_GZIP_VALUE)
                     .header(HEADER_CONTENT_TYPE, returnMediaType)
                     .build();

@@ -33,10 +33,10 @@ public class EurekaHttpResolver implements ClusterResolver<AwsEndpoint> {
     private final EurekaHttpClientFactory clientFactory;
 
     public EurekaHttpResolver(EurekaClientConfig clientConfig,
-                              EurekaTransportConfig transportConfig,
-                              ClusterResolver<EurekaEndpoint> bootstrapResolver,
-                              TransportClientFactory transportClientFactory,
-                              String vipAddress) {
+            EurekaTransportConfig transportConfig,
+            ClusterResolver<EurekaEndpoint> bootstrapResolver,
+            TransportClientFactory transportClientFactory,
+            String vipAddress) {
         this(
                 clientConfig,
                 transportConfig,
@@ -52,9 +52,9 @@ public class EurekaHttpResolver implements ClusterResolver<AwsEndpoint> {
     }
 
     /* visible for testing */ EurekaHttpResolver(EurekaClientConfig clientConfig,
-                                                 EurekaTransportConfig transportConfig,
-                                                 EurekaHttpClientFactory clientFactory,
-                                                 String vipAddress) {
+            EurekaTransportConfig transportConfig,
+            EurekaHttpClientFactory clientFactory,
+            String vipAddress) {
         this.clientConfig = clientConfig;
         this.transportConfig = transportConfig;
         this.clientFactory = clientFactory;

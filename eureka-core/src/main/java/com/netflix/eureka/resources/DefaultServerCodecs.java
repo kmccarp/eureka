@@ -34,7 +34,7 @@ public class DefaultServerCodecs implements ServerCodecs {
 
     @Inject
     public DefaultServerCodecs(EurekaServerConfig serverConfig) {
-        this (
+        this(
                 getFullJson(serverConfig),
                 CodecWrappers.getCodec(CodecWrappers.JacksonJsonMini.class),
                 getFullXml(serverConfig),
@@ -43,9 +43,9 @@ public class DefaultServerCodecs implements ServerCodecs {
     }
 
     protected DefaultServerCodecs(CodecWrapper fullJsonCodec,
-                                  CodecWrapper compactJsonCodec,
-                                  CodecWrapper fullXmlCodec,
-                                  CodecWrapper compactXmlCodec) {
+            CodecWrapper compactJsonCodec,
+            CodecWrapper fullXmlCodec,
+            CodecWrapper compactXmlCodec) {
         this.fullJsonCodec = fullJsonCodec;
         this.compactJsonCodec = compactJsonCodec;
         this.fullXmlCodec = fullXmlCodec;
@@ -105,7 +105,8 @@ public class DefaultServerCodecs implements ServerCodecs {
         protected CodecWrapper fullXmlCodec;
         protected CodecWrapper compactXmlCodec;
 
-        protected Builder() {}
+        protected Builder() {
+        }
 
         public Builder withFullJsonCodec(CodecWrapper fullJsonCodec) {
             this.fullJsonCodec = fullJsonCodec;

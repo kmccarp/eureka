@@ -56,10 +56,10 @@ public class DefaultEndpoint implements EurekaEndpoint {
                 .append(isSecure ? "https" : "http")
                 .append("://")
                 .append(networkAddress);
-		if (port >= 0) {
-			sb.append(':')
-				.append(port);
-		}
+        if (port >= 0) {
+            sb.append(':')
+                    .append(port);
+        }
         if (relativeUri != null) {
             if (!relativeUri.startsWith("/")) {
                 sb.append('/');

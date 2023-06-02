@@ -80,7 +80,7 @@ public class DiscoveryManager {
      * @param eurekaConfig the eureka client configuration of the instance.
      */
     public void initComponent(EurekaInstanceConfig config,
-                              EurekaClientConfig eurekaConfig, AbstractDiscoveryClientOptionalArgs args) {
+            EurekaClientConfig eurekaConfig, AbstractDiscoveryClientOptionalArgs args) {
         this.eurekaInstanceConfig = config;
         this.eurekaClientConfig = eurekaConfig;
         if (ApplicationInfoManager.getInstance().getInfo() == null) {
@@ -92,7 +92,7 @@ public class DiscoveryManager {
     }
 
     public void initComponent(EurekaInstanceConfig config,
-                              EurekaClientConfig eurekaConfig) {
+            EurekaClientConfig eurekaConfig) {
         initComponent(config, eurekaConfig, null);
     }
 

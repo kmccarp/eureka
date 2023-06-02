@@ -28,12 +28,12 @@ public class EurekaArchaius2InstanceConfig extends AbstractInstanceConfig {
     private final DataCenterInfo dcInfo;
 
     private final String defaultAppGroup;
-    
+
     @Inject
     public EurekaArchaius2InstanceConfig(Config configInstance) {
         this(configInstance, CommonConstants.DEFAULT_CONFIG_NAMESPACE);
     }
-    
+
     public EurekaArchaius2InstanceConfig(Config configInstance, String namespace) {
         this(configInstance, namespace, new DataCenterInfo() {
             @Override
@@ -42,7 +42,7 @@ public class EurekaArchaius2InstanceConfig extends AbstractInstanceConfig {
             }
         });
     }
-    
+
     public EurekaArchaius2InstanceConfig(Config configInstance, String namespace, DataCenterInfo dcInfo) {
         this.defaultAppGroup = configInstance.getString(FALLBACK_APP_GROUP_KEY, Values.UNKNOWN_APPLICATION);
         this.namespace = namespace;
@@ -105,15 +105,15 @@ public class EurekaArchaius2InstanceConfig extends AbstractInstanceConfig {
     @Override
     public String getVirtualHostName() {
         return this.isNonSecurePortEnabled()
-            ? prefixedConfig.getString(VIRTUAL_HOSTNAME_KEY, super.getVirtualHostName())
-            : null;
+                ? prefixedConfig.getString(VIRTUAL_HOSTNAME_KEY, super.getVirtualHostName())
+                : null;
     }
 
     @Override
     public String getSecureVirtualHostName() {
         return this.getSecurePortEnabled()
-            ? prefixedConfig.getString(SECURE_VIRTUAL_HOSTNAME_KEY, super.getSecureVirtualHostName())
-            : null;
+                ? prefixedConfig.getString(SECURE_VIRTUAL_HOSTNAME_KEY, super.getSecureVirtualHostName())
+                : null;
     }
 
     @Override

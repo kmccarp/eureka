@@ -15,8 +15,8 @@ public class AlwaysMatchInstanceStatusRule implements InstanceStatusOverrideRule
 
     @Override
     public StatusOverrideResult apply(InstanceInfo instanceInfo,
-                                      Lease<InstanceInfo> existingLease,
-                                      boolean isReplication) {
+            Lease<InstanceInfo> existingLease,
+            boolean isReplication) {
         logger.debug("Returning the default instance status {} for instance {}", instanceInfo.getStatus(),
                 instanceInfo.getId());
         return StatusOverrideResult.matchingStatus(instanceInfo.getStatus());

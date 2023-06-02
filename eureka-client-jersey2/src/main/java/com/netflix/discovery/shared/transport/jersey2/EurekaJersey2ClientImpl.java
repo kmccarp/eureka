@@ -58,7 +58,7 @@ public class EurekaJersey2ClientImpl implements EurekaJersey2Client {
     private static final String KEYSTORE_TYPE = "JKS";
 
     private final Client apacheHttpClient;
-    
+
     private final ConnectionCleanerTask connectionCleanerTask;
 
     ClientConfig jerseyClientConfig;
@@ -92,7 +92,7 @@ public class EurekaJersey2ClientImpl implements EurekaJersey2Client {
             jerseyClientConfig.property(ClientProperties.CONNECT_TIMEOUT, connectionTimeout);
             jerseyClientConfig.property(ClientProperties.READ_TIMEOUT, readTimeout);
             apacheHttpClient = ClientBuilder.newClient(jerseyClientConfig);
-            connectionCleanerTask = new ConnectionCleanerTask(connectionIdleTimeout); 
+            connectionCleanerTask = new ConnectionCleanerTask(connectionIdleTimeout);
             eurekaConnCleaner.scheduleWithFixedDelay(
                     connectionCleanerTask, HTTP_CONNECTION_CLEANER_INTERVAL_MS,
                     HTTP_CONNECTION_CLEANER_INTERVAL_MS,

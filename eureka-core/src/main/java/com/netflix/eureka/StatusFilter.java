@@ -56,7 +56,7 @@ public class StatusFilter implements Filter {
      * javax.servlet.ServletResponse, javax.servlet.FilterChain)
      */
     public void doFilter(ServletRequest request, ServletResponse response,
-                         FilterChain chain) throws IOException, ServletException {
+            FilterChain chain) throws IOException, ServletException {
         InstanceInfo myInfo = ApplicationInfoManager.getInstance().getInfo();
         InstanceStatus status = myInfo.getStatus();
         if (status != InstanceStatus.UP && response instanceof HttpServletResponse) {

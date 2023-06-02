@@ -83,9 +83,9 @@ public abstract class EurekaHttpClientDecorator implements EurekaHttpClient {
 
     @Override
     public EurekaHttpResponse<InstanceInfo> sendHeartBeat(final String appName,
-                                                          final String id,
-                                                          final InstanceInfo info,
-                                                          final InstanceStatus overriddenStatus) {
+            final String id,
+            final InstanceInfo info,
+            final InstanceStatus overriddenStatus) {
         return execute(new RequestExecutor<InstanceInfo>() {
             @Override
             public EurekaHttpResponse<InstanceInfo> execute(EurekaHttpClient delegate) {

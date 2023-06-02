@@ -95,7 +95,8 @@ public class RateLimitingFilter implements Filter {
 
     private static final Pattern TARGET_RE = Pattern.compile("^.*/apps(/[^/]*)?$");
 
-    enum Target {FullFetch, DeltaFetch, Application, Other}
+    enum Target {FullFetch, DeltaFetch, Application, Other
+    }
 
     /**
      * Includes both full and delta fetches.

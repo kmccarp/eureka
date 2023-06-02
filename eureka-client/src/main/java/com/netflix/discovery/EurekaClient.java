@@ -176,7 +176,7 @@ public interface EurekaClient extends LookupService {
      * @param eventListener
      */
     public void registerEventListener(EurekaEventListener eventListener);
-    
+
     /**
      * Unregister a {@link EurekaEventListener} previous registered with {@link EurekaClient#registerEventListener}
      * or injected into the constructor of {@link DiscoveryClient}
@@ -185,7 +185,7 @@ public interface EurekaClient extends LookupService {
      * @return True if removed otherwise false if the listener was never registered.
      */
     public boolean unregisterEventListener(EurekaEventListener eventListener);
-    
+
     /**
      * @return the current registered healthcheck handler
      */
@@ -199,12 +199,12 @@ public interface EurekaClient extends LookupService {
      * Shuts down Eureka Client. Also sends a deregistration request to the eureka server.
      */
     public void shutdown();
-    
+
     /**
      * @return the configuration of this eureka client
      */
     public EurekaClientConfig getEurekaClientConfig();
-    
+
     /**
      * @return the application info manager of this eureka client
      */

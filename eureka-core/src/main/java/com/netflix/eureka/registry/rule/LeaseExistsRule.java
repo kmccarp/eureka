@@ -16,8 +16,8 @@ public class LeaseExistsRule implements InstanceStatusOverrideRule {
 
     @Override
     public StatusOverrideResult apply(InstanceInfo instanceInfo,
-                                      Lease<InstanceInfo> existingLease,
-                                      boolean isReplication) {
+            Lease<InstanceInfo> existingLease,
+            boolean isReplication) {
         // This is for backward compatibility until all applications have ASG
         // names, otherwise while starting up
         // the client status may override status replicated from other servers

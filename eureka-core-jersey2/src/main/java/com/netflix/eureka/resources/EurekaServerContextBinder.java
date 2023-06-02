@@ -11,13 +11,13 @@ import com.netflix.eureka.EurekaServerContextHolder;
  * @author Matt Nelson
  */
 public class EurekaServerContextBinder extends AbstractBinder {
-    
+
     public class EurekaServerContextFactory implements Factory<EurekaServerContext> {
         @Override
         public EurekaServerContext provide() {
-           return EurekaServerContextHolder.getInstance().getServerContext();
+            return EurekaServerContextHolder.getInstance().getServerContext();
         }
-     
+
         @Override
         public void dispose(EurekaServerContext t) {
         }

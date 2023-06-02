@@ -56,9 +56,9 @@ public class MetricsCollectingEurekaHttpClient extends EurekaHttpClientDecorator
     }
 
     private MetricsCollectingEurekaHttpClient(EurekaHttpClient delegate,
-                                              Map<RequestType, EurekaHttpClientRequestMetrics> metricsByRequestType,
-                                              ExceptionsMetric exceptionsMetric,
-                                              boolean shutdownMetrics) {
+            Map<RequestType, EurekaHttpClientRequestMetrics> metricsByRequestType,
+            ExceptionsMetric exceptionsMetric,
+            boolean shutdownMetrics) {
         this.delegate = delegate;
         this.metricsByRequestType = metricsByRequestType;
         this.exceptionsMetric = exceptionsMetric;
@@ -171,7 +171,8 @@ public class MetricsCollectingEurekaHttpClient extends EurekaHttpClientDecorator
 
     static class EurekaHttpClientRequestMetrics {
 
-        enum Status {x100, x200, x300, x400, x500, Unknown}
+        enum Status {x100, x200, x300, x400, x500, Unknown
+        }
 
         private final Timer latencyTimer;
         private final Counter connectionErrors;

@@ -50,7 +50,7 @@ abstract class AbstractVIPResource {
     }
 
     protected Response getVipResponse(String version, String entityName, String acceptHeader,
-                                      EurekaAccept eurekaAccept, Key.EntityType entityType) {
+            EurekaAccept eurekaAccept, Key.EntityType entityType) {
         if (!registry.shouldAllowAccess(false)) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }

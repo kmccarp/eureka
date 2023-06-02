@@ -103,8 +103,8 @@ public class ASGResource {
     @PUT
     @Path("{asgName}/status")
     public Response statusUpdate(@PathParam("asgName") String asgName,
-                                 @QueryParam("value") String newStatus,
-                                 @HeaderParam(PeerEurekaNode.HEADER_REPLICATION) String isReplication) {
+            @QueryParam("value") String newStatus,
+            @HeaderParam(PeerEurekaNode.HEADER_REPLICATION) String isReplication) {
         if (awsAsgUtil == null) {
             return Response.status(400).build();
         }

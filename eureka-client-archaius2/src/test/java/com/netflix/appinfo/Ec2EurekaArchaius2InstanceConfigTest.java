@@ -50,7 +50,7 @@ public class Ec2EurekaArchaius2InstanceConfigTest {
         return new Ec2EurekaArchaius2InstanceConfig(MapConfig.from(Collections.<String, String>emptyMap()), info) {
             @Override
             public String[] getDefaultAddressResolutionOrder() {
-                return new String[] {
+                return new String[]{
                         publicHostname.name(),
                         localIpv4.name(),
                         ipv6.name()

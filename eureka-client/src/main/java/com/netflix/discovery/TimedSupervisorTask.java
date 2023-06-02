@@ -41,7 +41,7 @@ public class TimedSupervisorTask extends TimerTask {
     private final long maxDelay;
 
     public TimedSupervisorTask(String name, ScheduledExecutorService scheduler, ThreadPoolExecutor executor,
-                               int timeout, TimeUnit timeUnit, int expBackOffBound, Runnable task) {
+            int timeout, TimeUnit timeUnit, int expBackOffBound, Runnable task) {
         this.name = name;
         this.scheduler = scheduler;
         this.executor = executor;

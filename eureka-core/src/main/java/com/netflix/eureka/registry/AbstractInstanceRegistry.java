@@ -239,7 +239,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
             // This is where the initial state transfer of overridden status happens
             if (!InstanceStatus.UNKNOWN.equals(registrant.getOverriddenStatus())) {
                 logger.debug("Found overridden status {} for instance {}. Checking to see if needs to be add to the "
-                                + "overrides", registrant.getOverriddenStatus(), registrant.getId());
+                        + "overrides", registrant.getOverriddenStatus(), registrant.getId());
                 if (!overriddenInstanceStatusMap.containsKey(registrant.getId())) {
                     logger.info("Not found overridden id {} and hence adding it", registrant.getId());
                     overriddenInstanceStatusMap.put(registrant.getId(), registrant.getOverriddenStatus());
@@ -375,8 +375,8 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                     logger.info(
                             "The instance status {} is different from overridden instance status {} for instance {}. "
                                     + "Hence setting the status to overridden status", instanceInfo.getStatus().name(),
-                                    overriddenInstanceStatus.name(),
-                                    instanceInfo.getId());
+                            overriddenInstanceStatus.name(),
+                            instanceInfo.getId());
                     instanceInfo.setStatusWithoutDirty(overriddenInstanceStatus);
 
                 }
@@ -460,8 +460,8 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
      */
     @Override
     public boolean statusUpdate(String appName, String id,
-                                InstanceStatus newStatus, String lastDirtyTimestamp,
-                                boolean isReplication) {
+            InstanceStatus newStatus, String lastDirtyTimestamp,
+            boolean isReplication) {
         read.lock();
         try {
             STATUS_UPDATE.increment(isReplication);
@@ -525,9 +525,9 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
      */
     @Override
     public boolean deleteStatusOverride(String appName, String id,
-                                        InstanceStatus newStatus,
-                                        String lastDirtyTimestamp,
-                                        boolean isReplication) {
+            InstanceStatus newStatus,
+            String lastDirtyTimestamp,
+            boolean isReplication) {
         read.lock();
         try {
             STATUS_OVERRIDE_DELETE.increment(isReplication);
@@ -782,7 +782,7 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                             }
                         } else {
                             logger.debug("Application {} not fetched from the remote region {} as there exists a "
-                                            + "whitelist and this app is not in the whitelist.",
+                                    + "whitelist and this app is not in the whitelist.",
                                     application.getName(), remoteRegion);
                         }
                     }
@@ -1330,8 +1330,8 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
     protected abstract InstanceStatusOverrideRule getInstanceInfoOverrideRule();
 
     protected InstanceInfo.InstanceStatus getOverriddenInstanceStatus(InstanceInfo r,
-                                                                    Lease<InstanceInfo> existingLease,
-                                                                    boolean isReplication) {
+            Lease<InstanceInfo> existingLease,
+            boolean isReplication) {
         InstanceStatusOverrideRule rule = getInstanceInfoOverrideRule();
         logger.debug("Processing override status using rule: {}", rule);
         return rule.apply(r, existingLease, isReplication).status();

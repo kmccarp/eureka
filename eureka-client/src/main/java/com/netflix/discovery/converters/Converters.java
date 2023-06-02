@@ -105,7 +105,7 @@ public final class Converters {
          */
         @Override
         public void marshal(Object source, HierarchicalStreamWriter writer,
-                            MarshallingContext context) {
+                MarshallingContext context) {
             Applications apps = (Applications) source;
             writer.startNode(VERSIONS_DELTA);
             writer.setValue(apps.getVersion().toString());
@@ -130,7 +130,7 @@ public final class Converters {
          */
         @Override
         public Object unmarshal(HierarchicalStreamReader reader,
-                                UnmarshallingContext context) {
+                UnmarshallingContext context) {
             Applications apps = new Applications();
             while (reader.hasMoreChildren()) {
                 reader.moveDown();
@@ -179,7 +179,7 @@ public final class Converters {
          */
         @Override
         public void marshal(Object source, HierarchicalStreamWriter writer,
-                            MarshallingContext context) {
+                MarshallingContext context) {
             Application app = (Application) source;
 
             writer.startNode(ELEM_NAME);
@@ -203,7 +203,7 @@ public final class Converters {
          */
         @Override
         public Object unmarshal(HierarchicalStreamReader reader,
-                                UnmarshallingContext context) {
+                UnmarshallingContext context) {
             Application app = new Application();
 
             while (reader.hasMoreChildren()) {
@@ -264,7 +264,7 @@ public final class Converters {
          */
         @Override
         public void marshal(Object source, HierarchicalStreamWriter writer,
-                            MarshallingContext context) {
+                MarshallingContext context) {
             InstanceInfo info = (InstanceInfo) source;
 
             if (info.getInstanceId() != null) {
@@ -363,7 +363,7 @@ public final class Converters {
         @Override
         @SuppressWarnings("unchecked")
         public Object unmarshal(HierarchicalStreamReader reader,
-                                UnmarshallingContext context) {
+                UnmarshallingContext context) {
             InstanceInfo.Builder builder = InstanceInfo.Builder.newBuilder();
 
             while (reader.hasMoreChildren()) {
@@ -455,7 +455,7 @@ public final class Converters {
          */
         @Override
         public void marshal(Object source, HierarchicalStreamWriter writer,
-                            MarshallingContext context) {
+                MarshallingContext context) {
             DataCenterInfo info = (DataCenterInfo) source;
 
             writer.startNode(ELEM_NAME);
@@ -487,7 +487,7 @@ public final class Converters {
         @Override
         @SuppressWarnings("unchecked")
         public Object unmarshal(HierarchicalStreamReader reader,
-                                UnmarshallingContext context) {
+                UnmarshallingContext context) {
             DataCenterInfo info = null;
             while (reader.hasMoreChildren()) {
                 reader.moveDown();
@@ -561,7 +561,7 @@ public final class Converters {
          */
         @Override
         public void marshal(Object source, HierarchicalStreamWriter writer,
-                            MarshallingContext context) {
+                MarshallingContext context) {
             LeaseInfo info = (LeaseInfo) source;
 
             writer.startNode(ELEM_RENEW_INT);
@@ -600,7 +600,7 @@ public final class Converters {
          */
         @Override
         public Object unmarshal(HierarchicalStreamReader reader,
-                                UnmarshallingContext context) {
+                UnmarshallingContext context) {
 
             LeaseInfo.Builder builder = LeaseInfo.Builder.newBuilder();
 
@@ -667,7 +667,7 @@ public final class Converters {
         @Override
         @SuppressWarnings("unchecked")
         public void marshal(Object source, HierarchicalStreamWriter writer,
-                            MarshallingContext context) {
+                MarshallingContext context) {
             Map<String, String> map = (Map<String, String>) source;
 
             for (Iterator<Entry<String, String>> iter = map.entrySet()
@@ -690,7 +690,7 @@ public final class Converters {
          */
         @Override
         public Object unmarshal(HierarchicalStreamReader reader,
-                                UnmarshallingContext context) {
+                UnmarshallingContext context) {
             return unmarshalMap(reader, context);
         }
 
@@ -725,7 +725,7 @@ public final class Converters {
      *            - The writer for which to write the information to.
      */
     private static void autoMarshalEligible(Object o,
-                                            HierarchicalStreamWriter writer) {
+            HierarchicalStreamWriter writer) {
         try {
             Class c = o.getClass();
             Field[] fields = c.getDeclaredFields();
@@ -758,7 +758,7 @@ public final class Converters {
      *            populated.
      */
     private static void autoUnmarshalEligible(HierarchicalStreamReader reader,
-                                              Object o) {
+            Object o) {
         try {
             String nodeName = reader.getNodeName();
             Class c = o.getClass();

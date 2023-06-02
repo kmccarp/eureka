@@ -120,7 +120,6 @@ public class ReplicationConcurrencyTest {
     }
 
 
-
     private static class MockServer {
         public final ApplicationResource applicationResource;
         public final PeerReplicationResource replicationResource;

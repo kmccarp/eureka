@@ -59,37 +59,37 @@ public class ResolverUtilsTest {
         assertThat(ResolverUtils.extractZoneFromHostName("us-east-1c.myservice.net"), is(equalTo("us-east-1c")));
         assertThat(ResolverUtils.extractZoneFromHostName("txt.us-east-1c.myservice.net"), is(equalTo("us-east-1c")));
     }
-    
+
     @Test
     public void testRandomizeProperlyRandomizesList() throws Exception {
         boolean success = false;
         for (int i = 0; i < 100; i++) {
             List<AwsEndpoint> firstList = SampleCluster.UsEast1a.builder().withServerPool(100).build();
-        
+
             List<AwsEndpoint> secondList = ResolverUtils.randomize(firstList);
-        
+
             try {
                 assertThat(firstList, is(not(equalTo(secondList))));
                 success = true;
                 break;
-            }catch(AssertionError e) {
+            } catch (AssertionError e) {
             }
         }
-        
-        if(!success) {
+
+        if (!success) {
             throw new AssertionError("ResolverUtils::randomize returned the same list 100 times, this is more than likely a bug.");
         }
     }
-    
+
     @Test
     public void testRandomizeReturnsACopyOfTheMethodParameter() throws Exception {
         List<AwsEndpoint> firstList = SampleCluster.UsEast1a.builder().withServerPool(1).build();
-        
+
         List<AwsEndpoint> secondList = ResolverUtils.randomize(firstList);
-        
+
         assertThat(firstList, is(not(sameInstance(secondList))));
     }
-    
+
     @Test
     public void testIdentical() throws Exception {
         List<AwsEndpoint> firstList = SampleCluster.UsEast1a.builder().withServerPool(10).build();

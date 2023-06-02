@@ -39,7 +39,7 @@ public final class EurekaJacksonXmlModifiers {
         return new BeanSerializerModifier() {
             @Override
             public JsonSerializer<?> modifySerializer(SerializationConfig config,
-                                                      BeanDescription beanDesc, JsonSerializer<?> serializer) {
+                    BeanDescription beanDesc, JsonSerializer<?> serializer) {
                 if (beanDesc.getBeanClass().isAssignableFrom(Applications.class)) {
                     return new ApplicationsXmlBeanSerializer((BeanSerializerBase) serializer, keyFormatter);
                 }

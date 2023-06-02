@@ -45,9 +45,9 @@ public final class EurekaServerHttpClients {
      * {@link EurekaHttpClient} for remote region replication.
      */
     public static EurekaHttpClient createRemoteRegionClient(EurekaServerConfig serverConfig,
-                                                            EurekaTransportConfig transportConfig,
-                                                            ServerCodecs serverCodecs,
-                                                            ClusterResolver<EurekaEndpoint> clusterResolver) {
+            EurekaTransportConfig transportConfig,
+            ServerCodecs serverCodecs,
+            ClusterResolver<EurekaEndpoint> clusterResolver) {
         JerseyRemoteRegionClientFactory jerseyFactory = new JerseyRemoteRegionClientFactory(serverConfig, serverCodecs, clusterResolver.getRegion());
         TransportClientFactory metricsFactory = MetricsCollectingEurekaHttpClient.createFactory(jerseyFactory);
 

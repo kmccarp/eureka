@@ -72,7 +72,7 @@ public class DefaultEurekaServerConfig implements EurekaServerConfig {
             .getInstance();
     private static final DynamicStringProperty EUREKA_PROPS_FILE = DynamicPropertyFactory
             .getInstance().getStringProperty("eureka.server.props",
-                    "eureka-server");
+            "eureka-server");
     private static final int TIME_TO_WAIT_FOR_REPLICATION = 30000;
 
     private String namespace = "eureka.";
@@ -519,8 +519,8 @@ public class DefaultEurekaServerConfig implements EurekaServerConfig {
             String[] pairSplit = remoteRegionUrlWithNamePair.split(pairSplitChar);
             if (pairSplit.length < 2) {
                 logger.error("Error reading eureka remote region urls from property {}. "
-                                + "Invalid entry {} for remote region url. The entry must contain region name and url "
-                                + "separated by a {}. Ignoring this entry.",
+                        + "Invalid entry {} for remote region url. The entry must contain region name and url "
+                        + "separated by a {}. Ignoring this entry.",
                         propName, remoteRegionUrlWithNamePair, pairSplitChar);
             } else {
                 String regionName = pairSplit[0];

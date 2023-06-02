@@ -34,7 +34,7 @@ public class Lease<T> {
 
     enum Action {
         Register, Cancel, Renew
-    };
+    }
 
     public static final int DEFAULT_DURATION_IN_SECS = 90;
 

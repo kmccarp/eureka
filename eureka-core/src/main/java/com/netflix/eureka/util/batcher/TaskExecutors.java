@@ -60,9 +60,9 @@ class TaskExecutors<ID, T> {
     }
 
     static <ID, T> TaskExecutors<ID, T> singleItemExecutors(final String name,
-                                                            int workerCount,
-                                                            final TaskProcessor<T> processor,
-                                                            final AcceptorExecutor<ID, T> acceptorExecutor) {
+            int workerCount,
+            final TaskProcessor<T> processor,
+            final AcceptorExecutor<ID, T> acceptorExecutor) {
         final AtomicBoolean isShutdown = new AtomicBoolean();
         final TaskExecutorMetrics metrics = new TaskExecutorMetrics(name);
         registeredMonitors.put(name, metrics);
@@ -70,9 +70,9 @@ class TaskExecutors<ID, T> {
     }
 
     static <ID, T> TaskExecutors<ID, T> batchExecutors(final String name,
-                                                       int workerCount,
-                                                       final TaskProcessor<T> processor,
-                                                       final AcceptorExecutor<ID, T> acceptorExecutor) {
+            int workerCount,
+            final TaskProcessor<T> processor,
+            final AcceptorExecutor<ID, T> acceptorExecutor) {
         final AtomicBoolean isShutdown = new AtomicBoolean();
         final TaskExecutorMetrics metrics = new TaskExecutorMetrics(name);
         registeredMonitors.put(name, metrics);
@@ -153,10 +153,10 @@ class TaskExecutors<ID, T> {
         final AcceptorExecutor<ID, T> taskDispatcher;
 
         WorkerRunnable(String workerName,
-                       AtomicBoolean isShutdown,
-                       TaskExecutorMetrics metrics,
-                       TaskProcessor<T> processor,
-                       AcceptorExecutor<ID, T> taskDispatcher) {
+                AtomicBoolean isShutdown,
+                TaskExecutorMetrics metrics,
+                TaskProcessor<T> processor,
+                AcceptorExecutor<ID, T> taskDispatcher) {
             this.workerName = workerName;
             this.isShutdown = isShutdown;
             this.metrics = metrics;
@@ -172,10 +172,10 @@ class TaskExecutors<ID, T> {
     static class BatchWorkerRunnable<ID, T> extends WorkerRunnable<ID, T> {
 
         BatchWorkerRunnable(String workerName,
-                            AtomicBoolean isShutdown,
-                            TaskExecutorMetrics metrics,
-                            TaskProcessor<T> processor,
-                            AcceptorExecutor<ID, T> acceptorExecutor) {
+                AtomicBoolean isShutdown,
+                TaskExecutorMetrics metrics,
+                TaskProcessor<T> processor,
+                AcceptorExecutor<ID, T> acceptorExecutor) {
             super(workerName, isShutdown, metrics, processor, acceptorExecutor);
         }
 
@@ -229,10 +229,10 @@ class TaskExecutors<ID, T> {
     static class SingleTaskWorkerRunnable<ID, T> extends WorkerRunnable<ID, T> {
 
         SingleTaskWorkerRunnable(String workerName,
-                                 AtomicBoolean isShutdown,
-                                 TaskExecutorMetrics metrics,
-                                 TaskProcessor<T> processor,
-                                 AcceptorExecutor<ID, T> acceptorExecutor) {
+                AtomicBoolean isShutdown,
+                TaskExecutorMetrics metrics,
+                TaskProcessor<T> processor,
+                AcceptorExecutor<ID, T> acceptorExecutor) {
             super(workerName, isShutdown, metrics, processor, acceptorExecutor);
         }
 

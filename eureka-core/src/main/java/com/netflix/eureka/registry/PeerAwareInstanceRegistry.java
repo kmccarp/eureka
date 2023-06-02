@@ -49,7 +49,7 @@ public interface PeerAwareInstanceRegistry extends InstanceRegistry {
      */
      boolean shouldAllowAccess(boolean remoteRegionRequired);
 
-     void register(InstanceInfo info, boolean isReplication);
+    void register(InstanceInfo info, boolean isReplication);
 
-     void statusUpdate(final String asgName, final ASGResource.ASGStatus newStatus, final boolean isReplication);
+    void statusUpdate(final String asgName, final ASGResource.ASGStatus newStatus, final boolean isReplication);
 }

@@ -233,7 +233,7 @@ public class InstanceInfo {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "InstanceInfo [instanceId = " + this.instanceId + ", appName = " + this.appName +
                 ", hostName = " + this.hostName + ", status = " + this.status +
                 ", ipAddr = " + this.ipAddr + ", port = " + this.port + ", securePort = " + this.securePort +
@@ -372,7 +372,7 @@ public class InstanceInfo {
         private static final String COLON = ":";
         private static final String HTTPS_PROTOCOL = "https://";
         private static final String HTTP_PROTOCOL = "http://";
-        private final Function<String,String> intern;
+        private final Function<String, String> intern;
 
         private static final class LazyHolder {
             private static final VipAddressResolver DEFAULT_VIP_ADDRESS_RESOLVER = new Archaius1VipAddressResolver();
@@ -386,7 +386,7 @@ public class InstanceInfo {
 
         private String namespace;
 
-        private Builder(InstanceInfo result, VipAddressResolver vipAddressResolver, Function<String,String> intern) {
+        private Builder(InstanceInfo result, VipAddressResolver vipAddressResolver, Function<String, String> intern) {
             this.vipAddressResolver = vipAddressResolver;
             this.result = result;
             this.intern = intern != null ? intern : StringCache::intern;
@@ -400,7 +400,7 @@ public class InstanceInfo {
             return new Builder(new InstanceInfo(), LazyHolder.DEFAULT_VIP_ADDRESS_RESOLVER, null);
         }
 
-        public static Builder newBuilder(Function<String,String> intern) {
+        public static Builder newBuilder(Function<String, String> intern) {
             return new Builder(new InstanceInfo(), LazyHolder.DEFAULT_VIP_ADDRESS_RESOLVER, intern);
         }
 
@@ -424,12 +424,12 @@ public class InstanceInfo {
             result.appName = intern.apply(appName.toUpperCase(Locale.ROOT));
             return this;
         }
-        
+
         public Builder setAppNameForDeser(String appName) {
             result.appName = appName;
             return this;
         }
-        
+
 
         public Builder setAppGroupName(String appGroupName) {
             if (appGroupName != null) {
@@ -439,6 +439,7 @@ public class InstanceInfo {
             }
             return this;
         }
+
         public Builder setAppGroupNameForDeser(String appGroupName) {
             result.appGroupName = appGroupName;
             return this;
@@ -661,7 +662,7 @@ public class InstanceInfo {
          * @return the instance builder
          */
         public Builder setHealthCheckUrls(String relativeUrl,
-                                          String explicitUrl, String secureExplicitUrl) {
+                String explicitUrl, String secureExplicitUrl) {
             String hostNameInterpolationExpression = "${" + namespace + "hostname}";
             result.healthCheckRelativeUrl = relativeUrl;
             result.healthCheckExplicitUrl = explicitUrl;

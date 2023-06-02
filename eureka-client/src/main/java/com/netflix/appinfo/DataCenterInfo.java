@@ -32,7 +32,8 @@ import com.netflix.discovery.converters.jackson.DataCenterTypeInfoResolver;
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = As.PROPERTY, property = "@class")
 @JsonTypeIdResolver(DataCenterTypeInfoResolver.class)
 public interface DataCenterInfo {
-    enum Name {Netflix, Amazon, MyOwn}
+    enum Name {Netflix, Amazon, MyOwn
+    }
 
     Name getName();
 }

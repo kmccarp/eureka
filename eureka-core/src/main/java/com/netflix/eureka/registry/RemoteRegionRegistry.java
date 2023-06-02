@@ -99,10 +99,10 @@ public class RemoteRegionRegistry implements LookupService<String> {
 
     @Inject
     public RemoteRegionRegistry(EurekaServerConfig serverConfig,
-                                EurekaClientConfig clientConfig,
-                                ServerCodecs serverCodecs,
-                                String regionName,
-                                URL remoteRegionURL) {
+            EurekaClientConfig clientConfig,
+            ServerCodecs serverCodecs,
+            String regionName,
+            URL remoteRegionURL) {
         this.serverConfig = serverConfig;
         this.remoteRegionURL = remoteRegionURL;
         this.fetchRegistryTimer = Monitors.newTimer(this.remoteRegionURL.toString() + "_FetchRegistry");
@@ -464,7 +464,7 @@ public class RemoteRegionRegistry implements LookupService<String> {
                     getApplications().getReconcileHashCode(),
                     delta.getAppsHashCode());
             return true;
-        }else {
+        } else {
             logger.warn("Not setting the applications map as another thread has advanced the update generation");
             return true;  // still return true
         }

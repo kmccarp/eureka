@@ -33,10 +33,10 @@ public abstract class InstanceReplicationTask extends ReplicationTask {
     }
 
     protected InstanceReplicationTask(String peerNodeName,
-                                      Action action,
-                                      InstanceInfo instanceInfo,
-                                      InstanceStatus overriddenStatus,
-                                      boolean replicateInstanceInfo) {
+            Action action,
+            InstanceInfo instanceInfo,
+            InstanceStatus overriddenStatus,
+            boolean replicateInstanceInfo) {
         super(peerNodeName, action);
         this.appName = instanceInfo.getAppName();
         this.id = instanceInfo.getId();

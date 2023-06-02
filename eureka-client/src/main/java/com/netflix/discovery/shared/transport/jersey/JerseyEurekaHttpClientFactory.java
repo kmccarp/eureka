@@ -89,9 +89,9 @@ public class JerseyEurekaHttpClientFactory implements TransportClientFactory {
     }
 
     private JerseyEurekaHttpClientFactory(EurekaJerseyClient jerseyClient,
-                                          ApacheHttpClient4 apacheClient,
-                                          long connectionIdleTimeout,
-                                          Map<String, String> additionalHeaders) {
+            ApacheHttpClient4 apacheClient,
+            long connectionIdleTimeout,
+            Map<String, String> additionalHeaders) {
         this.jerseyClient = jerseyClient;
         this.apacheClient = jerseyClient != null ? jerseyClient.getClient() : apacheClient;
         this.additionalHeaders = additionalHeaders;
@@ -120,7 +120,7 @@ public class JerseyEurekaHttpClientFactory implements TransportClientFactory {
             apacheClient.destroy();
         }
     }
-    
+
     public static JerseyEurekaHttpClientFactory create(EurekaClientConfig clientConfig,
             Collection<ClientFilter> additionalFilters,
             InstanceInfo myInstanceInfo,
@@ -129,11 +129,11 @@ public class JerseyEurekaHttpClientFactory implements TransportClientFactory {
     }
 
     public static JerseyEurekaHttpClientFactory create(EurekaClientConfig clientConfig,
-                                                       Collection<ClientFilter> additionalFilters,
-                                                       InstanceInfo myInstanceInfo,
-                                                       AbstractEurekaIdentity clientIdentity,
-                                                       Optional<SSLContext> sslContext,
-                                                       Optional<HostnameVerifier> hostnameVerifier) {
+            Collection<ClientFilter> additionalFilters,
+            InstanceInfo myInstanceInfo,
+            AbstractEurekaIdentity clientIdentity,
+            Optional<SSLContext> sslContext,
+            Optional<HostnameVerifier> hostnameVerifier) {
         boolean useExperimental = "true".equals(clientConfig.getExperimental("JerseyEurekaHttpClientFactory.useNewBuilder"));
 
         JerseyEurekaHttpClientFactoryBuilder clientBuilder = (useExperimental ? experimentalBuilder() : newBuilder())
@@ -142,7 +142,7 @@ public class JerseyEurekaHttpClientFactory implements TransportClientFactory {
                 .withUserAgent("Java-EurekaClient")
                 .withClientConfig(clientConfig)
                 .withClientIdentity(clientIdentity);
-        
+
         sslContext.ifPresent(clientBuilder::withSSLContext);
         hostnameVerifier.ifPresent(clientBuilder::withHostnameVerifier);
 
@@ -215,14 +215,14 @@ public class JerseyEurekaHttpClientFactory implements TransportClientFactory {
                     .withConnectionIdleTimeout((int) connectionIdleTimeout)
                     .withEncoderWrapper(encoderWrapper)
                     .withDecoderWrapper(decoderWrapper)
-                    .withProxy(proxyHost,String.valueOf(proxyPort),proxyUserName,proxyPassword);
+                    .withProxy(proxyHost, String.valueOf(proxyPort), proxyUserName, proxyPassword);
 
             if (systemSSL) {
                 clientBuilder.withSystemSSLConfiguration();
             } else if (sslContext != null) {
                 clientBuilder.withCustomSSL(sslContext);
             }
-            
+
             if (hostnameVerifier != null) {
                 clientBuilder.withHostnameVerifier(hostnameVerifier);
             }

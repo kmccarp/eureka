@@ -53,10 +53,10 @@ public class AsyncResolver<T extends EurekaEndpoint> implements ClosableResolver
      * an initial warm up will be executed before scheduling the periodic update task.
      */
     public AsyncResolver(String name,
-                         ClusterResolver<T> delegate,
-                         int executorThreadPoolSize,
-                         int refreshIntervalMs,
-                         int warmUpTimeoutMs) {
+            ClusterResolver<T> delegate,
+            int executorThreadPoolSize,
+            int refreshIntervalMs,
+            int warmUpTimeoutMs) {
         this(
                 name,
                 delegate,
@@ -73,10 +73,10 @@ public class AsyncResolver<T extends EurekaEndpoint> implements ClosableResolver
      * scheduled until after the first time getClusterEndpoints call.
      */
     public AsyncResolver(String name,
-                         ClusterResolver<T> delegate,
-                         List<T> initialValues,
-                         int executorThreadPoolSize,
-                         int refreshIntervalMs) {
+            ClusterResolver<T> delegate,
+            List<T> initialValues,
+            int executorThreadPoolSize,
+            int refreshIntervalMs) {
         this(
                 name,
                 delegate,
@@ -97,11 +97,11 @@ public class AsyncResolver<T extends EurekaEndpoint> implements ClosableResolver
      * @param warmUpTimeoutMs the time to wait for the initial warm up
      */
     AsyncResolver(String name,
-                  ClusterResolver<T> delegate,
-                  List<T> initialValue,
-                  int executorThreadPoolSize,
-                  int refreshIntervalMs,
-                  int warmUpTimeoutMs) {
+            ClusterResolver<T> delegate,
+            List<T> initialValue,
+            int executorThreadPoolSize,
+            int refreshIntervalMs,
+            int warmUpTimeoutMs) {
         this.name = name;
         this.delegate = delegate;
         this.refreshIntervalMs = refreshIntervalMs;
@@ -138,7 +138,7 @@ public class AsyncResolver<T extends EurekaEndpoint> implements ClosableResolver
 
     @Override
     public void shutdown() {
-        if(Monitors.isObjectRegistered(name, this)) {
+        if (Monitors.isObjectRegistered(name, this)) {
             Monitors.unregisterObject(name, this);
         }
         executorService.shutdownNow();

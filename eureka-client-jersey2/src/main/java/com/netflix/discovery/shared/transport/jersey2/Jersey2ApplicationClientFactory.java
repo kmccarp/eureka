@@ -77,14 +77,14 @@ public class Jersey2ApplicationClientFactory implements TransportClientFactory {
     public void shutdown() {
         jersey2Client.close();
     }
-    
+
     public static Jersey2ApplicationClientFactory create(EurekaClientConfig clientConfig,
             Collection<ClientRequestFilter> additionalFilters,
             InstanceInfo myInstanceInfo,
             AbstractEurekaIdentity clientIdentity) {
         return create(clientConfig, additionalFilters, myInstanceInfo, clientIdentity, Optional.empty(), Optional.empty());
     }
-    
+
     public static Jersey2ApplicationClientFactory create(EurekaClientConfig clientConfig,
             Collection<ClientRequestFilter> additionalFilters,
             InstanceInfo myInstanceInfo,
@@ -97,21 +97,21 @@ public class Jersey2ApplicationClientFactory implements TransportClientFactory {
         clientBuilder.withUserAgent("Java-EurekaClient");
         clientBuilder.withClientConfig(clientConfig);
         clientBuilder.withClientIdentity(clientIdentity);
-        
+
         sslContext.ifPresent(clientBuilder::withSSLContext);
         hostnameVerifier.ifPresent(clientBuilder::withHostnameVerifier);
-        
+
         if ("true".equals(System.getProperty("com.netflix.eureka.shouldSSLConnectionsUseSystemSocketFactory"))) {
             clientBuilder.withClientName("DiscoveryClient-HTTPClient-System").withSystemSSLConfiguration();
         } else if (clientConfig.getProxyHost() != null && clientConfig.getProxyPort() != null) {
             clientBuilder.withClientName("Proxy-DiscoveryClient-HTTPClient")
-            .withProxy(
-                    clientConfig.getProxyHost(), Integer.parseInt(clientConfig.getProxyPort()),
-                    clientConfig.getProxyUserName(), clientConfig.getProxyPassword());
+                    .withProxy(
+                            clientConfig.getProxyHost(), Integer.parseInt(clientConfig.getProxyPort()),
+                            clientConfig.getProxyUserName(), clientConfig.getProxyPassword());
         } else {
             clientBuilder.withClientName("DiscoveryClient-HTTPClient");
         }
-        
+
         return clientBuilder.build();
     }
 
@@ -140,7 +140,7 @@ public class Jersey2ApplicationClientFactory implements TransportClientFactory {
         public Jersey2ApplicationClientFactory build() {
             ClientBuilder clientBuilder = ClientBuilder.newBuilder();
             ClientConfig clientConfig = new ClientConfig();
-            
+
             for (ClientRequestFilter filter : additionalFilters) {
                 clientConfig.register(filter);
             }
@@ -148,11 +148,11 @@ public class Jersey2ApplicationClientFactory implements TransportClientFactory {
             for (Feature feature : features) {
                 clientConfig.register(feature);
             }
-            
+
             addProviders(clientConfig);
             addSSLConfiguration(clientBuilder);
             addProxyConfiguration(clientConfig);
-            
+
             if (hostnameVerifier != null) {
                 clientBuilder.hostnameVerifier(hostnameVerifier);
             }

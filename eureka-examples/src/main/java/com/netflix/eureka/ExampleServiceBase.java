@@ -30,8 +30,8 @@ public class ExampleServiceBase {
 
     @Inject
     public ExampleServiceBase(ApplicationInfoManager applicationInfoManager,
-                              EurekaClient eurekaClient,
-                              DynamicPropertyFactory configInstance) {
+            EurekaClient eurekaClient,
+            DynamicPropertyFactory configInstance) {
         this.applicationInfoManager = applicationInfoManager;
         this.eurekaClient = eurekaClient;
         this.configInstance = configInstance;

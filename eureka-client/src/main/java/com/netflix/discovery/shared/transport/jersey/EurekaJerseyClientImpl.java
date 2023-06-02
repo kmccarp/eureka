@@ -46,7 +46,7 @@ public class EurekaJerseyClientImpl implements EurekaJerseyClient {
     ClientConfig jerseyClientConfig;
 
     public EurekaJerseyClientImpl(int connectionTimeout, int readTimeout, final int connectionIdleTimeout,
-                                  ClientConfig clientConfig) {
+            ClientConfig clientConfig) {
         try {
             jerseyClientConfig = clientConfig;
             apacheHttpClient = ApacheHttpClient4.create(jerseyClientConfig);
@@ -173,7 +173,7 @@ public class EurekaJerseyClientImpl implements EurekaJerseyClient {
             this.decoderWrapper = decoderWrapper;
             return this;
         }
-        
+
         public EurekaJerseyClientBuilder withCustomSSL(SSLContext sslContext) {
             this.sslContext = sslContext;
             return this;
@@ -261,11 +261,11 @@ public class EurekaJerseyClientImpl implements EurekaJerseyClient {
 
                         sslContext.init(null, trustManagers, null);
                     }
-                    
+
                     if (hostnameVerifier == null) {
                         hostnameVerifier = SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
                     }
-                    
+
                     SSLConnectionSocketFactory customSslSocketFactory = new SSLConnectionSocketFactory(sslContext, hostnameVerifier);
                     SSLSocketFactory sslSocketFactory = new SSLSocketFactoryAdapter(customSslSocketFactory);
                     SchemeRegistry sslSchemeRegistry = new SchemeRegistry();
@@ -293,7 +293,7 @@ public class EurekaJerseyClientImpl implements EurekaJerseyClient {
                         new Scheme("http", 80, PlainSocketFactory.getSocketFactory()));
                 registry.register(
                         new Scheme("https", 443, new SSLSocketFactoryAdapter(SSLConnectionSocketFactory.getSocketFactory())));
-                
+
                 return new MonitoredConnectionManager(clientName, registry);
             }
         }

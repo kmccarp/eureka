@@ -106,8 +106,8 @@ public class EurekaEntityFunctionsTest {
         Applications applications = createApplications(application);
         applications.addApplication(application);
         Assert.assertEquals(new ArrayList<>(Arrays.asList(
-                application.getByInstanceId("foo"),
-                application.getByInstanceId("foo"))),
+                        application.getByInstanceId("foo"),
+                        application.getByInstanceId("foo"))),
                 EurekaEntityFunctions.selectAll(applications));
     }
 
@@ -122,7 +122,7 @@ public class EurekaEntityFunctionsTest {
 
     @Test
     public void
-    testToApplicationsIfNotNullReturnApplicationsFromMapOfApplication() {
+            testToApplicationsIfNotNullReturnApplicationsFromMapOfApplication() {
         HashMap<String, Application> hashMap = new HashMap<>();
         hashMap.put("foo", new Application("foo"));
         hashMap.put("bar", new Application("bar"));
@@ -181,7 +181,7 @@ public class EurekaEntityFunctionsTest {
 
     @Test
     public void
-    testMergeApplicationsIfNotNullAndHasAppNameReturnApplications() {
+            testMergeApplicationsIfNotNullAndHasAppNameReturnApplications() {
         Application application = createSingleInstanceApp("foo", "foo",
                 InstanceInfo.ActionType.ADDED);
         Applications applications = createApplications(application);
@@ -191,7 +191,7 @@ public class EurekaEntityFunctionsTest {
 
     @Test
     public void
-    testMergeApplicationsIfNotNullAndDoesNotHaveAppNameReturnApplications() {
+            testMergeApplicationsIfNotNullAndDoesNotHaveAppNameReturnApplications() {
         Application application1 = createSingleInstanceApp("foo", "foo",
                 InstanceInfo.ActionType.ADDED);
         Applications applications1 = createApplications(application1);

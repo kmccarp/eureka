@@ -24,7 +24,7 @@ public interface InstanceStatusOverrideRule {
      * @return A result with whether we matched and what we propose the status to be overriden to.
      */
     StatusOverrideResult apply(final InstanceInfo instanceInfo,
-                               final Lease<InstanceInfo> existingLease,
-                               boolean isReplication);
+            final Lease<InstanceInfo> existingLease,
+            boolean isReplication);
 
 }

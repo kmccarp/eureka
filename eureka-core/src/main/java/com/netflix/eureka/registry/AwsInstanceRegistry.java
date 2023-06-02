@@ -46,9 +46,9 @@ public class AwsInstanceRegistry extends PeerAwareInstanceRegistryImpl {
 
     @Inject
     public AwsInstanceRegistry(EurekaServerConfig serverConfig,
-                               EurekaClientConfig clientConfig,
-                               ServerCodecs serverCodecs,
-                               EurekaClient eurekaClient) {
+            EurekaClientConfig clientConfig,
+            ServerCodecs serverCodecs,
+            EurekaClient eurekaClient) {
         super(serverConfig, clientConfig, serverCodecs, eurekaClient);
     }
 

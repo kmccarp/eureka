@@ -88,9 +88,9 @@ public class PeerEurekaNode {
     }
 
     /* For testing */ PeerEurekaNode(PeerAwareInstanceRegistry registry, String targetHost, String serviceUrl,
-                                     HttpReplicationClient replicationClient, EurekaServerConfig config,
-                                     int batchSize, long maxBatchingDelayMs,
-                                     long retrySleepTimeMs, long serverUnavailableSleepTimeMs) {
+            HttpReplicationClient replicationClient, EurekaServerConfig config,
+            int batchSize, long maxBatchingDelayMs,
+            long retrySleepTimeMs, long serverUnavailableSleepTimeMs) {
         this.registry = registry;
         this.targetHost = targetHost;
         this.replicationClient = replicationClient;
@@ -192,8 +192,8 @@ public class PeerEurekaNode {
      * @throws Throwable
      */
     public void heartbeat(final String appName, final String id,
-                          final InstanceInfo info, final InstanceStatus overriddenStatus,
-                          boolean primeConnection) throws Throwable {
+            final InstanceInfo info, final InstanceStatus overriddenStatus,
+            boolean primeConnection) throws Throwable {
         if (primeConnection) {
             // We do not care about the result for priming request.
             replicationClient.sendHeartBeat(appName, id, info, overriddenStatus);
@@ -267,7 +267,7 @@ public class PeerEurekaNode {
      *            the instance information of the instance.
      */
     public void statusUpdate(final String appName, final String id,
-                             final InstanceStatus newStatus, final InstanceInfo info) {
+            final InstanceStatus newStatus, final InstanceInfo info) {
         long expiryTime = System.currentTimeMillis() + maxProcessingDelayMs;
         batchingDispatcher.process(
                 taskId("statusUpdate", appName, id),

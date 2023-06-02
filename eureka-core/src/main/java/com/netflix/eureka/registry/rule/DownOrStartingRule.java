@@ -15,8 +15,8 @@ public class DownOrStartingRule implements InstanceStatusOverrideRule {
 
     @Override
     public StatusOverrideResult apply(InstanceInfo instanceInfo,
-                                      Lease<InstanceInfo> existingLease,
-                                      boolean isReplication) {
+            Lease<InstanceInfo> existingLease,
+            boolean isReplication) {
         // ReplicationInstance is DOWN or STARTING - believe that, but when the instance says UP, question that
         // The client instance sends STARTING or DOWN (because of heartbeat failures), then we accept what
         // the client says. The same is the case with replica as well.

@@ -67,7 +67,7 @@ public class PeerEurekaNodes {
     public List<PeerEurekaNode> getPeerEurekaNodes() {
         return peerEurekaNodes;
     }
-    
+
     public int getMinNumberOfAvailablePeers() {
         return serverConfig.getHealthStatusMinNumberOfAvailablePeers();
     }
@@ -238,7 +238,7 @@ public class PeerEurekaNodes {
         }
         return isInstanceURL(url, applicationInfoManager.getInfo());
     }
-    
+
     /**
      * Checks if the given service url matches the supplied instance
      *

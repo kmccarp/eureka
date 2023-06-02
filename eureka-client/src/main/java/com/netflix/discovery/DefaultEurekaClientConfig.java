@@ -301,7 +301,7 @@ public class DefaultEurekaClientConfig implements EurekaClientConfig {
     @Override
     public boolean shouldUnregisterOnShutdown() {
         return configInstance.getBooleanProperty(
-              namespace + SHOULD_UNREGISTER_ON_SHUTDOWN_KEY, true).get();
+                namespace + SHOULD_UNREGISTER_ON_SHUTDOWN_KEY, true).get();
     }
 
     /*

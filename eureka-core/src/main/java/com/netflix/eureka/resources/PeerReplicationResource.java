@@ -130,7 +130,7 @@ public class PeerReplicationResource {
     }
 
     /* Visible for testing */ InstanceResource createInstanceResource(ReplicationInstance instanceInfo,
-                                                                      ApplicationResource applicationResource) {
+            ApplicationResource applicationResource) {
         return new InstanceResource(applicationResource, instanceInfo.getId(), serverConfig, registry);
     }
 

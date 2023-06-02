@@ -46,8 +46,8 @@ public class Ec2EurekaClientModuleTest {
                                                 .put("eureka.mt.num_retries", 0)
                                                 .put("eureka.mt.connect_timeout", 1000)
                                                 .put("eureka.shouldInitAsEc2", true)
-                                                 // this override is required to force EC2 env as out tests may not
-                                                 // be executed in EC2
+                                                // this override is required to force EC2 env as out tests may not
+                                                // be executed in EC2
                                                 .put("eureka.instanceDeploymentEnvironment", "ec2")
                                                 .build()
                                 );

@@ -52,8 +52,8 @@ public class JerseyRemoteRegionClientFactory implements TransportClientFactory {
 
     @Inject
     public JerseyRemoteRegionClientFactory(EurekaServerConfig serverConfig,
-                                           ServerCodecs serverCodecs,
-                                           String region) {
+            ServerCodecs serverCodecs,
+            String region) {
         this.serverConfig = serverConfig;
         this.serverCodecs = serverCodecs;
         this.region = region;

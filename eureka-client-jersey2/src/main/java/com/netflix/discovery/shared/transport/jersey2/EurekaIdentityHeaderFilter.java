@@ -25,6 +25,6 @@ public class EurekaIdentityHeaderFilter implements ClientRequestFilter {
                 requestContext.getHeaders().putSingle(AbstractEurekaIdentity.AUTH_ID_HEADER_KEY, authInfo.getId());
             }
         }
-        
+
     }
 }

@@ -67,9 +67,9 @@ public class ElasticNetworkInterfaceBinder implements AwsBinder {
     @Inject
     public ElasticNetworkInterfaceBinder(
             EurekaServerConfig serverConfig,
-          EurekaClientConfig clientConfig,
-          PeerAwareInstanceRegistry registry,
-          ApplicationInfoManager applicationInfoManager) {
+            EurekaClientConfig clientConfig,
+            PeerAwareInstanceRegistry registry,
+            ApplicationInfoManager applicationInfoManager) {
         this.serverConfig = serverConfig;
         this.clientConfig = clientConfig;
         this.registry = registry;
@@ -82,7 +82,7 @@ public class ElasticNetworkInterfaceBinder implements AwsBinder {
     }
 
     @PostConstruct
-    public void start()  {
+    public void start() {
         int retries = serverConfig.getEIPBindRebindRetries();
         for (int i = 0; i < retries; i++) {
             try {
@@ -130,7 +130,7 @@ public class ElasticNetworkInterfaceBinder implements AwsBinder {
         List<InstanceNetworkInterface> instanceNetworkInterfaces = instanceData(myInstanceId, ec2Service).getNetworkInterfaces();
         List<String> candidateIPs = getCandidateIps();
         for (String ip : candidateIPs) {
-            for(InstanceNetworkInterface ini: instanceNetworkInterfaces) {
+            for (InstanceNetworkInterface ini : instanceNetworkInterfaces) {
                 if (ip.equals(ini.getPrivateIpAddress())) {
                     logger.info("My instance {} seems to be already associated with the ip {}", myInstanceId, ip);
                     return true;
@@ -170,9 +170,9 @@ public class ElasticNetworkInterfaceBinder implements AwsBinder {
 
         DescribeNetworkInterfacesResult result = ec2Service
                 .describeNetworkInterfaces(new DescribeNetworkInterfacesRequest()
-                                .withFilters(new Filter("private-ip-address", ips))
-                                .withFilters(new Filter("status", Lists.newArrayList("available")))
-                                .withFilters(new Filter("subnet-id", Lists.newArrayList(subnetId)))
+                        .withFilters(new Filter("private-ip-address", ips))
+                        .withFilters(new Filter("status", Lists.newArrayList("available")))
+                        .withFilters(new Filter("subnet-id", Lists.newArrayList(subnetId)))
                 );
 
         if (result.getNetworkInterfaces().isEmpty()) {
@@ -201,7 +201,7 @@ public class ElasticNetworkInterfaceBinder implements AwsBinder {
 
         List<String> ips = getCandidateIps();
 
-        for(InstanceNetworkInterface networkInterface: result){
+        for (InstanceNetworkInterface networkInterface : result) {
             if (ips.contains(networkInterface.getPrivateIpAddress())) {
                 String attachmentId = networkInterface.getAttachment().getAttachmentId();
                 ec2.detachNetworkInterface(new DetachNetworkInterfaceRequest().withAttachmentId(attachmentId));
@@ -233,7 +233,7 @@ public class ElasticNetworkInterfaceBinder implements AwsBinder {
         }
         List<String> ips = Lists.newArrayList();
 
-        for(String candidate : candidates) {
+        for (String candidate : candidates) {
             String host = new URL(candidate).getHost();
             if (InetAddresses.isInetAddress(host)) {
                 ips.add(host);

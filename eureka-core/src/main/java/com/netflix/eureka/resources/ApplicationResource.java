@@ -59,8 +59,8 @@ public class ApplicationResource {
     private final ResponseCache responseCache;
 
     ApplicationResource(String appName,
-                        EurekaServerConfig serverConfig,
-                        PeerAwareInstanceRegistry registry) {
+            EurekaServerConfig serverConfig,
+            PeerAwareInstanceRegistry registry) {
         this.appName = appName.toUpperCase();
         this.serverConfig = serverConfig;
         this.registry = registry;
@@ -84,8 +84,8 @@ public class ApplicationResource {
      */
     @GET
     public Response getApplication(@PathParam("version") String version,
-                                   @HeaderParam("Accept") final String acceptHeader,
-                                   @HeaderParam(EurekaAccept.HTTP_X_EUREKA_ACCEPT) String eurekaAccept) {
+            @HeaderParam("Accept") final String acceptHeader,
+            @HeaderParam(EurekaAccept.HTTP_X_EUREKA_ACCEPT) String eurekaAccept) {
         if (!registry.shouldAllowAccess(false)) {
             return Response.status(Status.FORBIDDEN).build();
         }
@@ -143,7 +143,7 @@ public class ApplicationResource {
     @POST
     @Consumes({"application/json", "application/xml"})
     public Response addInstance(InstanceInfo info,
-                                @HeaderParam(PeerEurekaNode.HEADER_REPLICATION) String isReplication) {
+            @HeaderParam(PeerEurekaNode.HEADER_REPLICATION) String isReplication) {
         logger.debug("Registering instance {} (replication={})", info.getId(), isReplication);
         // validate that the instanceinfo contains all the necessary required fields
         if (isBlank(info.getId())) {

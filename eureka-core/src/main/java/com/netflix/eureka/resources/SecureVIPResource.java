@@ -51,9 +51,9 @@ public class SecureVIPResource extends AbstractVIPResource {
     @GET
     @Path("{svipAddress}")
     public Response statusUpdate(@PathParam("version") String version,
-                                 @PathParam("svipAddress") String svipAddress,
-                                 @HeaderParam("Accept") final String acceptHeader,
-                                 @HeaderParam(EurekaAccept.HTTP_X_EUREKA_ACCEPT) String eurekaAccept) {
+            @PathParam("svipAddress") String svipAddress,
+            @HeaderParam("Accept") final String acceptHeader,
+            @HeaderParam(EurekaAccept.HTTP_X_EUREKA_ACCEPT) String eurekaAccept) {
         return getVipResponse(version, svipAddress, acceptHeader,
                 EurekaAccept.fromString(eurekaAccept), Key.EntityType.SVIP);
     }

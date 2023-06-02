@@ -40,9 +40,10 @@ import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
 public class XmlXStream extends XStream {
 
     private static final XmlXStream s_instance = new XmlXStream();
+
     static {
         XStream.setupDefaultSecurity(s_instance);
-        s_instance.allowTypesByWildcard(new String[] {
+        s_instance.allowTypesByWildcard(new String[]{
                 "com.netflix.discovery.**", "com.netflix.appinfo.**"
         });
     }

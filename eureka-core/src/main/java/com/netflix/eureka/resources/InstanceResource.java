@@ -279,7 +279,7 @@ public class InstanceResource {
             @HeaderParam(PeerEurekaNode.HEADER_REPLICATION) String isReplication) {
         try {
             boolean isSuccess = registry.cancel(app.getName(), id,
-                "true".equals(isReplication));
+                    "true".equals(isReplication));
 
             if (isSuccess) {
                 logger.debug("Found (Cancel): {} - {}", app.getName(), id);
@@ -296,7 +296,7 @@ public class InstanceResource {
     }
 
     private Response validateDirtyTimestamp(Long lastDirtyTimestamp,
-                                            boolean isReplication) {
+            boolean isReplication) {
         InstanceInfo appInfo = registry.getInstanceByAppAndId(app.getName(), id, false);
         if (appInfo != null) {
             if ((lastDirtyTimestamp != null) && (!lastDirtyTimestamp.equals(appInfo.getLastDirtyTimestamp()))) {

@@ -115,7 +115,7 @@ public class RedirectingEurekaHttpClient extends EurekaHttpClientDecorator {
     }
 
     private <R> EurekaHttpResponse<R> executeOnNewServer(RequestExecutor<R> requestExecutor,
-                                                         AtomicReference<EurekaHttpClient> currentHttpClientRef) {
+            AtomicReference<EurekaHttpClient> currentHttpClientRef) {
         URI targetUrl = null;
         for (int followRedirectCount = 0; followRedirectCount < MAX_FOLLOWED_REDIRECTS; followRedirectCount++) {
             EurekaHttpResponse<R> httpResponse = requestExecutor.execute(currentHttpClientRef.get());

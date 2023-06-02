@@ -323,7 +323,7 @@ public class DeserializerStringCache implements Function<String, String> {
                 this.length = source.getTextLength();
                 this.valueTransform = valueTransform;
                 this.variant = valueTransform == null ? DEFAULT_VARIANT : System.identityHashCode(valueTransform.getClass());
-                this.hash =  31 * arrayHash(this.source, offset, length) + variant;
+                this.hash = 31 * arrayHash(this.source, offset, length) + variant;
             }
 
             @Override
@@ -353,7 +353,7 @@ public class DeserializerStringCache implements Function<String, String> {
                                     return false;
                                 }
                             }
-                        return true;
+                            return true;
                         }
                     }
                 }
@@ -416,7 +416,7 @@ public class DeserializerStringCache implements Function<String, String> {
                 this.source = source;
                 this.variant = variant;
                 this.hashCode = 31 * source.hashCode() + variant;
-            }            
+            }
 
             @Override
             public int hashCode() {

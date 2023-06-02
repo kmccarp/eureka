@@ -54,7 +54,7 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 @XStreamAlias("application")
 @JsonRootName("application")
 public class Application {
-    
+
     private static Random shuffleRandom = new Random();
 
     @Override
@@ -148,7 +148,7 @@ public class Application {
     @JsonIgnore
     public List<InstanceInfo> getInstancesAsIsFromEureka() {
         synchronized (instances) {
-           return new ArrayList<InstanceInfo>(this.instances);
+            return new ArrayList<InstanceInfo>(this.instances);
         }
     }
 
@@ -203,15 +203,15 @@ public class Application {
     }
 
     public void shuffleAndStoreInstances(Map<String, Applications> remoteRegionsRegistry,
-                                         EurekaClientConfig clientConfig, InstanceRegionChecker instanceRegionChecker) {
+            EurekaClientConfig clientConfig, InstanceRegionChecker instanceRegionChecker) {
         _shuffleAndStoreInstances(clientConfig.shouldFilterOnlyUpInstances(), true, remoteRegionsRegistry, clientConfig,
                 instanceRegionChecker);
     }
 
     private void _shuffleAndStoreInstances(boolean filterUpInstances, boolean indexByRemoteRegions,
-                                           @Nullable Map<String, Applications> remoteRegionsRegistry,
-                                           @Nullable EurekaClientConfig clientConfig,
-                                           @Nullable InstanceRegionChecker instanceRegionChecker) {
+            @Nullable Map<String, Applications> remoteRegionsRegistry,
+            @Nullable EurekaClientConfig clientConfig,
+            @Nullable InstanceRegionChecker instanceRegionChecker) {
         List<InstanceInfo> instanceInfoList;
         synchronized (instances) {
             instanceInfoList = new ArrayList<InstanceInfo>(instances);

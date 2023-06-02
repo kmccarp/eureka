@@ -46,16 +46,16 @@ public class EurekaJacksonCodecIntegrationTest {
                         + " et: " + (System.currentTimeMillis() - start));
             }
         }
-        System.out.println("test time: " 
+        System.out.println("test time: "
                 + " et: " + (System.currentTimeMillis() - testStart));
     }
-    
-    
+
+
     @Test
     public void testCuriosity() {
         char[] arr1 = "test".toCharArray();
-        char[] arr2 = new char[] {'t', 'e', 's', 't'};
-        
+        char[] arr2 = new char[]{'t', 'e', 's', 't'};
+
         System.out.println("array equals" + arr1.equals(arr2));
     }
 

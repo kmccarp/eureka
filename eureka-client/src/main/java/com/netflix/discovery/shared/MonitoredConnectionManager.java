@@ -26,7 +26,7 @@ public class MonitoredConnectionManager extends ThreadSafeClientConnManager {
     }
 
     public MonitoredConnectionManager(String name, SchemeRegistry schreg, long connTTL,
-                                      TimeUnit connTTLTimeUnit) {
+            TimeUnit connTTLTimeUnit) {
         super(schreg, connTTL, connTTLTimeUnit);
         initMonitors(name);
     }
@@ -50,7 +50,7 @@ public class MonitoredConnectionManager extends ThreadSafeClientConnManager {
 
     @Override
     protected ConnPoolByRoute createConnectionPool(long connTTL,
-                                                   TimeUnit connTTLTimeUnit) {
+            TimeUnit connTTLTimeUnit) {
         return new NamedConnectionPool(connOperator, connPerRoute, 20, connTTL, connTTLTimeUnit);
     }
 
@@ -61,7 +61,7 @@ public class MonitoredConnectionManager extends ThreadSafeClientConnManager {
 
     @Override
     public ClientConnectionRequest requestConnection(HttpRoute route,
-                                                     Object state) {
+            Object state) {
         // TODO Auto-generated method stub
         return super.requestConnection(route, state);
     }

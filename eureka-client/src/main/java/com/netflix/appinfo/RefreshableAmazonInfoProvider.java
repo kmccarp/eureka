@@ -20,6 +20,7 @@ public class RefreshableAmazonInfoProvider implements Provider<AmazonInfo> {
      */
     public static interface FallbackAddressProvider {
         String getFallbackIp();
+
         String getFallbackHostname();
     }
 
@@ -95,9 +96,9 @@ public class RefreshableAmazonInfoProvider implements Provider<AmazonInfo> {
 
     /* visible for testing */ AmazonInfo getNewAmazonInfo() {
         return AmazonInfo.Builder
-                        .newBuilder()
-                        .withAmazonInfoConfig(amazonInfoConfig)
-                        .autoBuild(amazonInfoConfig.getNamespace());
+                .newBuilder()
+                .withAmazonInfoConfig(amazonInfoConfig)
+                .autoBuild(amazonInfoConfig.getNamespace());
     }
 
     /**

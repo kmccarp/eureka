@@ -72,11 +72,11 @@ public class RetryableEurekaHttpClient extends EurekaHttpClientDecorator {
     private final Set<EurekaEndpoint> quarantineSet = new ConcurrentSkipListSet<>();
 
     public RetryableEurekaHttpClient(String name,
-                                     EurekaTransportConfig transportConfig,
-                                     ClusterResolver clusterResolver,
-                                     TransportClientFactory clientFactory,
-                                     ServerStatusEvaluator serverStatusEvaluator,
-                                     int numberOfRetries) {
+            EurekaTransportConfig transportConfig,
+            ClusterResolver clusterResolver,
+            TransportClientFactory clientFactory,
+            ServerStatusEvaluator serverStatusEvaluator,
+            int numberOfRetries) {
         this.name = name;
         this.transportConfig = transportConfig;
         this.clusterResolver = clusterResolver;
@@ -89,7 +89,7 @@ public class RetryableEurekaHttpClient extends EurekaHttpClientDecorator {
     @Override
     public void shutdown() {
         TransportUtils.shutdown(delegate.get());
-        if(Monitors.isObjectRegistered(name, this)) {
+        if (Monitors.isObjectRegistered(name, this)) {
             Monitors.unregisterObject(name, this);
         }
     }
@@ -140,10 +140,10 @@ public class RetryableEurekaHttpClient extends EurekaHttpClientDecorator {
     }
 
     public static EurekaHttpClientFactory createFactory(final String name,
-                                                        final EurekaTransportConfig transportConfig,
-                                                        final ClusterResolver<EurekaEndpoint> clusterResolver,
-                                                        final TransportClientFactory delegateFactory,
-                                                        final ServerStatusEvaluator serverStatusEvaluator) {
+            final EurekaTransportConfig transportConfig,
+            final ClusterResolver<EurekaEndpoint> clusterResolver,
+            final TransportClientFactory delegateFactory,
+            final ServerStatusEvaluator serverStatusEvaluator) {
         return new EurekaHttpClientFactory() {
             @Override
             public EurekaHttpClient newClient() {

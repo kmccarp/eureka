@@ -231,7 +231,7 @@ public class AmazonInfo implements DataCenterInfo, UniqueIdentifier {
                         && !result.metadata.containsKey(MetaDataKey.instanceId.getName())) {
 
                     logger.warn("Skipping the rest of AmazonInfo init as we were not able to load instanceId after " +
-                                    "the configured number of retries: {}, per fail fast configuration: {}",
+                            "the configured number of retries: {}, per fail fast configuration: {}",
                             config.getNumRetries(), config.shouldFailFastOnFirstLoad());
                     break;  // break out of loop and return whatever we have thus far
                 }
@@ -258,12 +258,12 @@ public class AmazonInfo implements DataCenterInfo, UniqueIdentifier {
             @JsonProperty("metadata") HashMap<String, String> metadata) {
         this.metadata = metadata;
     }
-    
+
     public AmazonInfo(
             @JsonProperty("name") String name,
             @JsonProperty("metadata") Map<String, String> metadata) {
         this.metadata = metadata;
-    }    
+    }
 
     @Override
     public Name getName() {

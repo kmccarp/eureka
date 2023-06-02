@@ -99,7 +99,7 @@ public class AwsAsgUtil implements AsgClient {
                     thread.setDaemon(true);
                     return thread;
                 }
-    });
+            });
 
     private ListeningExecutorService listeningCacheReloadExecutor = MoreExecutors.listeningDecorator(cacheReloadExecutor);
 
@@ -115,8 +115,8 @@ public class AwsAsgUtil implements AsgClient {
 
     @Inject
     public AwsAsgUtil(EurekaServerConfig serverConfig,
-                      EurekaClientConfig clientConfig,
-                      InstanceRegistry registry) {
+            EurekaClientConfig clientConfig,
+            InstanceRegistry registry) {
         this.serverConfig = serverConfig;
         this.clientConfig = clientConfig;
         this.registry = registry;
@@ -171,8 +171,8 @@ public class AwsAsgUtil implements AsgClient {
                 // period, but no new values will be fetched while disabled.
 
                 logger.info(("'{}' is not cached at the moment and won't be fetched because querying AWS ASGs "
-                        + "has been disabled via the config, returning the fallback value."),
-                            cacheKey);
+                                + "has been disabled via the config, returning the fallback value."),
+                        cacheKey);
 
                 return true;
             }
@@ -205,7 +205,7 @@ public class AwsAsgUtil implements AsgClient {
      */
     private boolean isAddToLoadBalancerSuspended(String asgAccountId, String asgName) {
         AutoScalingGroup asg;
-        if(asgAccountId == null || asgAccountId.equals(accountId)) {
+        if (asgAccountId == null || asgAccountId.equals(accountId)) {
             asg = retrieveAutoScalingGroup(asgName);
         } else {
             asg = retrieveAutoScalingGroupCrossAccount(asgAccountId, asgName);
@@ -271,8 +271,8 @@ public class AwsAsgUtil implements AsgClient {
         String roleArn = "arn:aws:iam::" + asgAccount + ":role/" + roleName;
 
         AssumeRoleResult assumeRoleResult = sts.assumeRole(new AssumeRoleRequest()
-                        .withRoleArn(roleArn)
-                        .withRoleSessionName("sts-session-" + asgAccount)
+                .withRoleArn(roleArn)
+                .withRoleSessionName("sts-session-" + asgAccount)
         );
 
         return assumeRoleResult.getCredentials();
