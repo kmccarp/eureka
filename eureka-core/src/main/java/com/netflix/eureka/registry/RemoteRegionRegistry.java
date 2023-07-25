@@ -94,8 +94,8 @@ public class RemoteRegionRegistry implements LookupService<String> {
     private volatile boolean readyForServingData;
     private final EurekaHttpClient eurekaHttpClient;
     private long timeOfLastSuccessfulRemoteFetch = System.currentTimeMillis();
-    private long deltaSuccesses = 0;
-    private long deltaMismatches = 0;
+    private long deltaSuccesses;
+    private long deltaMismatches;
 
     @Inject
     public RemoteRegionRegistry(EurekaServerConfig serverConfig,
@@ -117,7 +117,7 @@ public class RemoteRegionRegistry implements LookupService<String> {
                 .withMaxTotalConnections(serverConfig.getRemoteRegionTotalConnections())
                 .withConnectionIdleTimeout(serverConfig.getRemoteRegionConnectionIdleTimeoutSeconds());
 
-        if (remoteRegionURL.getProtocol().equals("http")) {
+        if ("http".equals(remoteRegionURL.getProtocol())) {
             clientBuilder.withClientName("Discovery-RemoteRegionClient-" + regionName);
         } else if ("true".equals(System.getProperty("com.netflix.eureka.shouldSSLConnectionsUseSystemSocketFactory"))) {
             clientBuilder.withClientName("Discovery-RemoteRegionSystemSecureClient-" + regionName)
@@ -235,7 +235,7 @@ public class RemoteRegionRegistry implements LookupService<String> {
             // If the delta is disabled or if it is the first time, get all applications
             if (serverConfig.shouldDisableDeltaForRemoteRegions()
                     || (getApplications() == null)
-                    || (getApplications().getRegisteredApplications().size() == 0)) {
+                    || (getApplications().getRegisteredApplications().isEmpty())) {
                 logger.info("Disable delta property : {}", serverConfig.shouldDisableDeltaForRemoteRegions());
                 logger.info("Application is null : {}", getApplications() == null);
                 logger.info("Registered Applications size is zero : {}", getApplications().getRegisteredApplications().isEmpty());

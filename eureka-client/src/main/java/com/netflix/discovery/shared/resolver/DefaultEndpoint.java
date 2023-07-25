@@ -114,18 +114,28 @@ public class DefaultEndpoint implements EurekaEndpoint {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DefaultEndpoint)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof DefaultEndpoint)) {
+            return false;
+        }
 
         DefaultEndpoint that = (DefaultEndpoint) o;
 
-        if (isSecure != that.isSecure) return false;
-        if (port != that.port) return false;
-        if (networkAddress != null ? !networkAddress.equals(that.networkAddress) : that.networkAddress != null) return false;
-        if (relativeUri != null ? !relativeUri.equals(that.relativeUri) : that.relativeUri != null) return false;
-        if (serviceUrl != null ? !serviceUrl.equals(that.serviceUrl) : that.serviceUrl != null) return false;
-
-        return true;
+        if (isSecure != that.isSecure) {
+            return false;
+        }
+        if (port != that.port) {
+            return false;
+        }
+        if (networkAddress != null ? !networkAddress.equals(that.networkAddress) : that.networkAddress != null) {
+            return false;
+        }
+        if (relativeUri != null ? !relativeUri.equals(that.relativeUri) : that.relativeUri != null) {
+            return false;
+        }
+        return !(serviceUrl != null ? !serviceUrl.equals(that.serviceUrl) : that.serviceUrl != null);
     }
 
     @Override

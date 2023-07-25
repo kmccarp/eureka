@@ -32,14 +32,14 @@ public abstract class AbstractAzToRegionMapper implements AzToRegionMapper {
      * will not be used.
      */
     private final Multimap<String, String> defaultRegionVsAzMap =
-            Multimaps.newListMultimap(new HashMap<String, Collection<String>>(), new Supplier<List<String>>() {
+            Multimaps.newListMultimap(new HashMap<>(), new Supplier<List<String>>() {
                 @Override
                 public List<String> get() {
-                    return new ArrayList<String>();
+                    return new ArrayList<>();
                 }
             });
 
-    private final Map<String, String> availabilityZoneVsRegion = new ConcurrentHashMap<String, String>();
+    private final Map<String, String> availabilityZoneVsRegion = new ConcurrentHashMap<>();
     private String[] regionsToFetch;
 
     protected AbstractAzToRegionMapper(EurekaClientConfig clientConfig) {

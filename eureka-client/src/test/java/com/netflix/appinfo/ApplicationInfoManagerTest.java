@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 public class ApplicationInfoManagerTest {
 
     private CloudInstanceConfig config;
-    private String dummyDefault = "dummyDefault";
+    private final String dummyDefault = "dummyDefault";
     private InstanceInfo instanceInfo;
     private ApplicationInfoManager applicationInfoManager;
 
