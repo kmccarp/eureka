@@ -61,7 +61,7 @@ public class StaticClusterResolver<T extends EurekaEndpoint> implements ClusterR
         int defaultPort = isSecure ? 443 : 80;
         int port = serviceUrl.getPort() == -1 ? defaultPort : serviceUrl.getPort();
 
-        return new StaticClusterResolver<EurekaEndpoint>(
+        return new StaticClusterResolver<>(
                 regionName,
                 new DefaultEndpoint(serviceUrl.getHost(), port, isSecure, serviceUrl.getPath())
         );

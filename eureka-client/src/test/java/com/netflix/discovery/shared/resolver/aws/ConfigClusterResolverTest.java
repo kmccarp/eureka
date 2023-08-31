@@ -59,7 +59,7 @@ public class ConfigClusterResolverTest {
         assertThat(endpoints.size(), equalTo(6));
 
 		for (AwsEndpoint endpoint : endpoints) {
-			if (endpoint.getZone().equals("us-east-1e")) {
+			if ("us-east-1e".equals(endpoint.getZone())) {
 				assertThat("secure was wrong", endpoint.isSecure(), is(true));
 				assertThat("serviceUrl contains -1", endpoint.getServiceUrl().contains("-1"), is(false));
                 assertThat("BASIC auth credentials expected", endpoint.getServiceUrl().contains("myuser:mypassword"), is(true));

@@ -84,7 +84,7 @@ public class EurekaCodecCompatibilityTest {
     public void testInstanceInfoEncodeDecodeJsonWithEmptyMetadataMap() throws Exception {
         final InstanceInfo base = infoIterator.next();
         final InstanceInfo instanceInfo = new InstanceInfo.Builder(base)
-                .setMetadata(Collections.EMPTY_MAP)
+                .setMetadata(Collections.emptyMap())
                 .build();
 
         Action2 codingAction = new Action2() {

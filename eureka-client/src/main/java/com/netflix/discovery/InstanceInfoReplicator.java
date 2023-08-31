@@ -49,7 +49,7 @@ class InstanceInfoReplicator implements Runnable {
                         .setDaemon(true)
                         .build());
 
-        this.scheduledPeriodicRef = new AtomicReference<Future>();
+        this.scheduledPeriodicRef = new AtomicReference<>();
 
         this.started = new AtomicBoolean(false);
         this.rateLimiter = new RateLimiter(TimeUnit.MINUTES);

@@ -38,19 +38,19 @@ public class Lease<T> {
 
     public static final int DEFAULT_DURATION_IN_SECS = 90;
 
-    private T holder;
+    private final T holder;
     private long evictionTimestamp;
-    private long registrationTimestamp;
+    private final long registrationTimestamp;
     private long serviceUpTimestamp;
     // Make it volatile so that the expiration task would see this quicker
     private volatile long lastUpdateTimestamp;
-    private long duration;
+    private final long duration;
 
     public Lease(T r, int durationInSecs) {
         holder = r;
         registrationTimestamp = System.currentTimeMillis();
         lastUpdateTimestamp = registrationTimestamp;
-        duration = (durationInSecs * 1000);
+        duration = durationInSecs * 1000;
 
     }
 
@@ -108,7 +108,7 @@ public class Lease<T> {
      * @param additionalLeaseMs any additional lease time to add to the lease evaluation in ms.
      */
     public boolean isExpired(long additionalLeaseMs) {
-        return (evictionTimestamp > 0 || System.currentTimeMillis() > (lastUpdateTimestamp + duration + additionalLeaseMs));
+        return evictionTimestamp > 0 || System.currentTimeMillis() > (lastUpdateTimestamp + duration + additionalLeaseMs);
     }
 
     /**

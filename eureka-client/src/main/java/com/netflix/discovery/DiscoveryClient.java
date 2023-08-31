@@ -130,10 +130,10 @@ public class DiscoveryClient implements EurekaClient {
 
     // Timers
     private static final String PREFIX = "DiscoveryClient_";
-    private final Counter RECONCILE_HASH_CODES_MISMATCH = Monitors.newCounter(PREFIX + "ReconcileHashCodeMismatch");
-    private final com.netflix.servo.monitor.Timer FETCH_REGISTRY_TIMER = Monitors
+    private final Counter reconcileHashCodesMismatch = Monitors.newCounter(PREFIX + "ReconcileHashCodeMismatch");
+    private final com.netflix.servo.monitor.Timer fetchRegistryTimer = Monitors
             .newTimer(PREFIX + "FetchRegistry");
-    private final Counter REREGISTER_COUNTER = Monitors.newCounter(PREFIX
+    private final Counter reregisterCounter = Monitors.newCounter(PREFIX
             + "Reregister");
 
     // instance variables
@@ -178,7 +178,7 @@ public class DiscoveryClient implements EurekaClient {
 
     private InstanceInfoReplicator instanceInfoReplicator;
 
-    private volatile int registrySize = 0;
+    private volatile int registrySize;
     private volatile long lastSuccessfulRegistryFetchTimestamp = -1;
     private volatile long lastSuccessfulHeartbeatTimestamp = -1;
     private final ThresholdLevelsMetric heartbeatStalenessMonitor;
@@ -354,7 +354,7 @@ public class DiscoveryClient implements EurekaClient {
 
         fetchRegistryGeneration = new AtomicLong(0);
 
-        remoteRegionsToFetch = new AtomicReference<String>(clientConfig.fetchRegistryForRemoteRegions());
+        remoteRegionsToFetch = new AtomicReference<>(clientConfig.fetchRegistryForRemoteRegions());
         remoteRegionsRef = new AtomicReference<>(remoteRegionsToFetch.get() == null ? null : remoteRegionsToFetch.get().split(","));
 
         if (config.shouldFetchRegistry()) {
@@ -893,7 +893,7 @@ public class DiscoveryClient implements EurekaClient {
             httpResponse = eurekaTransport.registrationClient.sendHeartBeat(instanceInfo.getAppName(), instanceInfo.getId(), instanceInfo, null);
             logger.debug(PREFIX + "{} - Heartbeat status: {}", appPathIdentifier, httpResponse.getStatusCode());
             if (httpResponse.getStatusCode() == Status.NOT_FOUND.getStatusCode()) {
-                REREGISTER_COUNTER.increment();
+                reregisterCounter.increment();
                 logger.info(PREFIX + "{} - Re-registering apps/{}", appPathIdentifier, instanceInfo.getAppName());
                 long timestamp = instanceInfo.setIsDirtyWithTime();
                 boolean success = register();
@@ -990,7 +990,7 @@ public class DiscoveryClient implements EurekaClient {
      * @return true if the registry was fetched
      */
     private boolean fetchRegistry(boolean forceFullRegistryFetch) {
-        Stopwatch tracer = FETCH_REGISTRY_TIMER.start();
+        Stopwatch tracer = fetchRegistryTimer.start();
 
         try {
             // If the delta is disabled or if it is the first time, get all
@@ -1001,7 +1001,7 @@ public class DiscoveryClient implements EurekaClient {
                     || (!Strings.isNullOrEmpty(clientConfig.getRegistryRefreshSingleVipAddress()))
                     || forceFullRegistryFetch
                     || (applications == null)
-                    || (applications.getRegisteredApplications().size() == 0)
+                    || (applications.getRegisteredApplications().isEmpty())
                     || (applications.getVersion() == -1)) //Client application does not have latest library supporting delta
             {
                 logger.info("Disable delta property : {}", clientConfig.shouldDisableDelta());
@@ -1009,7 +1009,7 @@ public class DiscoveryClient implements EurekaClient {
                 logger.info("Force full registry fetch : {}", forceFullRegistryFetch);
                 logger.info("Application is null : {}", (applications == null));
                 logger.info("Registered Applications size is zero : {}",
-                        (applications.getRegisteredApplications().size() == 0));
+                        (applications.getRegisteredApplications().isEmpty()));
                 logger.info("Application version is -1: {}", (applications.getVersion() == -1));
                 getAndStoreFullRegistry();
             } else {
@@ -1069,7 +1069,7 @@ public class DiscoveryClient implements EurekaClient {
     }
 
     private String getReconcileHashCode(Applications applications) {
-        TreeMap<String, AtomicInteger> instanceCountMap = new TreeMap<String, AtomicInteger>();
+        TreeMap<String, AtomicInteger> instanceCountMap = new TreeMap<>();
         if (isFetchingRemoteRegionRegistries()) {
             for (Applications remoteApp : remoteRegionVsApps.values()) {
                 remoteApp.populateInstanceCountMap(instanceCountMap);
@@ -1200,7 +1200,7 @@ public class DiscoveryClient implements EurekaClient {
         logger.debug("The Reconcile hashcodes do not match, client : {}, server : {}. Getting the full registry",
                 reconcileHashCode, delta.getAppsHashCode());
 
-        RECONCILE_HASH_CODES_MISMATCH.increment();
+        reconcileHashCodesMismatch.increment();
 
         long currentUpdateGeneration = fetchRegistryGeneration.get();
 
@@ -1623,7 +1623,7 @@ public class DiscoveryClient implements EurekaClient {
     private Applications filterAndShuffle(Applications apps) {
         if (apps != null) {
             if (isFetchingRemoteRegionRegistries()) {
-                Map<String, Applications> remoteRegionVsApps = new ConcurrentHashMap<String, Applications>();
+                Map<String, Applications> remoteRegionVsApps = new ConcurrentHashMap<>();
                 apps.shuffleAndIndexInstances(remoteRegionVsApps, clientConfig, instanceRegionChecker);
                 for (Applications applications : remoteRegionVsApps.values()) {
                     applications.shuffleInstances(clientConfig.shouldFilterOnlyUpInstances());
@@ -1781,7 +1781,7 @@ public class DiscoveryClient implements EurekaClient {
      * Stats is used to track useful attributes of the DiscoveryClient. It includes helpers that can aid
      * debugging and log analysis.
      */
-    public class Stats {
+    public final class Stats {
 
         private Stats() {}
 

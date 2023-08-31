@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 public class CloudInstanceConfigTest {
 
     private CloudInstanceConfig config;
-    private String dummyDefault = "dummyDefault";
+    private final String dummyDefault = "dummyDefault";
     private InstanceInfo instanceInfo;
 
     @Before
