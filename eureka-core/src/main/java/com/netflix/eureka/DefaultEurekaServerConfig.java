@@ -512,7 +512,7 @@ public class DefaultEurekaServerConfig implements EurekaServerConfig {
         }
 
         String[] remoteRegionUrlWithNamePairs = remoteRegionUrlWithNameString.split(",");
-        Map<String, String> toReturn = new HashMap<String, String>(remoteRegionUrlWithNamePairs.length);
+        Map<String, String> toReturn = new HashMap<>(remoteRegionUrlWithNamePairs.length);
 
         final String pairSplitChar = ";";
         for (String remoteRegionUrlWithNamePair : remoteRegionUrlWithNamePairs) {
@@ -567,7 +567,7 @@ public class DefaultEurekaServerConfig implements EurekaServerConfig {
         } else {
             String appWhiteListStr = appWhiteListProp.get();
             String[] whitelistEntries = appWhiteListStr.split(",");
-            return new HashSet<String>(Arrays.asList(whitelistEntries));
+            return new HashSet<>(Arrays.asList(whitelistEntries));
         }
     }
 

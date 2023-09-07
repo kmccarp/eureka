@@ -220,15 +220,13 @@ public class EurekaBootStrap implements ServletContextListener {
     }
     
     protected PeerEurekaNodes getPeerEurekaNodes(PeerAwareInstanceRegistry registry, EurekaServerConfig eurekaServerConfig, EurekaClientConfig eurekaClientConfig, ServerCodecs serverCodecs, ApplicationInfoManager applicationInfoManager) {
-        PeerEurekaNodes peerEurekaNodes = new PeerEurekaNodes(
+        return new PeerEurekaNodes(
                 registry,
                 eurekaServerConfig,
                 eurekaClientConfig,
                 serverCodecs,
                 applicationInfoManager
         );
-        
-        return peerEurekaNodes;
     }
 
     /**
