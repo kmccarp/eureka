@@ -109,7 +109,7 @@ public final class EurekaEntityFunctions {
     }
 
     public static Map<String, Application> toApplicationMap(List<InstanceInfo> instances) {
-        Map<String, Application> applicationMap = new HashMap<String, Application>();
+        Map<String, Application> applicationMap = new HashMap<>();
         for (InstanceInfo instance : instances) {
             String appName = instance.getAppName();
             Application application = applicationMap.get(appName);

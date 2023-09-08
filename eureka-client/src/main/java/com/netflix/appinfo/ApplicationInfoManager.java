@@ -84,7 +84,7 @@ public class ApplicationInfoManager {
     public ApplicationInfoManager(EurekaInstanceConfig config, InstanceInfo instanceInfo, OptionalArgs optionalArgs) {
         this.config = config;
         this.instanceInfo = instanceInfo;
-        this.listeners = new ConcurrentHashMap<String, StatusChangeListener>();
+        this.listeners = new ConcurrentHashMap<>();
         if (optionalArgs != null) {
             this.instanceStatusMapper = optionalArgs.getInstanceStatusMapper();
         } else {

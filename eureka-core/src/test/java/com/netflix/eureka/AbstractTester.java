@@ -247,12 +247,12 @@ public class AbstractTester {
 
     protected void registerInstanceLocally(InstanceInfo remoteInstance) {
         registry.register(remoteInstance, 10000000, false);
-        registeredApps.add(new Pair<String, String>(LOCAL_REGION_APP_NAME, remoteInstance.getId()));
+        registeredApps.add(new Pair<>(LOCAL_REGION_APP_NAME, remoteInstance.getId()));
     }
 
     protected void registerInstanceLocallyWithLeaseDurationInSecs(InstanceInfo remoteInstance, int leaseDurationInSecs) {
         registry.register(remoteInstance, leaseDurationInSecs, false);
-        registeredApps.add(new Pair<String, String>(LOCAL_REGION_APP_NAME, remoteInstance.getId()));
+        registeredApps.add(new Pair<>(LOCAL_REGION_APP_NAME, remoteInstance.getId()));
     }
 
 

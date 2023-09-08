@@ -34,14 +34,14 @@ public class MockRemoteEurekaServer extends ExternalResource {
 
     public static final String EUREKA_API_BASE_PATH = "/eureka/v2/";
 
-    private static Pattern HOSTNAME_PATTERN = Pattern.compile("\"hostName\"\\s?:\\s?\\\"([A-Za-z0-9\\.-]*)\\\"");
-    private static Pattern STATUS_PATTERN = Pattern.compile("\"status\"\\s?:\\s?\\\"([A-Z_]*)\\\"");
+    private static final Pattern HOSTNAME_PATTERN = Pattern.compile("\"hostName\"\\s?:\\s?\\\"([A-Za-z0-9\\.-]*)\\\"");
+    private static final Pattern STATUS_PATTERN = Pattern.compile("\"status\"\\s?:\\s?\\\"([A-Z_]*)\\\"");
 
     private int port;
-    private final Map<String, Application> applicationMap = new HashMap<String, Application>();
-    private final Map<String, Application> remoteRegionApps = new HashMap<String, Application>();
-    private final Map<String, Application> remoteRegionAppsDelta = new HashMap<String, Application>();
-    private final Map<String, Application> applicationDeltaMap = new HashMap<String, Application>();
+    private final Map<String, Application> applicationMap = new HashMap<>();
+    private final Map<String, Application> remoteRegionApps = new HashMap<>();
+    private final Map<String, Application> remoteRegionAppsDelta = new HashMap<>();
+    private final Map<String, Application> applicationDeltaMap = new HashMap<>();
     private Server server;
     private final AtomicBoolean sentDelta = new AtomicBoolean();
     private final AtomicBoolean sentRegistry = new AtomicBoolean();
@@ -167,7 +167,7 @@ public class MockRemoteEurekaServer extends ExternalResource {
                     apps.setAppsHashCode(getDeltaAppsHashCode(includeRemote));
                     sendOkResponseWithContent((Request) request, response, apps);
                     handled = true;
-                } else if (pathInfo.equals("apps/")) {
+                } else if ("apps/".equals(pathInfo)) {
                     getFullRegistryCount.getAndIncrement();
 
                     Applications apps = new Applications();
@@ -204,7 +204,7 @@ public class MockRemoteEurekaServer extends ExternalResource {
                             }
                         }
 
-                        if (retApp.getInstances().size() > 0) {
+                        if (!retApp.getInstances().isEmpty()) {
                             apps.addApplication(retApp);
                         }
                     }
@@ -213,9 +213,9 @@ public class MockRemoteEurekaServer extends ExternalResource {
                     sendOkResponseWithContent((Request) request, response, apps);
                     handled = true;
                 } else if (pathInfo.startsWith("apps")) {  // assume this is the renewal heartbeat
-                    if (request.getMethod().equals("PUT")) {  // this is the renewal heartbeat
+                    if ("PUT".equals(request.getMethod())) {  // this is the renewal heartbeat
                         heartbeatCount.getAndIncrement();
-                    } else if (request.getMethod().equals("POST")) {  // this is a register request
+                    } else if ("POST".equals(request.getMethod())) {  // this is a register request
                         registerCount.getAndIncrement();
                         String statusStr = null;
                         String hostname = null;

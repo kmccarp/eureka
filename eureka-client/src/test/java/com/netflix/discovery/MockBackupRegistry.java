@@ -13,7 +13,7 @@ import com.netflix.discovery.shared.Applications;
 @Singleton
 public class MockBackupRegistry implements BackupRegistry {
 
-    private Map<String, Applications> remoteRegionVsApps = new HashMap<String, Applications>();
+    private Map<String, Applications> remoteRegionVsApps = new HashMap<>();
     private Applications localRegionApps;
 
     @Override

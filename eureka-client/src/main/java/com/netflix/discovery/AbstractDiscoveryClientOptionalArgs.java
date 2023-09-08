@@ -91,7 +91,7 @@ public abstract class AbstractDiscoveryClientOptionalArgs<T> {
     }
     
     Set<EurekaEventListener> getEventListeners() {
-        return eventListeners == null ? Collections.<EurekaEventListener>emptySet() : eventListeners;
+        return eventListeners == null ? Collections.emptySet() : eventListeners;
     }
     
     public TransportClientFactories getTransportClientFactories() {

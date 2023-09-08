@@ -58,14 +58,14 @@ public class GzipEncodingEnforcingFilter implements Filter {
             @Override
             public Enumeration<String> getHeaders(String name) {
                 if (HttpHeaders.ACCEPT_ENCODING.equals(name)) {
-                    return new EnumWrapper<String>("gzip");
+                    return new EnumWrapper<>("gzip");
                 }
                 return super.getHeaders(name);
             }
 
             @Override
             public Enumeration<String> getHeaderNames() {
-                return new EnumWrapper<String>(super.getHeaderNames(), HttpHeaders.ACCEPT_ENCODING);
+                return new EnumWrapper<>(super.getHeaderNames(), HttpHeaders.ACCEPT_ENCODING);
             }
 
             @Override
@@ -78,7 +78,7 @@ public class GzipEncodingEnforcingFilter implements Filter {
         };
     }
 
-    private static class EnumWrapper<E> implements Enumeration<E> {
+    private static final class EnumWrapper<E> implements Enumeration<E> {
 
         private final Enumeration<E> delegate;
         private final AtomicReference<E> extraElementRef;
