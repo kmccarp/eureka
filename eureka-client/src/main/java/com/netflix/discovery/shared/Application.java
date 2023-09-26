@@ -67,7 +67,7 @@ public class Application {
     private String name;
 
     @XStreamOmitField
-    private volatile boolean isDirty = false;
+    private volatile boolean isDirty;
 
     @XStreamImplicit
     private final Set<InstanceInfo> instances;
@@ -77,9 +77,9 @@ public class Application {
     private final Map<String, InstanceInfo> instancesMap;
 
     public Application() {
-        instances = new LinkedHashSet<InstanceInfo>();
-        instancesMap = new ConcurrentHashMap<String, InstanceInfo>();
-        shuffledInstances = new AtomicReference<List<InstanceInfo>>();
+        instances = new LinkedHashSet<>();
+        instancesMap = new ConcurrentHashMap<>();
+        shuffledInstances = new AtomicReference<>();
     }
 
     public Application(String name) {
@@ -148,7 +148,7 @@ public class Application {
     @JsonIgnore
     public List<InstanceInfo> getInstancesAsIsFromEureka() {
         synchronized (instances) {
-           return new ArrayList<InstanceInfo>(this.instances);
+           return new ArrayList<>(this.instances);
         }
     }
 
@@ -214,7 +214,7 @@ public class Application {
                                            @Nullable InstanceRegionChecker instanceRegionChecker) {
         List<InstanceInfo> instanceInfoList;
         synchronized (instances) {
-            instanceInfoList = new ArrayList<InstanceInfo>(instances);
+            instanceInfoList = new ArrayList<>(instances);
         }
         boolean remoteIndexingActive = indexByRemoteRegions && null != instanceRegionChecker && null != clientConfig
                 && null != remoteRegionsRegistry;

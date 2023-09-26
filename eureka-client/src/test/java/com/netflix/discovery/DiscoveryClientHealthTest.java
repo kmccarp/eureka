@@ -179,7 +179,7 @@ public class DiscoveryClientHealthTest extends AbstractDiscoveryClientTester {
         }
     }
 
-    private static class MyHealthCheckCallback implements HealthCheckCallback {
+    private static final class MyHealthCheckCallback implements HealthCheckCallback {
 
         private final boolean health;
         private volatile boolean invoked;
@@ -203,7 +203,7 @@ public class DiscoveryClientHealthTest extends AbstractDiscoveryClientTester {
         }
     }
 
-    private static class MyHealthCheckHandler implements HealthCheckHandler {
+    private static final class MyHealthCheckHandler implements HealthCheckHandler {
 
         private final InstanceInfo.InstanceStatus health;
         private volatile boolean invoked;

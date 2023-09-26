@@ -20,14 +20,12 @@ public class Jersey2EurekaBootStrap extends EurekaBootStrap {
 
     @Override    
     protected PeerEurekaNodes getPeerEurekaNodes(PeerAwareInstanceRegistry registry, EurekaServerConfig eurekaServerConfig, EurekaClientConfig eurekaClientConfig, ServerCodecs serverCodecs, ApplicationInfoManager applicationInfoManager) {
-        PeerEurekaNodes peerEurekaNodes = new Jersey2PeerEurekaNodes(
+        return new Jersey2PeerEurekaNodes(
                 registry,
                 eurekaServerConfig,
                 eurekaClientConfig,
                 serverCodecs,
                 applicationInfoManager
         );
-        
-        return peerEurekaNodes;
     }
 }

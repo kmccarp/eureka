@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
  * @author Joseph Witthuhn
  */
 public class EIPManagerTest {
-    private EurekaClientConfig config = mock(EurekaClientConfig.class);
+    private final EurekaClientConfig config = mock(EurekaClientConfig.class);
     private EIPManager eipManager;
 
     @Before

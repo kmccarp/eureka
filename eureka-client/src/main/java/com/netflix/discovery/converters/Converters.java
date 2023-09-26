@@ -700,8 +700,8 @@ public final class Converters {
             Map<String, String> map = Collections.emptyMap();
 
             while (reader.hasMoreChildren()) {
-                if (map == Collections.EMPTY_MAP) {
-                    map = new HashMap<String, String>();
+                if (map == Collections.emptyMap()) {
+                    map = new HashMap<>();
                 }
                 reader.moveDown();
                 String key = reader.getNodeName();

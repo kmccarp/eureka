@@ -263,7 +263,7 @@ public class AwsAsgUtil implements AsgClient {
     private Credentials initializeStsSession(String asgAccount) {
         AWSSecurityTokenService sts = new AWSSecurityTokenServiceClient(new InstanceProfileCredentialsProvider());
         String region = clientConfig.getRegion();
-        if (!region.equals("us-east-1")) {
+        if (!"us-east-1".equals(region)) {
             sts.setEndpoint("sts." + region + ".amazonaws.com");
         }
 
@@ -301,7 +301,7 @@ public class AwsAsgUtil implements AsgClient {
         );
 
         String region = clientConfig.getRegion();
-        if (!region.equals("us-east-1")) {
+        if (!"us-east-1".equals(region)) {
             autoScalingClient.setEndpoint("autoscaling." + region + ".amazonaws.com");
         }
 
@@ -516,16 +516,19 @@ public class AwsAsgUtil implements AsgClient {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof CacheKey)) return false;
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof CacheKey)) {
+                return false;
+            }
 
             CacheKey cacheKey = (CacheKey) o;
 
-            if (asgAccountId != null ? !asgAccountId.equals(cacheKey.asgAccountId) : cacheKey.asgAccountId != null)
+            if (asgAccountId != null ? !asgAccountId.equals(cacheKey.asgAccountId) : cacheKey.asgAccountId != null) {
                 return false;
-            if (asgName != null ? !asgName.equals(cacheKey.asgName) : cacheKey.asgName != null) return false;
-
-            return true;
+            }
+            return !(asgName != null ? !asgName.equals(cacheKey.asgName) : cacheKey.asgName != null);
         }
 
         @Override

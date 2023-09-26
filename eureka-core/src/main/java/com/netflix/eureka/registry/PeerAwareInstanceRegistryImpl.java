@@ -97,7 +97,7 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
     private static final String US_EAST_1 = "us-east-1";
     private static final int PRIME_PEER_NODES_RETRY_MS = 30000;
 
-    private long startupTime = 0;
+    private long startupTime;
     private boolean peerInstancesTransferEmptyOnStartup = true;
 
     public enum Action {
@@ -210,7 +210,7 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
         // Copy entire entry from neighboring DS node
         int count = 0;
 
-        for (int i = 0; ((i < serverConfig.getRegistrySyncRetries()) && (count == 0)); i++) {
+        for (int i = 0; (i < serverConfig.getRegistrySyncRetries()) && (count == 0); i++) {
             if (i > 0) {
                 try {
                     Thread.sleep(serverConfig.getRegistrySyncRetryWaitMs());
@@ -337,7 +337,7 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
     @Override
     public boolean shouldAllowAccess(boolean remoteRegionRequired) {
         if (this.peerInstancesTransferEmptyOnStartup) {
-            if (!(System.currentTimeMillis() > this.startupTime + serverConfig.getWaitTimeInMsWhenSyncEmpty())) {
+            if (System.currentTimeMillis() <= this.startupTime + serverConfig.getWaitTimeInMsWhenSyncEmpty()) {
                 return false;
             }
         }
@@ -543,7 +543,7 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
             synchronized (lock) {
                 // Update threshold only if the threshold is greater than the
                 // current expected threshold or if self preservation is disabled.
-                if ((count) > (serverConfig.getRenewalPercentThreshold() * expectedNumberOfClientsSendingRenews)
+                if (count > (serverConfig.getRenewalPercentThreshold() * expectedNumberOfClientsSendingRenews)
                         || (!this.isSelfPreservationModeEnabled())) {
                     this.expectedNumberOfClientsSendingRenews = count;
                     updateRenewsPerMinThreshold();
@@ -635,7 +635,7 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
                 numberOfReplicationsLastMin.increment();
             }
             // If it is a replication already, do not replicate again as this will create a poison replication
-            if (peerEurekaNodes == Collections.EMPTY_LIST || isReplication) {
+            if (peerEurekaNodes == Collections.emptyList() || isReplication) {
                 return;
             }
 

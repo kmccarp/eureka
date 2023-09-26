@@ -51,7 +51,7 @@ public final class EurekaServerHttpClients {
         JerseyRemoteRegionClientFactory jerseyFactory = new JerseyRemoteRegionClientFactory(serverConfig, serverCodecs, clusterResolver.getRegion());
         TransportClientFactory metricsFactory = MetricsCollectingEurekaHttpClient.createFactory(jerseyFactory);
 
-        SessionedEurekaHttpClient client = new SessionedEurekaHttpClient(
+        return new SessionedEurekaHttpClient(
                 Names.REMOTE,
                 RetryableEurekaHttpClient.createFactory(
                         Names.REMOTE,
@@ -61,8 +61,6 @@ public final class EurekaServerHttpClients {
                         ServerStatusEvaluators.legacyEvaluator()),
                 RECONNECT_INTERVAL_MINUTES * 60 * 1000
         );
-
-        return client;
     }
 
     public static TransportClientFactory createFactory(final TransportClientFactory delegateFactory) {
