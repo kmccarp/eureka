@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
  * @author Nitesh Kant
  */
 public class InstanceRegionChecker {
-    private static Logger logger = LoggerFactory.getLogger(InstanceRegionChecker.class);
+    private static final Logger logger = LoggerFactory.getLogger(InstanceRegionChecker.class);
 
     private final AzToRegionMapper azToRegionMapper;
     private final String localRegion;

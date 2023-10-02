@@ -130,10 +130,10 @@ public class DiscoveryClient implements EurekaClient {
 
     // Timers
     private static final String PREFIX = "DiscoveryClient_";
-    private final Counter RECONCILE_HASH_CODES_MISMATCH = Monitors.newCounter(PREFIX + "ReconcileHashCodeMismatch");
-    private final com.netflix.servo.monitor.Timer FETCH_REGISTRY_TIMER = Monitors
+    private static final Counter RECONCILE_HASH_CODES_MISMATCH = Monitors.newCounter(PREFIX + "ReconcileHashCodeMismatch");
+    private static final com.netflix.servo.monitor.Timer FETCH_REGISTRY_TIMER = Monitors
             .newTimer(PREFIX + "FetchRegistry");
-    private final Counter REREGISTER_COUNTER = Monitors.newCounter(PREFIX
+    private static final Counter REREGISTER_COUNTER = Monitors.newCounter(PREFIX
             + "Reregister");
 
     // instance variables
@@ -178,7 +178,7 @@ public class DiscoveryClient implements EurekaClient {
 
     private InstanceInfoReplicator instanceInfoReplicator;
 
-    private volatile int registrySize = 0;
+    private volatile int registrySize;
     private volatile long lastSuccessfulRegistryFetchTimestamp = -1;
     private volatile long lastSuccessfulHeartbeatTimestamp = -1;
     private final ThresholdLevelsMetric heartbeatStalenessMonitor;
@@ -354,7 +354,7 @@ public class DiscoveryClient implements EurekaClient {
 
         fetchRegistryGeneration = new AtomicLong(0);
 
-        remoteRegionsToFetch = new AtomicReference<String>(clientConfig.fetchRegistryForRemoteRegions());
+        remoteRegionsToFetch = new AtomicReference<>(clientConfig.fetchRegistryForRemoteRegions());
         remoteRegionsRef = new AtomicReference<>(remoteRegionsToFetch.get() == null ? null : remoteRegionsToFetch.get().split(","));
 
         if (config.shouldFetchRegistry()) {
@@ -1001,7 +1001,7 @@ public class DiscoveryClient implements EurekaClient {
                     || (!Strings.isNullOrEmpty(clientConfig.getRegistryRefreshSingleVipAddress()))
                     || forceFullRegistryFetch
                     || (applications == null)
-                    || (applications.getRegisteredApplications().size() == 0)
+                    || (applications.getRegisteredApplications().isEmpty())
                     || (applications.getVersion() == -1)) //Client application does not have latest library supporting delta
             {
                 logger.info("Disable delta property : {}", clientConfig.shouldDisableDelta());
@@ -1009,7 +1009,7 @@ public class DiscoveryClient implements EurekaClient {
                 logger.info("Force full registry fetch : {}", forceFullRegistryFetch);
                 logger.info("Application is null : {}", (applications == null));
                 logger.info("Registered Applications size is zero : {}",
-                        (applications.getRegisteredApplications().size() == 0));
+                        (applications.getRegisteredApplications().isEmpty()));
                 logger.info("Application version is -1: {}", (applications.getVersion() == -1));
                 getAndStoreFullRegistry();
             } else {
@@ -1069,7 +1069,7 @@ public class DiscoveryClient implements EurekaClient {
     }
 
     private String getReconcileHashCode(Applications applications) {
-        TreeMap<String, AtomicInteger> instanceCountMap = new TreeMap<String, AtomicInteger>();
+        TreeMap<String, AtomicInteger> instanceCountMap = new TreeMap<>();
         if (isFetchingRemoteRegionRegistries()) {
             for (Applications remoteApp : remoteRegionVsApps.values()) {
                 remoteApp.populateInstanceCountMap(instanceCountMap);
@@ -1623,7 +1623,7 @@ public class DiscoveryClient implements EurekaClient {
     private Applications filterAndShuffle(Applications apps) {
         if (apps != null) {
             if (isFetchingRemoteRegionRegistries()) {
-                Map<String, Applications> remoteRegionVsApps = new ConcurrentHashMap<String, Applications>();
+                Map<String, Applications> remoteRegionVsApps = new ConcurrentHashMap<>();
                 apps.shuffleAndIndexInstances(remoteRegionVsApps, clientConfig, instanceRegionChecker);
                 for (Applications applications : remoteRegionVsApps.values()) {
                     applications.shuffleInstances(clientConfig.shouldFilterOnlyUpInstances());
@@ -1733,7 +1733,7 @@ public class DiscoveryClient implements EurekaClient {
     @com.netflix.servo.annotations.Monitor(name = METRIC_REGISTRATION_PREFIX + "lastSuccessfulHeartbeatTimePeriod",
             description = "How much time has passed from last successful heartbeat", type = DataSourceType.GAUGE)
     private long getLastSuccessfulHeartbeatTimePeriodInternal() {
-        final long delay = (!clientConfig.shouldRegisterWithEureka() || isShutdown.get())
+        final long delay = !clientConfig.shouldRegisterWithEureka() || isShutdown.get()
             ? 0
             : getLastSuccessfulHeartbeatTimePeriod();
 
@@ -1745,7 +1745,7 @@ public class DiscoveryClient implements EurekaClient {
     @com.netflix.servo.annotations.Monitor(name = METRIC_REGISTRY_PREFIX + "lastSuccessfulRegistryFetchTimePeriod",
             description = "How much time has passed from last successful local registry update", type = DataSourceType.GAUGE)
     private long getLastSuccessfulRegistryFetchTimePeriodInternal() {
-        final long delay = (!clientConfig.shouldFetchRegistry() || isShutdown.get())
+        final long delay = !clientConfig.shouldFetchRegistry() || isShutdown.get()
             ? 0
             : getLastSuccessfulRegistryFetchTimePeriod();
 
@@ -1781,7 +1781,7 @@ public class DiscoveryClient implements EurekaClient {
      * Stats is used to track useful attributes of the DiscoveryClient. It includes helpers that can aid
      * debugging and log analysis.
      */
-    public class Stats {
+    public final class Stats {
 
         private Stats() {}
 

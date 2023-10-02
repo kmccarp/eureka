@@ -97,10 +97,7 @@ public final class EurekaEntityComparators {
         if (first.getRenewalTimestamp() != second.getRenewalTimestamp()) {
             return false;
         }
-        if (first.getServiceUpTimestamp() != second.getServiceUpTimestamp()) {
-            return false;
-        }
-        return true;
+        return first.getServiceUpTimestamp() == second.getServiceUpTimestamp();
     }
 
     public static boolean equal(InstanceInfo first, InstanceInfo second) {
@@ -187,10 +184,7 @@ public final class EurekaEntityComparators {
         if (first.getLastUpdatedTimestamp()!= second.getLastUpdatedTimestamp()) {
             return false;
         }
-        if (first.isCoordinatingDiscoveryServer() != null ? !first.isCoordinatingDiscoveryServer().equals(second.isCoordinatingDiscoveryServer()) : second.isCoordinatingDiscoveryServer() != null) {
-            return false;
-        }
-        return true;
+        return !(first.isCoordinatingDiscoveryServer() != null ? !first.isCoordinatingDiscoveryServer().equals(second.isCoordinatingDiscoveryServer()) : second.isCoordinatingDiscoveryServer() != null);
     }
 
 
@@ -242,10 +236,7 @@ public final class EurekaEntityComparators {
         if (first.getStatus() != null ? !first.getStatus().equals(second.getStatus()) : second.getStatus() != null) {
             return false;
         }
-        if (first.getLastUpdatedTimestamp()!= second.getLastUpdatedTimestamp()) {
-            return false;
-        }
-        return true;
+        return first.getLastUpdatedTimestamp() == second.getLastUpdatedTimestamp();
     }
 
     public static boolean equal(Application first, Application second) {
@@ -338,11 +329,11 @@ public final class EurekaEntityComparators {
     public static class RawIdHandleEmptyEqualFunc implements EqualFunc<InstanceInfo> {
         @Override
         public boolean equals(InstanceInfo first, InstanceInfo second) {
-            String firstId = (first.getInstanceId() == null || first.getInstanceId().isEmpty())
+            String firstId = first.getInstanceId() == null || first.getInstanceId().isEmpty()
                     ? null
                     : first.getInstanceId();
 
-            String secondId = (second.getInstanceId() == null || second.getInstanceId().isEmpty())
+            String secondId = second.getInstanceId() == null || second.getInstanceId().isEmpty()
                     ? null
                     : second.getInstanceId();
 
