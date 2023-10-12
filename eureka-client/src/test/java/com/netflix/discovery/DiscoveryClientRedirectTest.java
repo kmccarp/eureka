@@ -45,7 +45,7 @@ public class DiscoveryClientRedirectTest {
     public MockServerRule redirectServerMockRule = new MockServerRule(this);
     private MockServerClient redirectServerMockClient;
 
-    private MockClientHolder targetServerMockClient = new MockClientHolder();
+    private final MockClientHolder targetServerMockClient = new MockClientHolder();
     @Rule
     public MockServerRule targetServerMockRule = new MockServerRule(targetServerMockClient);
 

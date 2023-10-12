@@ -117,7 +117,7 @@ public class StringInterningAmazonInfoBuilder extends JsonDeserializer<AmazonInf
                 String metadataKey = intern.apply(jp, CacheScope.GLOBAL_SCOPE);
                 jp.nextToken();
                 CacheScope scope = VALUE_INTERN_KEYS.get(metadataKey);
-                String metadataValue =  (scope != null) ? intern.apply(jp, scope) : intern.apply(jp, CacheScope.APPLICATION_SCOPE);
+                String metadataValue =  scope != null ? intern.apply(jp, scope) : intern.apply(jp, CacheScope.APPLICATION_SCOPE);
                 metadata.put(metadataKey, metadataValue);
             }
             skipToEnd(jp);

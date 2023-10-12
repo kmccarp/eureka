@@ -252,8 +252,7 @@ public class DiscoveryClientResource extends ExternalResource {
         ApplicationInfoManager applicationInfoManager = new ApplicationInfoManager(new MyDataCenterInstanceConfig(), clientInstanceInfo);
 
         DiscoveryManager.getInstance().setEurekaClientConfig(config);
-        EurekaClient client = new DiscoveryClient(applicationInfoManager, config);
-        return client;
+        return new DiscoveryClient(applicationInfoManager, config);
     }
 
     public static EurekaClient setupInjector(InstanceInfo clientInstanceInfo) {

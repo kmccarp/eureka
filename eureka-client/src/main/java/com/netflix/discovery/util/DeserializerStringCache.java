@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.ObjectReader;
  * short-lived heap allocations (e.g., Strings)
  *
  */
-public class DeserializerStringCache implements Function<String, String> {
+public final class DeserializerStringCache implements Function<String, String> {
 
     public enum CacheScope {
         // Strings in this scope are freed on deserialization of each
@@ -75,8 +75,9 @@ public class DeserializerStringCache implements Function<String, String> {
      */
     public static ObjectReader init(ObjectReader reader, DeserializationContext context) {
         return withCache(context, cache -> {
-            if (cache == null)
+            if (cache == null) {
                 throw new IllegalStateException();
+            }
             return reader.withAttribute(ATTR_STRING_CACHE, cache);
         });
     }
@@ -118,12 +119,14 @@ public class DeserializerStringCache implements Function<String, String> {
     public static void clear(ObjectReader reader, final CacheScope scope) {
         withCache(reader, cache -> {
             if (scope == CacheScope.GLOBAL_SCOPE) {
-                if (debugLogEnabled)
+                if (debugLogEnabled) {
                     logger.debug("clearing global-level cache with size {}", cache.globalCache.size());
+                }
                 cache.globalCache.clear();
             }
-            if (debugLogEnabled)
+            if (debugLogEnabled) {
                 logger.debug("clearing app-level serialization cache with size {}", cache.applicationCache.size());
+            }
             cache.applicationCache.clear();
             return null;
         });
@@ -148,12 +151,14 @@ public class DeserializerStringCache implements Function<String, String> {
     public static void clear(DeserializationContext context, CacheScope scope) {
         withCache(context, cache -> {
             if (scope == CacheScope.GLOBAL_SCOPE) {
-                if (debugLogEnabled)
+                if (debugLogEnabled) {
                     logger.debug("clearing global-level serialization cache with size {}", cache.globalCache.size());
+                }
                 cache.globalCache.clear();
             }
-            if (debugLogEnabled)
+            if (debugLogEnabled) {
                 logger.debug("clearing app-level serialization cache with size {}", cache.applicationCache.size());
+            }
             cache.applicationCache.clear();
             return null;
         });
@@ -232,13 +237,11 @@ public class DeserializerStringCache implements Function<String, String> {
      */
     public String apply(CharBuffer charValue, CacheScope cacheScope) {
         int keyLength = charValue.length();
-        if ((lengthLimit < 0 || keyLength <= lengthLimit)) {
-            Map<CharBuffer, String> cache = (cacheScope == CacheScope.GLOBAL_SCOPE) ? globalCache : applicationCache;
+        if (lengthLimit < 0 || keyLength <= lengthLimit) {
+            Map<CharBuffer, String> cache = cacheScope == CacheScope.GLOBAL_SCOPE ? globalCache : applicationCache;
             String value = cache.get(charValue);
             if (value == null) {
-                value = charValue.consume((k, v) -> {
-                    cache.put(k, v);
-                });
+                value = charValue.consume(cache::put);
             } else {
                 // System.out.println("cache hit");
             }
@@ -392,8 +395,9 @@ public class DeserializerStringCache implements Function<String, String> {
             }
 
             private static int arrayHash(char[] a, int offset, int length) {
-                if (a == null)
+                if (a == null) {
                     return 0;
+                }
                 int result = 0;
                 int limit = offset + length;
                 for (int i = offset; i < limit; i++) {

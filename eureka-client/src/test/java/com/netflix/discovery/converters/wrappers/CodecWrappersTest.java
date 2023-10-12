@@ -13,7 +13,7 @@ import java.io.OutputStream;
  */
 public class CodecWrappersTest {
 
-    private static String testWrapperName = "FOO_WRAPPER";
+    private static final String testWrapperName = "FOO_WRAPPER";
 
     @Test
     public void testRegisterNewWrapper() {

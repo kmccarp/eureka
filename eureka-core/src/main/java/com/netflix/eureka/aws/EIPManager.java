@@ -213,11 +213,11 @@ public class EIPManager implements AwsBinder {
                     associatedInstanceId = eipAddress.getInstanceId();
                     // This EIP is not used by any other instance, hence mark it for selection if it is not
                     // already marked.
-                    if (((associatedInstanceId == null) || (associatedInstanceId.isEmpty()))) {
+                    if ((associatedInstanceId == null) || (associatedInstanceId.isEmpty())) {
                         if (selectedEIP == null) {
                             selectedEIP = eipAddress;
                         }
-                    } else if (isMyinstanceAssociatedWithEIP = (associatedInstanceId.equals(myInstanceId))) {
+                    } else if (isMyinstanceAssociatedWithEIP = associatedInstanceId.equals(myInstanceId)) {
                         // This EIP is associated with an instance, check if this is the same as the current instance.
                         // If it is the same, stop searching for an EIP as this instance is already associated with an
                         // EIP
@@ -316,7 +316,7 @@ public class EIPManager implements AwsBinder {
                         ? getEIPsForZoneFromDNS(myZone)
                         : getEIPsForZoneFromConfig(myZone);
 
-        if (eipCandidates == null || eipCandidates.size() == 0) {
+        if (eipCandidates == null || eipCandidates.isEmpty()) {
             throw new RuntimeException("Could not get any elastic ips from the EIP pool for zone :" + myZone);
         }
 

@@ -215,7 +215,7 @@ public class EndpointUtils {
             }
         }
 
-        if (orderedUrls.size() < 1) {
+        if (orderedUrls.isEmpty()) {
             throw new IllegalArgumentException("DiscoveryClient: invalid serviceUrl specified!");
         }
         return orderedUrls;
@@ -284,7 +284,7 @@ public class EndpointUtils {
             if (DiscoveryUrlType.CNAME.equals(type)) {
                 return ec2UrlsForZone;
             }
-            eipsForZone = new TreeSet<String>();
+            eipsForZone = new TreeSet<>();
             for (String cname : ec2UrlsForZone) {
                 String[] tokens = cname.split("\\.");
                 String ec2HostName = tokens[0];
@@ -320,7 +320,7 @@ public class EndpointUtils {
 
             logger.debug("The region url to be looked up is {} :", discoveryDnsName);
             Set<String> zoneCnamesForRegion = new TreeSet<>(DnsResolver.getCNamesFromTxtRecord(discoveryDnsName));
-            Map<String, List<String>> zoneCnameMapForRegion = new TreeMap<String, List<String>>();
+            Map<String, List<String>> zoneCnameMapForRegion = new TreeMap<>();
             for (String zoneCname : zoneCnamesForRegion) {
                 String zone = null;
                 if (isEC2Url(zoneCname)) {
@@ -336,7 +336,7 @@ public class EndpointUtils {
                 }
                 List<String> zoneCnamesSet = zoneCnameMapForRegion.get(zone);
                 if (zoneCnamesSet == null) {
-                    zoneCnamesSet = new ArrayList<String>();
+                    zoneCnamesSet = new ArrayList<>();
                     zoneCnameMapForRegion.put(zone, zoneCnamesSet);
                 }
                 zoneCnamesSet.add(zoneCname);

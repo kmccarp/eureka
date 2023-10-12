@@ -185,7 +185,7 @@ public class BackUpRegistryTest {
 
     private AmazonInfo getAmazonInfo(@Nullable String availabilityZone, String instanceHostName) {
         AmazonInfo.Builder azBuilder = AmazonInfo.Builder.newBuilder();
-        azBuilder.addMetadata(AmazonInfo.MetaDataKey.availabilityZone, (null == availabilityZone) ? "us-east-1a" : availabilityZone);
+        azBuilder.addMetadata(AmazonInfo.MetaDataKey.availabilityZone, null == availabilityZone ? "us-east-1a" : availabilityZone);
         azBuilder.addMetadata(AmazonInfo.MetaDataKey.instanceId, instanceHostName);
         azBuilder.addMetadata(AmazonInfo.MetaDataKey.amiId, "XXX");
         azBuilder.addMetadata(AmazonInfo.MetaDataKey.instanceType, "XXX");

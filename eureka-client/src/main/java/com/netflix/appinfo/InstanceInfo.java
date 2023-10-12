@@ -132,14 +132,14 @@ public class InstanceInfo {
     private String healthCheckExplicitUrl;
     @Deprecated
     private volatile int countryId = DEFAULT_COUNTRY_ID; // Defaults to US
-    private volatile boolean isSecurePortEnabled = false;
+    private volatile boolean isSecurePortEnabled;
     private volatile boolean isUnsecurePortEnabled = true;
     private volatile DataCenterInfo dataCenterInfo;
     private volatile String hostName;
     private volatile InstanceStatus status = InstanceStatus.UP;
     private volatile InstanceStatus overriddenStatus = InstanceStatus.UNKNOWN;
     @XStreamOmitField
-    private volatile boolean isInstanceInfoDirty = false;
+    private volatile boolean isInstanceInfoDirty;
     private volatile LeaseInfo leaseInfo;
     @Auto
     private volatile Boolean isCoordinatingDiscoveryServer = Boolean.FALSE;
@@ -156,7 +156,7 @@ public class InstanceInfo {
     private String version = VERSION_UNKNOWN;
 
     private InstanceInfo() {
-        this.metadata = new ConcurrentHashMap<String, String>();
+        this.metadata = new ConcurrentHashMap<>();
         this.lastUpdatedTimestamp = System.currentTimeMillis();
         this.lastDirtyTimestamp = lastUpdatedTimestamp;
     }
@@ -338,7 +338,7 @@ public class InstanceInfo {
     @Override
     public int hashCode() {
         String id = getId();
-        return (id == null) ? 31 : (id.hashCode() + 31);
+        return id == null ? 31 : (id.hashCode() + 31);
     }
 
     @Override
@@ -814,7 +814,7 @@ public class InstanceInfo {
         }
 
         public boolean isInitialized() {
-            return (result.appName != null);
+            return result.appName != null;
         }
 
         /**
@@ -1266,7 +1266,6 @@ public class InstanceInfo {
     public synchronized void unsetIsDirty(long unsetDirtyTimestamp) {
         if (lastDirtyTimestamp <= unsetDirtyTimestamp) {
             isInstanceInfoDirty = false;
-        } else {
         }
     }
 
@@ -1370,8 +1369,8 @@ public class InstanceInfo {
      * @return - The zone in which the particular instance belongs to.
      */
     public static String getZone(String[] availZones, InstanceInfo myInfo) {
-        String instanceZone = ((availZones == null || availZones.length == 0) ? "default"
-                : availZones[0]);
+        String instanceZone = availZones == null || availZones.length == 0 ? "default"
+                : availZones[0];
         if (myInfo != null
                 && myInfo.getDataCenterInfo().getName() == DataCenterInfo.Name.Amazon) {
 

@@ -18,7 +18,7 @@ import static org.junit.Assert.assertThat;
  */
 public class Ec2EurekaArchaius2InstanceConfigTest {
     private Ec2EurekaArchaius2InstanceConfig config;
-    private String dummyDefault = "dummyDefault";
+    private final String dummyDefault = "dummyDefault";
     private InstanceInfo instanceInfo;
 
     @Before

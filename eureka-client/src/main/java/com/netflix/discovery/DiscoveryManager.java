@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 @Deprecated
-public class DiscoveryManager {
+public final class DiscoveryManager {
     private static final Logger logger = LoggerFactory.getLogger(DiscoveryManager.class);
     private DiscoveryClient discoveryClient;
     private EurekaClient clientOverride;
