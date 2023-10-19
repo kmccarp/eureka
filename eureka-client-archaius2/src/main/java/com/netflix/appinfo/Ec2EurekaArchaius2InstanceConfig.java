@@ -100,7 +100,7 @@ public class Ec2EurekaArchaius2InstanceConfig extends EurekaArchaius2InstanceCon
     @Override
     public String[] getDefaultAddressResolutionOrder() {
         String[] order = super.getDefaultAddressResolutionOrder();
-        return (order.length == 0) ? DEFAULT_AWS_ADDRESS_RESOLUTION_ORDER : order;
+        return order.length == 0 ? DEFAULT_AWS_ADDRESS_RESOLUTION_ORDER : order;
     }
 
     /**

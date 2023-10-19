@@ -107,14 +107,14 @@ public class ResponseCacheImpl implements ResponseCache {
      * around till expiry. Github issue: https://github.com/Netflix/eureka/issues/118
      */
     private final Multimap<Key, Key> regionSpecificKeys =
-            Multimaps.newListMultimap(new ConcurrentHashMap<Key, Collection<Key>>(), new Supplier<List<Key>>() {
+            Multimaps.newListMultimap(new ConcurrentHashMap<>(), new Supplier<List<Key>>() {
                 @Override
                 public List<Key> get() {
-                    return new CopyOnWriteArrayList<Key>();
+                    return new CopyOnWriteArrayList<>();
                 }
             });
 
-    private final ConcurrentMap<Key, Value> readOnlyCacheMap = new ConcurrentHashMap<Key, Value>();
+    private final ConcurrentMap<Key, Value> readOnlyCacheMap = new ConcurrentHashMap<>();
 
     private final LoadingCache<Key, Value> readWriteCacheMap;
     private final boolean shouldUseReadOnlyResponseCache;
@@ -149,8 +149,7 @@ public class ResponseCacheImpl implements ResponseCache {
                                     Key cloneWithNoRegions = key.cloneWithoutRegions();
                                     regionSpecificKeys.put(cloneWithNoRegions, key);
                                 }
-                                Value value = generatePayload(key);
-                                return value;
+                                return generatePayload(key);
                             }
                         });
 

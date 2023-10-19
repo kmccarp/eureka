@@ -214,7 +214,7 @@ class TaskExecutors<ID, T> {
             do {
                 result = workQueue.poll(1, TimeUnit.SECONDS);
             } while (!isShutdown.get() && result == null);
-            return (result == null) ? new ArrayList<>() : result;
+            return result == null ? new ArrayList<>() : result;
         }
 
         private List<T> getTasksOf(List<TaskHolder<ID, T>> holders) {
