@@ -26,15 +26,15 @@ import com.netflix.eureka.registry.PeerAwareInstanceRegistryImpl.Action;
 import com.netflix.eureka.transport.JerseyReplicationClient;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -45,7 +45,7 @@ import static org.mockito.Mockito.when;
  *
  * @author Tomasz Bak
  */
-public class EurekaClientServerRestIntegrationTest {
+class EurekaClientServerRestIntegrationTest {
 
     private static final String[] EUREKA1_WAR_DIRS = {"build/libs", "eureka-server/build/libs"};
 
@@ -67,8 +67,8 @@ public class EurekaClientServerRestIntegrationTest {
 
     private static String eurekaServiceUrl;
 
-    @BeforeClass
-    public static void setUp() throws Exception {
+    @BeforeAll
+    static void setUp() throws Exception {
         injectEurekaConfiguration();
         startServer();
         createEurekaServerConfig();
@@ -92,8 +92,8 @@ public class EurekaClientServerRestIntegrationTest {
         );
     }
 
-    @AfterClass
-    public static void tearDown() throws Exception {
+    @AfterAll
+    static void tearDown() throws Exception {
         removeEurekaConfiguration();
         if (jerseyReplicationClient != null) {
             jerseyReplicationClient.shutdown();
@@ -107,7 +107,7 @@ public class EurekaClientServerRestIntegrationTest {
     }
 
     @Test
-    public void testRegistration() throws Exception {
+    void registration() throws Exception {
         InstanceInfo instanceInfo = instanceInfoIt.next();
         EurekaHttpResponse<Void> httpResponse = jerseyEurekaClient.register(instanceInfo);
 
@@ -115,7 +115,7 @@ public class EurekaClientServerRestIntegrationTest {
     }
 
     @Test
-    public void testHeartbeat() throws Exception {
+    void heartbeat() throws Exception {
         // Register first
         InstanceInfo instanceInfo = instanceInfoIt.next();
         jerseyEurekaClient.register(instanceInfo);
@@ -128,7 +128,7 @@ public class EurekaClientServerRestIntegrationTest {
     }
 
     @Test
-    public void testMissedHeartbeat() throws Exception {
+    void missedHeartbeat() throws Exception {
         InstanceInfo instanceInfo = instanceInfoIt.next();
 
         // Now send heartbeat
@@ -138,7 +138,7 @@ public class EurekaClientServerRestIntegrationTest {
     }
 
     @Test
-    public void testCancelForEntryThatExists() throws Exception {
+    void cancelForEntryThatExists() throws Exception {
         // Register first
         InstanceInfo instanceInfo = instanceInfoIt.next();
         jerseyEurekaClient.register(instanceInfo);
@@ -150,7 +150,7 @@ public class EurekaClientServerRestIntegrationTest {
     }
 
     @Test
-    public void testCancelForEntryThatDoesNotExist() throws Exception {
+    void cancelForEntryThatDoesNotExist() throws Exception {
         // Now cancel
         InstanceInfo instanceInfo = instanceInfoIt.next();
         EurekaHttpResponse<Void> httpResponse = jerseyEurekaClient.cancel(instanceInfo.getAppName(), instanceInfo.getId());
@@ -159,7 +159,7 @@ public class EurekaClientServerRestIntegrationTest {
     }
 
     @Test
-    public void testStatusOverrideUpdateAndDelete() throws Exception {
+    void statusOverrideUpdateAndDelete() throws Exception {
         // Register first
         InstanceInfo instanceInfo = instanceInfoIt.next();
         jerseyEurekaClient.register(instanceInfo);
@@ -180,7 +180,7 @@ public class EurekaClientServerRestIntegrationTest {
     }
 
     @Test
-    public void testBatch() throws Exception {
+    void batch() throws Exception {
         InstanceInfo instanceInfo = instanceInfoIt.next();
         ReplicationInstance replicationInstance = ReplicationInstance.replicationInstance()
                 .withAction(Action.Register)

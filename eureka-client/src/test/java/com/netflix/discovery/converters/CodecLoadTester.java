@@ -1,6 +1,6 @@
 package com.netflix.discovery.converters;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -162,12 +162,12 @@ public class CodecLoadTester {
 
     private static String formatSize(long size) {
         if (size < 1000) {
-            return String.format("%d [bytes]", size);
+            return "%d [bytes]".formatted(size);
         }
         if (size < 1024 * 1024) {
-            return String.format("%.2f [KB]", size / 1024f);
+            return "%.2f [KB]".formatted(size / 1024f);
         }
-        return String.format("%.2f [MB]", size / (1024f * 1024f));
+        return "%.2f [MB]".formatted(size / (1024f * 1024f));
     }
 
     interface Func0<T> {

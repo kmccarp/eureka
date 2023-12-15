@@ -23,18 +23,18 @@ import com.netflix.appinfo.EurekaAccept;
 import com.netflix.discovery.converters.wrappers.CodecWrappers.JacksonJson;
 import com.netflix.discovery.shared.resolver.DefaultEndpoint;
 import com.netflix.discovery.shared.transport.jersey.JerseyEurekaHttpClientFactory;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 
 /**
  * @author Tomasz Bak
  */
-public class SimpleEurekaHttpServerTest extends EurekaHttpClientCompatibilityTestSuite {
+class SimpleEurekaHttpServerTest extends EurekaHttpClientCompatibilityTestSuite {
 
     private TransportClientFactory httpClientFactory;
     private EurekaHttpClient eurekaHttpClient;
 
     @Override
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         httpClientFactory.shutdown();
         super.tearDown();

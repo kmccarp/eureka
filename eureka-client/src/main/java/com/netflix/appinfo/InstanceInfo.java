@@ -942,8 +942,8 @@ public class InstanceInfo {
     public String getId() {
         if (instanceId != null && !instanceId.isEmpty()) {
             return instanceId;
-        } else if (dataCenterInfo instanceof UniqueIdentifier) {
-            String uniqueId = ((UniqueIdentifier) dataCenterInfo).getId();
+        } else if (dataCenterInfo instanceof UniqueIdentifier identifier) {
+            String uniqueId = identifier.getId();
             if (uniqueId != null && !uniqueId.isEmpty()) {
                 return uniqueId;
             }

@@ -16,7 +16,6 @@
 
 package com.netflix.eureka.registry;
 
-import javax.annotation.Nullable;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
@@ -54,6 +53,7 @@ import com.netflix.servo.annotations.Monitor;
 import com.netflix.servo.monitor.Monitors;
 import com.netflix.servo.monitor.Stopwatch;
 import com.netflix.servo.monitor.Timer;
+import jakarta.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

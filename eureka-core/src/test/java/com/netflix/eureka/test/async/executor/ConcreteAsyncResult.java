@@ -77,8 +77,8 @@ public class ConcreteAsyncResult<T> implements AsyncResult<T> {
             throw new AsyncExecutorException("Interrupted", error);
         }
         if (error != null) {
-            if (error instanceof AsyncExecutorException) {
-                throw (AsyncExecutorException) error;
+            if (error instanceof AsyncExecutorException exception) {
+                throw exception;
             } else {
                 throw new AsyncExecutorException("Execution exception", error);
             }
@@ -90,8 +90,8 @@ public class ConcreteAsyncResult<T> implements AsyncResult<T> {
         try {
             if (latch.await(timeout, unit)) {
                 if (error != null) {
-                    if (error instanceof AsyncExecutorException) {
-                        throw (AsyncExecutorException) error;
+                    if (error instanceof AsyncExecutorException exception) {
+                        throw exception;
                     } else {
                         throw new RuntimeException("call future get exception", error);
                     }

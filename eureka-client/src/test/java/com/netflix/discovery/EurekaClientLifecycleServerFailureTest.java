@@ -15,18 +15,19 @@ import com.netflix.discovery.shared.transport.jersey.Jersey1DiscoveryClientOptio
 import com.netflix.discovery.util.InstanceInfoGenerator;
 import com.netflix.governator.guice.LifecycleInjector;
 import com.netflix.governator.lifecycle.LifecycleManager;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
 import static com.netflix.discovery.shared.transport.EurekaHttpResponse.anEurekaHttpResponse;
 import static java.util.Collections.singletonList;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -46,8 +47,8 @@ public class EurekaClientLifecycleServerFailureTest {
 
     public static SimpleEurekaHttpServer eurekaHttpServer;
 
-    @BeforeClass
-    public static void setupClass() throws IOException {
+    @BeforeAll
+    static void setupClass() throws IOException {
         eurekaHttpServer = new SimpleEurekaHttpServer(requestHandler);
         when(requestHandler.getApplications()).thenReturn(
                 anEurekaHttpResponse(500, APPLICATIONS).type(MediaType.APPLICATION_JSON_TYPE).build()
@@ -57,8 +58,8 @@ public class EurekaClientLifecycleServerFailureTest {
         );
     }
 
-    @AfterClass
-    public static void tearDownClass() {
+    @AfterAll
+    static void tearDownClass() {
         if (eurekaHttpServer != null) {
             eurekaHttpServer.shutdown();
         }
@@ -122,34 +123,36 @@ public class EurekaClientLifecycleServerFailureTest {
      * which returns `null` for its list of applications and thus results in a failure to return a successful response
      * for registry data when used.
      */
-    @Test(expected = ProvisionException.class)
-    public void testEnforceFetchRegistryAtInitPrimaryAndBackupFailure() {
-        Injector injector = LifecycleInjector.builder()
-                .withModules(
-                        new AbstractModule() {
-                            @Override
-                            protected void configure() {
-                                bind(EurekaInstanceConfig.class).to(LocalEurekaInstanceConfig.class);
-                                bind(EurekaClientConfig.class).to(LocalEurekaClientConfig1.class);
-                                bind(AbstractDiscoveryClientOptionalArgs.class).to(Jersey1DiscoveryClientOptionalArgs.class).in(Scopes.SINGLETON);
-                                bind(EndpointRandomizer.class).toInstance(ResolverUtils::randomize);
+    @Test
+    void enforceFetchRegistryAtInitPrimaryAndBackupFailure() {
+        assertThrows(ProvisionException.class, () -> {
+            Injector injector = LifecycleInjector.builder()
+                    .withModules(
+                            new AbstractModule() {
+                                @Override
+                                protected void configure() {
+                                    bind(EurekaInstanceConfig.class).to(LocalEurekaInstanceConfig.class);
+                                    bind(EurekaClientConfig.class).to(LocalEurekaClientConfig1.class);
+                                    bind(AbstractDiscoveryClientOptionalArgs.class).to(Jersey1DiscoveryClientOptionalArgs.class).in(Scopes.SINGLETON);
+                                    bind(EndpointRandomizer.class).toInstance(ResolverUtils::randomize);
+                                }
                             }
-                        }
-                )
-                .build().createInjector();
-        LifecycleManager lifecycleManager = injector.getInstance(LifecycleManager.class);
-        try {
-            lifecycleManager.start();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+                    )
+                    .build().createInjector();
+            LifecycleManager lifecycleManager = injector.getInstance(LifecycleManager.class);
+            try {
+                lifecycleManager.start();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
 
-        // this will throw a Guice ProvisionException for the constructor failure
-        injector.getInstance(EurekaClient.class);
+            // this will throw a Guice ProvisionException for the constructor failure
+            injector.getInstance(EurekaClient.class);
+        });
     }
 
     @Test
-    public void testEnforceFetchRegistryAtInitPrimaryFailureAndBackupSuccess() {
+    void enforceFetchRegistryAtInitPrimaryFailureAndBackupSuccess() {
         Injector injector = LifecycleInjector.builder()
                 .withModules(
                         new AbstractModule() {
@@ -173,11 +176,11 @@ public class EurekaClientLifecycleServerFailureTest {
 
         // this will not throw a Guice ProvisionException for the constructor failure
         EurekaClient client = injector.getInstance(EurekaClient.class);
-        Assert.assertNotNull(client);
+        assertNotNull(client);
     }
 
     @Test
-    public void testEnforceFetchRegistryAtInitPrimaryFailureNoop() {
+    void enforceFetchRegistryAtInitPrimaryFailureNoop() {
         Injector injector = LifecycleInjector.builder()
                 .withModules(
                         new AbstractModule() {
@@ -200,7 +203,7 @@ public class EurekaClientLifecycleServerFailureTest {
 
         // this will not throw a Guice ProvisionException for the constructor failure
         EurekaClient client = injector.getInstance(EurekaClient.class);
-        Assert.assertNotNull(client);
+        assertNotNull(client);
     }
 
 }

@@ -176,14 +176,14 @@ public class InstanceInfoGenerator {
         String privateIp = "192.168." + appIndex + '.' + appInstanceId;
         String ipv6 = "::FFFF:" + publicIp;
 
-        String instanceId = String.format("i-%04d%04d", appIndex, appInstanceId);
+        String instanceId = "i-%04d%04d".formatted(appIndex, appInstanceId);
         if (taggedId) {
             instanceId = instanceId + '_' + appName;
         }
 
         AmazonInfo dataCenterInfo = AmazonInfo.Builder.newBuilder()
                 .addMetadata(MetaDataKey.accountId, "testAccountId")
-                .addMetadata(MetaDataKey.amiId, String.format("ami-%04d%04d", appIndex, appInstanceId))
+                .addMetadata(MetaDataKey.amiId, "ami-%04d%04d".formatted(appIndex, appInstanceId))
                 .addMetadata(MetaDataKey.availabilityZone, zone)
                 .addMetadata(MetaDataKey.instanceId, instanceId)
                 .addMetadata(MetaDataKey.instanceType, "m2.xlarge")

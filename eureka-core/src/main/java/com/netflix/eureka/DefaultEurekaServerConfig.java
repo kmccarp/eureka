@@ -24,8 +24,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Nullable;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import com.netflix.config.ConfigurationManager;
 import com.netflix.config.DynamicBooleanProperty;
@@ -34,7 +33,7 @@ import com.netflix.config.DynamicPropertyFactory;
 import com.netflix.config.DynamicStringProperty;
 import com.netflix.config.DynamicStringSetProperty;
 import com.netflix.eureka.aws.AwsBindingStrategy;
-
+import jakarta.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -115,8 +114,10 @@ public class DefaultEurekaServerConfig implements EurekaServerConfig {
                     .loadCascadedPropertiesFromResources(eurekaPropsFile);
         } catch (IOException e) {
             logger.warn(
-                    "Cannot find the properties specified : {}. This may be okay if there are other environment "
-                            + "specific properties or the configuration is installed with a different mechanism.",
+                    """
+                    Cannot find the properties specified : {}. This may be okay if there are other environment \
+                    specific properties or the configuration is installed with a different mechanism.\
+                    """,
                     eurekaPropsFile);
         }
     }
@@ -518,9 +519,11 @@ public class DefaultEurekaServerConfig implements EurekaServerConfig {
         for (String remoteRegionUrlWithNamePair : remoteRegionUrlWithNamePairs) {
             String[] pairSplit = remoteRegionUrlWithNamePair.split(pairSplitChar);
             if (pairSplit.length < 2) {
-                logger.error("Error reading eureka remote region urls from property {}. "
-                                + "Invalid entry {} for remote region url. The entry must contain region name and url "
-                                + "separated by a {}. Ignoring this entry.",
+                logger.error("""
+                                Error reading eureka remote region urls from property {}. \
+                                Invalid entry {} for remote region url. The entry must contain region name and url \
+                                separated by a {}. Ignoring this entry.\
+                                """,
                         propName, remoteRegionUrlWithNamePair, pairSplitChar);
             } else {
                 String regionName = pairSplit[0];

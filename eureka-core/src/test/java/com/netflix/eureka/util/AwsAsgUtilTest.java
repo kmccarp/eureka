@@ -12,20 +12,20 @@ import com.netflix.eureka.DefaultEurekaServerConfig;
 import com.netflix.eureka.EurekaServerConfig;
 import com.netflix.eureka.registry.PeerAwareInstanceRegistry;
 import com.netflix.eureka.aws.AwsAsgUtil;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
 /**
  * @author David Liu
  */
-public class AwsAsgUtilTest {
+class AwsAsgUtilTest {
 
     private ApplicationInfoManager applicationInfoManager;
     private PeerAwareInstanceRegistry registry;
@@ -33,8 +33,8 @@ public class AwsAsgUtilTest {
     private AwsAsgUtil awsAsgUtil;
     private InstanceInfo instanceInfo;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         ConfigurationManager.getConfigInstance().setProperty("eureka.awsAccessId", "fakeId");
         ConfigurationManager.getConfigInstance().setProperty("eureka.awsSecretKey", "fakeKey");
 
@@ -58,18 +58,18 @@ public class AwsAsgUtilTest {
         awsAsgUtil = spy(new AwsAsgUtil(serverConfig, clientConfig, registry));
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterEach
+    void tearDown() throws Exception {
         ConfigurationManager.getConfigInstance().clear();
     }
 
     @Test
-    public void testDefaultAsgStatus() {
-        Assert.assertEquals(true, awsAsgUtil.isASGEnabled(instanceInfo));
+    void defaultAsgStatus() {
+        assertTrue(awsAsgUtil.isASGEnabled(instanceInfo));
     }
 
     @Test
-    public void testAsyncLoadingFromCache() {
+    void asyncLoadingFromCache() {
         // TODO
     }
 }

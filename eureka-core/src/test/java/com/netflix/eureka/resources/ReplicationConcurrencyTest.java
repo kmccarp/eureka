@@ -12,8 +12,8 @@ import com.netflix.eureka.cluster.PeerEurekaNode;
 import com.netflix.eureka.cluster.PeerEurekaNodes;
 import com.netflix.eureka.registry.PeerAwareInstanceRegistry;
 import com.netflix.eureka.registry.PeerAwareInstanceRegistryImpl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import java.util.Collections;
 
@@ -28,7 +28,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  *
  * @author David Liu
  */
-public class ReplicationConcurrencyTest {
+class ReplicationConcurrencyTest {
 
     private String id;
     private String appName;
@@ -42,8 +42,8 @@ public class ReplicationConcurrencyTest {
     private InstanceInfo server1Sees;
     private InstanceInfo server2Sees;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         InstanceInfo seed = InstanceInfoGenerator.takeOne();
         id = seed.getId();
         appName = seed.getAppName();
@@ -100,7 +100,7 @@ public class ReplicationConcurrencyTest {
      * different eureka servers before replication can occur between them
      */
     @Test
-    public void testReplicationWithRegistrationAndUpdateOnDifferentServers() throws Exception {
+    void replicationWithRegistrationAndUpdateOnDifferentServers() throws Exception {
         // now simulate server1 (delayed) replication to server2.
         // without batching this is done by server1 making a REST call to the register endpoint of server2 with
         // replication=true

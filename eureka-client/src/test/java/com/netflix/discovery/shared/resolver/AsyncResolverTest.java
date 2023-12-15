@@ -2,17 +2,17 @@ package com.netflix.discovery.shared.resolver;
 
 import com.netflix.discovery.shared.resolver.aws.SampleCluster;
 import com.netflix.discovery.shared.transport.EurekaTransportConfig;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyLong;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -24,15 +24,15 @@ import static org.mockito.Mockito.when;
 /**
  * @author David Liu
  */
-public class AsyncResolverTest {
+class AsyncResolverTest {
 
     private final EurekaTransportConfig transportConfig = mock(EurekaTransportConfig.class);
     private final ClusterResolver delegateResolver = mock(ClosableResolver.class);
 
     private AsyncResolver resolver;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         when(transportConfig.getAsyncExecutorThreadPoolSize()).thenReturn(3);
         when(transportConfig.getAsyncResolverRefreshIntervalMs()).thenReturn(200);
         when(transportConfig.getAsyncResolverWarmUpTimeoutMs()).thenReturn(100);
@@ -46,13 +46,13 @@ public class AsyncResolverTest {
         ));
     }
 
-    @After
-    public void shutDown() {
+    @AfterEach
+    void shutDown() {
         resolver.shutdown();
     }
 
     @Test
-    public void testHappyCase() {
+    void happyCase() {
         List delegateReturns1 = new ArrayList(SampleCluster.UsEast1a.builder().withServerPool(2).build());
         List delegateReturns2 = new ArrayList(SampleCluster.UsEast1b.builder().withServerPool(3).build());
 
@@ -80,7 +80,7 @@ public class AsyncResolverTest {
     }
 
     @Test
-    public void testDelegateFailureAtWarmUp() {
+    void delegateFailureAtWarmUp() {
         when(delegateResolver.getClusterEndpoints())
                 .thenReturn(null);
 

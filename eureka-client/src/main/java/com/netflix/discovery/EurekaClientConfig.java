@@ -18,10 +18,9 @@ package com.netflix.discovery;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.google.inject.ImplementedBy;
 import com.netflix.discovery.shared.transport.EurekaTransportConfig;
+import jakarta.annotation.Nullable;
 
 /**
  * Configuration information required by the eureka clients to register an

@@ -16,8 +16,8 @@
 
 package com.netflix.discovery.shared.transport;
 
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.UriBuilder;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.UriBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -27,15 +27,15 @@ import com.netflix.appinfo.InstanceInfo.InstanceStatus;
 import com.netflix.discovery.shared.Applications;
 import com.netflix.discovery.util.EurekaEntityComparators;
 import com.netflix.discovery.util.InstanceInfoGenerator;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.netflix.discovery.shared.transport.EurekaHttpResponse.anEurekaHttpResponse;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -61,12 +61,12 @@ public abstract class EurekaHttpClientCompatibilityTestSuite {
     protected EurekaHttpClientCompatibilityTestSuite() {
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         httpServer = new SimpleEurekaHttpServer(requestHandler, transportEventListener);
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         httpServer.shutdown();
     }
@@ -87,7 +87,7 @@ public abstract class EurekaHttpClientCompatibilityTestSuite {
     }
 
     @Test
-    public void testRegisterRequest() throws Exception {
+    void registerRequest() throws Exception {
         InstanceInfo instance = InstanceInfoGenerator.takeOne();
         when(requestHandler.register(instance)).thenReturn(EurekaHttpResponse.status(204));
 
@@ -96,7 +96,7 @@ public abstract class EurekaHttpClientCompatibilityTestSuite {
     }
 
     @Test
-    public void testCancelRequest() throws Exception {
+    void cancelRequest() throws Exception {
         InstanceInfo instance = InstanceInfoGenerator.takeOne();
         when(requestHandler.cancel(instance.getAppName(), instance.getId())).thenReturn(EurekaHttpResponse.status(200));
 
@@ -105,7 +105,7 @@ public abstract class EurekaHttpClientCompatibilityTestSuite {
     }
 
     @Test
-    public void testHeartbeatRequest() throws Exception {
+    void heartbeatRequest() throws Exception {
         InstanceInfo instance = InstanceInfoGenerator.takeOne();
         InstanceInfo updated = new InstanceInfo.Builder(instance).setHostName("another.host").build();
         when(requestHandler.sendHeartBeat(instance.getAppName(), instance.getId(), null, null)).thenReturn(createResponse(updated));
@@ -115,7 +115,7 @@ public abstract class EurekaHttpClientCompatibilityTestSuite {
     }
 
     @Test
-    public void testStatusUpdateRequest() throws Exception {
+    void statusUpdateRequest() throws Exception {
         InstanceInfo instance = InstanceInfoGenerator.takeOne();
         when(requestHandler.statusUpdate(instance.getAppName(), instance.getId(), InstanceStatus.OUT_OF_SERVICE, null))
                 .thenReturn(EurekaHttpResponse.status(200));
@@ -125,7 +125,7 @@ public abstract class EurekaHttpClientCompatibilityTestSuite {
     }
 
     @Test
-    public void testGetApplicationsRequest() throws Exception {
+    void getApplicationsRequest() throws Exception {
         Applications apps = InstanceInfoGenerator.newBuilder(2, 1).build().toApplications();
         when(requestHandler.getApplications()).thenReturn(createResponse(apps));
 
@@ -134,7 +134,7 @@ public abstract class EurekaHttpClientCompatibilityTestSuite {
     }
 
     @Test
-    public void testGetApplicationsWithRemoteRegionRequest() throws Exception {
+    void getApplicationsWithRemoteRegionRequest() throws Exception {
         Applications apps = InstanceInfoGenerator.newBuilder(2, 1).build().toApplications();
         when(requestHandler.getApplications(REMOTE_REGION)).thenReturn(createResponse(apps));
 
@@ -143,7 +143,7 @@ public abstract class EurekaHttpClientCompatibilityTestSuite {
     }
 
     @Test
-    public void testGetDeltaRequest() throws Exception {
+    void getDeltaRequest() throws Exception {
         Applications delta = InstanceInfoGenerator.newBuilder(2, 1).build().takeDelta(2);
         when(requestHandler.getDelta()).thenReturn(createResponse(delta));
 
@@ -152,7 +152,7 @@ public abstract class EurekaHttpClientCompatibilityTestSuite {
     }
 
     @Test
-    public void testGetDeltaWithRemoteRegionRequest() throws Exception {
+    void getDeltaWithRemoteRegionRequest() throws Exception {
         Applications delta = InstanceInfoGenerator.newBuilder(2, 1).build().takeDelta(2);
         when(requestHandler.getDelta(REMOTE_REGION)).thenReturn(createResponse(delta));
 
@@ -161,7 +161,7 @@ public abstract class EurekaHttpClientCompatibilityTestSuite {
     }
 
     @Test
-    public void testGetInstanceRequest() throws Exception {
+    void getInstanceRequest() throws Exception {
         InstanceInfo instance = InstanceInfoGenerator.takeOne();
         when(requestHandler.getInstance(instance.getId())).thenReturn(createResponse(instance));
 
@@ -170,7 +170,7 @@ public abstract class EurekaHttpClientCompatibilityTestSuite {
     }
 
     @Test
-    public void testGetApplicationInstanceRequest() throws Exception {
+    void getApplicationInstanceRequest() throws Exception {
         InstanceInfo instance = InstanceInfoGenerator.takeOne();
         when(requestHandler.getInstance(instance.getAppName(), instance.getId())).thenReturn(createResponse(instance));
 
@@ -179,7 +179,7 @@ public abstract class EurekaHttpClientCompatibilityTestSuite {
     }
 
     @Test
-    public void testGetVipRequest() throws Exception {
+    void getVipRequest() throws Exception {
         Applications vipApps = InstanceInfoGenerator.newBuilder(1, 2).build().toApplications();
         String vipAddress = vipApps.getRegisteredApplications().get(0).getInstances().get(0).getVIPAddress();
         when(requestHandler.getVip(vipAddress)).thenReturn(createResponse(vipApps));
@@ -189,7 +189,7 @@ public abstract class EurekaHttpClientCompatibilityTestSuite {
     }
 
     @Test
-    public void testGetVipWithRemoteRegionRequest() throws Exception {
+    void getVipWithRemoteRegionRequest() throws Exception {
         Applications vipApps = InstanceInfoGenerator.newBuilder(1, 2).build().toApplications();
         String vipAddress = vipApps.getRegisteredApplications().get(0).getInstances().get(0).getVIPAddress();
         when(requestHandler.getVip(vipAddress, REMOTE_REGION)).thenReturn(createResponse(vipApps));
@@ -199,7 +199,7 @@ public abstract class EurekaHttpClientCompatibilityTestSuite {
     }
 
     @Test
-    public void testGetSecureVipRequest() throws Exception {
+    void getSecureVipRequest() throws Exception {
         Applications vipApps = InstanceInfoGenerator.newBuilder(1, 2).build().toApplications();
         String secureVipAddress = vipApps.getRegisteredApplications().get(0).getInstances().get(0).getSecureVipAddress();
         when(requestHandler.getSecureVip(secureVipAddress)).thenReturn(createResponse(vipApps));
@@ -209,7 +209,7 @@ public abstract class EurekaHttpClientCompatibilityTestSuite {
     }
 
     @Test
-    public void testGetSecureVipWithRemoteRegionRequest() throws Exception {
+    void getSecureVipWithRemoteRegionRequest() throws Exception {
         Applications vipApps = InstanceInfoGenerator.newBuilder(1, 2).build().toApplications();
         String secureVipAddress = vipApps.getRegisteredApplications().get(0).getInstances().get(0).getSecureVipAddress();
         when(requestHandler.getSecureVip(secureVipAddress, REMOTE_REGION)).thenReturn(createResponse(vipApps));
@@ -219,7 +219,7 @@ public abstract class EurekaHttpClientCompatibilityTestSuite {
     }
 
     @Test
-    public void testStatusUpdateDeleteRequest() throws Exception {
+    void statusUpdateDeleteRequest() throws Exception {
         InstanceInfo instance = InstanceInfoGenerator.takeOne();
         when(requestHandler.deleteStatusOverride(instance.getAppName(), instance.getId(), null))
                 .thenReturn(EurekaHttpResponse.status(200));
@@ -229,7 +229,7 @@ public abstract class EurekaHttpClientCompatibilityTestSuite {
     }
 
     @Test
-    public void testBasicAuthentication() throws Exception {
+    void basicAuthentication() throws Exception {
         InstanceInfo instance = InstanceInfoGenerator.takeOne();
         when(requestHandler.register(instance)).thenReturn(EurekaHttpResponse.status(204));
 

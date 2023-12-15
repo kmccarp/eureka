@@ -21,9 +21,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
 import com.netflix.eureka.util.batcher.TaskProcessor.ProcessingResult;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.netflix.eureka.util.batcher.RecordingProcessor.permanentErrorTaskHolder;
 import static com.netflix.eureka.util.batcher.RecordingProcessor.successfulTaskHolder;
@@ -38,7 +38,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author Tomasz Bak
  */
-public class TaskExecutorsTest {
+class TaskExecutorsTest {
 
     @SuppressWarnings("unchecked")
     private final AcceptorExecutor<Integer, ProcessingResult> acceptorExecutor = mock(AcceptorExecutor.class);
@@ -49,33 +49,33 @@ public class TaskExecutorsTest {
 
     private TaskExecutors<Integer, ProcessingResult> taskExecutors;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         when(acceptorExecutor.requestWorkItem()).thenReturn(taskQueue);
         when(acceptorExecutor.requestWorkItems()).thenReturn(taskBatchQueue);
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterEach
+    void tearDown() throws Exception {
         taskExecutors.shutdown();
     }
 
     @Test
-    public void testSingleItemSuccessfulProcessing() throws Exception {
+    void singleItemSuccessfulProcessing() throws Exception {
         taskExecutors = TaskExecutors.singleItemExecutors("TEST", 1, processor, acceptorExecutor);
         taskQueue.add(successfulTaskHolder(1));
         processor.expectSuccesses(1);
     }
 
     @Test
-    public void testBatchSuccessfulProcessing() throws Exception {
+    void batchSuccessfulProcessing() throws Exception {
         taskExecutors = TaskExecutors.batchExecutors("TEST", 1, processor, acceptorExecutor);
         taskBatchQueue.add(asList(successfulTaskHolder(1), successfulTaskHolder(2)));
         processor.expectSuccesses(2);
     }
 
     @Test
-    public void testSingleItemProcessingWithTransientError() throws Exception {
+    void singleItemProcessingWithTransientError() throws Exception {
         taskExecutors = TaskExecutors.singleItemExecutors("TEST", 1, processor, acceptorExecutor);
 
         TaskHolder<Integer, ProcessingResult> taskHolder = transientErrorTaskHolder(1);
@@ -87,7 +87,7 @@ public class TaskExecutorsTest {
     }
 
     @Test
-    public void testBatchProcessingWithTransientError() throws Exception {
+    void batchProcessingWithTransientError() throws Exception {
         taskExecutors = TaskExecutors.batchExecutors("TEST", 1, processor, acceptorExecutor);
 
         List<TaskHolder<Integer, ProcessingResult>> taskHolderBatch = asList(transientErrorTaskHolder(1), transientErrorTaskHolder(2));
@@ -99,7 +99,7 @@ public class TaskExecutorsTest {
     }
 
     @Test
-    public void testSingleItemProcessingWithPermanentError() throws Exception {
+    void singleItemProcessingWithPermanentError() throws Exception {
         taskExecutors = TaskExecutors.singleItemExecutors("TEST", 1, processor, acceptorExecutor);
 
         TaskHolder<Integer, ProcessingResult> taskHolder = permanentErrorTaskHolder(1);
@@ -111,7 +111,7 @@ public class TaskExecutorsTest {
     }
 
     @Test
-    public void testBatchProcessingWithPermanentError() throws Exception {
+    void batchProcessingWithPermanentError() throws Exception {
         taskExecutors = TaskExecutors.batchExecutors("TEST", 1, processor, acceptorExecutor);
 
         List<TaskHolder<Integer, ProcessingResult>> taskHolderBatch = asList(permanentErrorTaskHolder(1), permanentErrorTaskHolder(2));

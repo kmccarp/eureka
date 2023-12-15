@@ -1,33 +1,33 @@
 package com.netflix.appinfo;
 
 import com.netflix.discovery.util.InstanceInfoGenerator;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.netflix.appinfo.AmazonInfo.MetaDataKey.ipv6;
 import static com.netflix.appinfo.AmazonInfo.MetaDataKey.localIpv4;
 import static com.netflix.appinfo.AmazonInfo.MetaDataKey.publicHostname;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
  * @author David Liu
  */
-public class CloudInstanceConfigTest {
+class CloudInstanceConfigTest {
 
     private CloudInstanceConfig config;
     private String dummyDefault = "dummyDefault";
     private InstanceInfo instanceInfo;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         instanceInfo = InstanceInfoGenerator.takeOne();
     }
 
     @Test
-    public void testResolveDefaultAddress() {
+    void resolveDefaultAddress() {
         AmazonInfo info = (AmazonInfo) instanceInfo.getDataCenterInfo();
         config = createConfig(info);
         assertThat(config.resolveDefaultAddress(false), is(info.get(publicHostname)));
@@ -46,7 +46,7 @@ public class CloudInstanceConfigTest {
     }
 
     @Test
-    public void testBroadcastPublicIpv4Address() {
+    void broadcastPublicIpv4Address() {
         AmazonInfo info = (AmazonInfo) instanceInfo.getDataCenterInfo();
 
         config = createConfig(info);
@@ -56,7 +56,7 @@ public class CloudInstanceConfigTest {
     }
 
     @Test
-    public void testBroadcastPublicIpv4Address_usingPublicIpv4s() {
+    void broadcastPublicIpv4Address_usingPublicIpv4s() {
         AmazonInfo info = (AmazonInfo) instanceInfo.getDataCenterInfo();
         info.getMetadata().remove(AmazonInfo.MetaDataKey.publicIpv4.getName());
         info.getMetadata().put(AmazonInfo.MetaDataKey.publicIpv4s.getName(), "10.0.0.1");

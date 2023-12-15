@@ -4,24 +4,23 @@ import static com.netflix.discovery.shared.transport.EurekaHttpResponse.anEureka
 import static com.netflix.discovery.util.EurekaEntityFunctions.toApplications;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
-import org.junit.Test;
-
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.junit.resource.DiscoveryClientResource;
 import com.netflix.discovery.shared.Applications;
@@ -43,20 +42,20 @@ public class EurekaEventListenerTest {
     /**
      * Share server stub by all tests.
      */
-    @BeforeClass
-    public static void setUpClass() throws IOException {
+    @BeforeAll
+    static void setUpClass() throws IOException {
         eurekaHttpServer = new SimpleEurekaHttpServer(requestHandler);
     }
 
-    @AfterClass
-    public static void tearDownClass() throws Exception {
+    @AfterAll
+    static void tearDownClass() throws Exception {
         if (eurekaHttpServer != null) {
             eurekaHttpServer.shutdown();
         }
     }
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         reset(requestHandler);
         when(requestHandler.register(any(InstanceInfo.class))).thenReturn(EurekaHttpResponse.status(204));
         when(requestHandler.cancel(anyString(), anyString())).thenReturn(EurekaHttpResponse.status(200));
@@ -73,9 +72,9 @@ public class EurekaEventListenerTest {
             this.event = event;
         }
     }
-    
+
     @Test
-    public void testCacheRefreshEvent() throws Exception {
+    void cacheRefreshEvent() throws Exception {
         CapturingEurekaEventListener listener = new CapturingEurekaEventListener();
 
         Applications initialApps = toApplications(discoveryClientResource.getMyInstanceInfo());

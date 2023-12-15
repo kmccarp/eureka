@@ -1,30 +1,30 @@
 package com.netflix.appinfo;
 
 import com.netflix.discovery.util.InstanceInfoGenerator;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.netflix.appinfo.AmazonInfo.MetaDataKey.amiId;
 import static com.netflix.appinfo.AmazonInfo.MetaDataKey.instanceId;
 import static com.netflix.appinfo.AmazonInfo.MetaDataKey.localIpv4;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author David Liu
  */
-public class RefreshableAmazonInfoProviderTest {
+class RefreshableAmazonInfoProviderTest {
 
     private InstanceInfo instanceInfo;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         instanceInfo = InstanceInfoGenerator.takeOne();
     }
 
     @Test
-    public void testAmazonInfoNoUpdateIfEqual() {
+    void amazonInfoNoUpdateIfEqual() {
         AmazonInfo oldInfo = (AmazonInfo) instanceInfo.getDataCenterInfo();
 
         AmazonInfo newInfo = copyAmazonInfo(instanceInfo);
@@ -32,7 +32,7 @@ public class RefreshableAmazonInfoProviderTest {
     }
 
     @Test
-    public void testAmazonInfoNoUpdateIfEmpty() {
+    void amazonInfoNoUpdateIfEmpty() {
         AmazonInfo oldInfo = (AmazonInfo) instanceInfo.getDataCenterInfo();
 
         AmazonInfo newInfo = new AmazonInfo();
@@ -40,7 +40,7 @@ public class RefreshableAmazonInfoProviderTest {
     }
 
     @Test
-    public void testAmazonInfoNoUpdateIfNoInstanceId() {
+    void amazonInfoNoUpdateIfNoInstanceId() {
         AmazonInfo oldInfo = (AmazonInfo) instanceInfo.getDataCenterInfo();
 
         AmazonInfo newInfo = copyAmazonInfo(instanceInfo);
@@ -56,7 +56,7 @@ public class RefreshableAmazonInfoProviderTest {
     }
 
     @Test
-    public void testAmazonInfoNoUpdateIfNoLocalIpv4() {
+    void amazonInfoNoUpdateIfNoLocalIpv4() {
         AmazonInfo oldInfo = (AmazonInfo) instanceInfo.getDataCenterInfo();
 
         AmazonInfo newInfo = copyAmazonInfo(instanceInfo);
@@ -70,7 +70,7 @@ public class RefreshableAmazonInfoProviderTest {
     }
 
     @Test
-    public void testAmazonInfoUpdatePositiveCase() {
+    void amazonInfoUpdatePositiveCase() {
         AmazonInfo oldInfo = (AmazonInfo) instanceInfo.getDataCenterInfo();
 
         AmazonInfo newInfo = copyAmazonInfo(instanceInfo);

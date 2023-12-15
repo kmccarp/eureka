@@ -1,6 +1,5 @@
 package com.netflix.eureka;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,8 +26,9 @@ import com.netflix.eureka.registry.PeerAwareInstanceRegistryImpl;
 import com.netflix.eureka.resources.DefaultServerCodecs;
 import com.netflix.eureka.resources.ServerCodecs;
 import com.netflix.eureka.test.async.executor.SingleEvent;
-import org.junit.After;
-import org.junit.Before;
+import jakarta.annotation.Nullable;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -61,8 +61,8 @@ public class AbstractTester {
     protected EurekaClient client;
     protected PeerAwareInstanceRegistryImpl registry;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         ConfigurationManager.getConfigInstance().clearProperty("eureka.remoteRegion.global.appWhiteList");
         ConfigurationManager.getConfigInstance().setProperty("eureka.responseCacheAutoExpirationInSeconds", "10");
         ConfigurationManager.getConfigInstance().clearProperty("eureka.remoteRegion." + REMOTE_REGION_NAME + ".appWhiteList");
@@ -130,8 +130,8 @@ public class AbstractTester {
         return new MockRemoteEurekaServer(0 /* use ephemeral */, remoteRegionApps, remoteRegionAppsDelta);
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterEach
+    void tearDown() throws Exception {
         for (Pair<String, String> registeredApp : registeredApps) {
             System.out.println("Canceling application: " + registeredApp.first() + " from local registry.");
             registry.cancel(registeredApp.first(), registeredApp.second(), false);

@@ -7,36 +7,36 @@ import com.netflix.discovery.util.InstanceInfoGenerator;
 import com.netflix.eureka.cluster.TestableInstanceReplicationTask.ProcessingState;
 import com.netflix.eureka.registry.PeerAwareInstanceRegistryImpl.Action;
 import com.netflix.eureka.util.batcher.TaskProcessor.ProcessingResult;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.netflix.eureka.cluster.TestableInstanceReplicationTask.aReplicationTask;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Tomasz Bak
  */
-public class ReplicationTaskProcessorTest {
+class ReplicationTaskProcessorTest {
 
     private final TestableHttpReplicationClient replicationClient = new TestableHttpReplicationClient();
 
     private ReplicationTaskProcessor replicationTaskProcessor;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         replicationTaskProcessor = new ReplicationTaskProcessor("peerId#test", replicationClient);
     }
 
     @Test
-    public void testNonBatchableTaskExecution() throws Exception {
+    void nonBatchableTaskExecution() throws Exception {
         TestableInstanceReplicationTask task = aReplicationTask().withAction(Action.Heartbeat).withReplyStatusCode(200).build();
         ProcessingResult status = replicationTaskProcessor.process(task);
         assertThat(status, is(ProcessingResult.Success));
     }
 
     @Test
-    public void testNonBatchableTaskCongestionFailureHandling() throws Exception {
+    void nonBatchableTaskCongestionFailureHandling() throws Exception {
         TestableInstanceReplicationTask task = aReplicationTask().withAction(Action.Heartbeat).withReplyStatusCode(503).build();
         ProcessingResult status = replicationTaskProcessor.process(task);
         assertThat(status, is(ProcessingResult.Congestion));
@@ -44,7 +44,7 @@ public class ReplicationTaskProcessorTest {
     }
 
     @Test
-    public void testNonBatchableTaskNetworkFailureHandling() throws Exception {
+    void nonBatchableTaskNetworkFailureHandling() throws Exception {
         TestableInstanceReplicationTask task = aReplicationTask().withAction(Action.Heartbeat).withNetworkFailures(1).build();
         ProcessingResult status = replicationTaskProcessor.process(task);
         assertThat(status, is(ProcessingResult.TransientError));
@@ -52,7 +52,7 @@ public class ReplicationTaskProcessorTest {
     }
 
     @Test
-    public void testNonBatchableTaskPermanentFailureHandling() throws Exception {
+    void nonBatchableTaskPermanentFailureHandling() throws Exception {
         TestableInstanceReplicationTask task = aReplicationTask().withAction(Action.Heartbeat).withReplyStatusCode(406).build();
         ProcessingResult status = replicationTaskProcessor.process(task);
         assertThat(status, is(ProcessingResult.PermanentError));
@@ -60,7 +60,7 @@ public class ReplicationTaskProcessorTest {
     }
 
     @Test
-    public void testBatchableTaskListExecution() throws Exception {
+    void batchableTaskListExecution() throws Exception {
         TestableInstanceReplicationTask task = aReplicationTask().build();
 
         replicationClient.withBatchReply(200);
@@ -72,7 +72,7 @@ public class ReplicationTaskProcessorTest {
     }
 
     @Test
-    public void testBatchableTaskCongestionFailureHandling() throws Exception {
+    void batchableTaskCongestionFailureHandling() throws Exception {
         TestableInstanceReplicationTask task = aReplicationTask().build();
 
         replicationClient.withNetworkStatusCode(503);
@@ -81,9 +81,9 @@ public class ReplicationTaskProcessorTest {
         assertThat(status, is(ProcessingResult.Congestion));
         assertThat(task.getProcessingState(), is(ProcessingState.Pending));
     }
-    
+
     @Test
-    public void testBatchableTaskNetworkReadTimeOutHandling() throws Exception {
+    void batchableTaskNetworkReadTimeOutHandling() throws Exception {
         TestableInstanceReplicationTask task = aReplicationTask().build();
 
         replicationClient.withReadtimeOut(1);
@@ -95,7 +95,7 @@ public class ReplicationTaskProcessorTest {
 
 
     @Test
-    public void testBatchableTaskNetworkFailureHandling() throws Exception {
+    void batchableTaskNetworkFailureHandling() throws Exception {
         TestableInstanceReplicationTask task = aReplicationTask().build();
 
         replicationClient.withNetworkError(1);
@@ -106,7 +106,7 @@ public class ReplicationTaskProcessorTest {
     }
 
     @Test
-    public void testBatchableTaskPermanentFailureHandling() throws Exception {
+    void batchableTaskPermanentFailureHandling() throws Exception {
         TestableInstanceReplicationTask task = aReplicationTask().build();
         InstanceInfo instanceInfoFromPeer = InstanceInfoGenerator.takeOne();
 

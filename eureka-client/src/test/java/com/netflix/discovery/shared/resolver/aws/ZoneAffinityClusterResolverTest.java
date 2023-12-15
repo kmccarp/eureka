@@ -20,19 +20,19 @@ import java.util.List;
 
 import com.netflix.discovery.shared.resolver.ResolverUtils;
 import com.netflix.discovery.shared.resolver.StaticClusterResolver;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Tomasz Bak
  */
-public class ZoneAffinityClusterResolverTest {
+class ZoneAffinityClusterResolverTest {
 
     @Test
-    public void testApplicationZoneIsFirstOnTheList() throws Exception {
+    void applicationZoneIsFirstOnTheList() throws Exception {
         List<AwsEndpoint> endpoints = SampleCluster.merge(SampleCluster.UsEast1a, SampleCluster.UsEast1b, SampleCluster.UsEast1c);
 
         ZoneAffinityClusterResolver resolver = new ZoneAffinityClusterResolver(
@@ -46,7 +46,7 @@ public class ZoneAffinityClusterResolverTest {
     }
 
     @Test
-    public void testAntiAffinity() throws Exception {
+    void antiAffinity() throws Exception {
         List<AwsEndpoint> endpoints = SampleCluster.merge(SampleCluster.UsEast1a, SampleCluster.UsEast1b);
 
         ZoneAffinityClusterResolver resolver = new ZoneAffinityClusterResolver(new StaticClusterResolver<>("regionA", endpoints), "us-east-1b", false, ResolverUtils::randomize);
@@ -57,7 +57,7 @@ public class ZoneAffinityClusterResolverTest {
     }
 
     @Test
-    public void testUnrecognizedZoneIsIgnored() throws Exception {
+    void unrecognizedZoneIsIgnored() throws Exception {
         List<AwsEndpoint> endpoints = SampleCluster.merge(SampleCluster.UsEast1a, SampleCluster.UsEast1b);
 
         ZoneAffinityClusterResolver resolver = new ZoneAffinityClusterResolver(new StaticClusterResolver<>("regionA", endpoints), "us-east-1c", true, ResolverUtils::randomize);

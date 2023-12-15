@@ -1,6 +1,5 @@
 package com.netflix.discovery.endpoint;
 
-import javax.annotation.Nullable;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
@@ -14,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import jakarta.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

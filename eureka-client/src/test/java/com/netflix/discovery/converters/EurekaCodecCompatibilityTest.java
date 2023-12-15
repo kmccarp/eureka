@@ -23,11 +23,11 @@ import com.netflix.eureka.cluster.protocol.ReplicationInstanceResponse;
 import com.netflix.eureka.cluster.protocol.ReplicationList;
 import com.netflix.eureka.cluster.protocol.ReplicationListResponse;
 import com.netflix.eureka.registry.PeerAwareInstanceRegistryImpl.Action;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Tomasz Bak
@@ -58,7 +58,7 @@ public class EurekaCodecCompatibilityTest {
      */
     @Deprecated
     @Test
-    public void testInstanceInfoEncodeDecodeLegacyJacksonToJackson() throws Exception {
+    void instanceInfoEncodeDecodeLegacyJacksonToJackson() throws Exception {
         final InstanceInfo instanceInfo = infoIterator.next();
         Action2 codingAction = new Action2() {
             @Override
@@ -81,7 +81,7 @@ public class EurekaCodecCompatibilityTest {
     }
 
     @Test
-    public void testInstanceInfoEncodeDecodeJsonWithEmptyMetadataMap() throws Exception {
+    void instanceInfoEncodeDecodeJsonWithEmptyMetadataMap() throws Exception {
         final InstanceInfo base = infoIterator.next();
         final InstanceInfo instanceInfo = new InstanceInfo.Builder(base)
                 .setMetadata(Collections.EMPTY_MAP)
@@ -105,7 +105,7 @@ public class EurekaCodecCompatibilityTest {
      * is an issue, compact version of the encoder should be used on the server side.
      */
     @Test
-    public void testInstanceInfoFullEncodeMiniDecodeJackson() throws Exception {
+    void instanceInfoFullEncodeMiniDecodeJackson() throws Exception {
         final InstanceInfo instanceInfo = infoIterator.next();
         Action2 codingAction = new Action2() {
             @Override
@@ -125,7 +125,7 @@ public class EurekaCodecCompatibilityTest {
     }
 
     @Test
-    public void testInstanceInfoFullEncodeMiniDecodeJacksonWithMyOwnDataCenterInfo() throws Exception {
+    void instanceInfoFullEncodeMiniDecodeJacksonWithMyOwnDataCenterInfo() throws Exception {
         final InstanceInfo base = infoIterator.next();
         final InstanceInfo instanceInfo = new InstanceInfo.Builder(base)
                 .setDataCenterInfo(new MyDataCenterInfo(DataCenterInfo.Name.MyOwn))
@@ -149,7 +149,7 @@ public class EurekaCodecCompatibilityTest {
     }
 
     @Test
-    public void testInstanceInfoMiniEncodeMiniDecodeJackson() throws Exception {
+    void instanceInfoMiniEncodeMiniDecodeJackson() throws Exception {
         final InstanceInfo instanceInfo = infoIterator.next();
         Action2 codingAction = new Action2() {
             @Override
@@ -169,7 +169,7 @@ public class EurekaCodecCompatibilityTest {
     }
 
     @Test
-    public void testInstanceInfoEncodeDecode() throws Exception {
+    void instanceInfoEncodeDecode() throws Exception {
         final InstanceInfo instanceInfo = infoIterator.next();
         Action2 codingAction = new Action2() {
             @Override
@@ -189,7 +189,7 @@ public class EurekaCodecCompatibilityTest {
     // https://github.com/Netflix/eureka/issues/1051
     // test going from camel case to lower case
     @Test
-    public void testInstanceInfoEncodeDecodeCompatibilityDueToOverriddenStatusRenamingV1() throws Exception {
+    void instanceInfoEncodeDecodeCompatibilityDueToOverriddenStatusRenamingV1() throws Exception {
         final InstanceInfo instanceInfo = infoIterator.next();
         new InstanceInfo.Builder(instanceInfo).setOverriddenStatus(InstanceInfo.InstanceStatus.OUT_OF_SERVICE);
 
@@ -212,7 +212,7 @@ public class EurekaCodecCompatibilityTest {
 
     // same as the above, but go from lower case to camel case
     @Test
-    public void testInstanceInfoEncodeDecodeCompatibilityDueToOverriddenStatusRenamingV2() throws Exception {
+    void instanceInfoEncodeDecodeCompatibilityDueToOverriddenStatusRenamingV2() throws Exception {
         final InstanceInfo instanceInfo = infoIterator.next();
         new InstanceInfo.Builder(instanceInfo).setOverriddenStatus(InstanceInfo.InstanceStatus.OUT_OF_SERVICE);
 
@@ -234,7 +234,7 @@ public class EurekaCodecCompatibilityTest {
     }
 
     @Test
-    public void testApplicationEncodeDecode() throws Exception {
+    void applicationEncodeDecode() throws Exception {
         final Application application = new Application("testApp");
         application.addInstance(infoIterator.next());
         application.addInstance(infoIterator.next());
@@ -253,7 +253,7 @@ public class EurekaCodecCompatibilityTest {
     }
 
     @Test
-    public void testApplicationsEncodeDecode() throws Exception {
+    void applicationsEncodeDecode() throws Exception {
         final Applications applications = infoGenerator.takeDelta(2);
 
         Action2 codingAction = new Action2() {
@@ -273,7 +273,7 @@ public class EurekaCodecCompatibilityTest {
      * For backward compatibility with LegacyJacksonJson codec single item arrays shall not be unwrapped.
      */
     @Test
-    public void testApplicationsJsonEncodeDecodeWithSingleAppItem() throws Exception {
+    void applicationsJsonEncodeDecodeWithSingleAppItem() throws Exception {
         final Applications applications = infoGenerator.takeDelta(1);
 
         Action2 codingAction = new Action2() {
@@ -297,7 +297,7 @@ public class EurekaCodecCompatibilityTest {
     }
 
     @Test
-    public void testBatchRequestEncoding() throws Exception {
+    void batchRequestEncoding() throws Exception {
         InstanceInfo instance = InstanceInfoGenerator.takeOne();
         List<ReplicationInstance> replicationInstances = new ArrayList<>();
         replicationInstances.add(new ReplicationInstance(
@@ -331,7 +331,7 @@ public class EurekaCodecCompatibilityTest {
     }
 
     @Test
-    public void testBatchResponseEncoding() throws Exception {
+    void batchResponseEncoding() throws Exception {
         List<ReplicationInstanceResponse> responseList = new ArrayList<>();
         responseList.add(new ReplicationInstanceResponse(200, InstanceInfoGenerator.takeOne()));
         final ReplicationListResponse replicationListResponse = new ReplicationListResponse(responseList);

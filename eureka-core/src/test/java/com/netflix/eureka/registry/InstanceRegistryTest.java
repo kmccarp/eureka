@@ -12,42 +12,45 @@ import com.netflix.discovery.shared.Applications;
 import com.netflix.eureka.AbstractTester;
 import com.netflix.eureka.registry.AbstractInstanceRegistry.CircularQueue;
 import com.netflix.eureka.registry.AbstractInstanceRegistry.EvictionTask;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 /**
  * @author Nitesh Kant
  */
-public class InstanceRegistryTest extends AbstractTester {
+class InstanceRegistryTest extends AbstractTester {
 
     @Test
-    public void testSoftDepRemoteUp() throws Exception {
-        Assert.assertTrue("Registry access disallowed when remote region is UP.", registry.shouldAllowAccess(false));
-        Assert.assertTrue("Registry access disallowed when remote region is UP.", registry.shouldAllowAccess(true));
+    void softDepRemoteUp() throws Exception {
+        assertTrue(registry.shouldAllowAccess(false), "Registry access disallowed when remote region is UP.");
+        assertTrue(registry.shouldAllowAccess(true), "Registry access disallowed when remote region is UP.");
     }
 
     @Test
-    public void testGetAppsFromAllRemoteRegions() throws Exception {
+    void getAppsFromAllRemoteRegions() throws Exception {
         Applications apps = registry.getApplicationsFromAllRemoteRegions();
         List<Application> registeredApplications = apps.getRegisteredApplications();
-        Assert.assertEquals("Apps size from remote regions do not match", 1, registeredApplications.size());
+        assertEquals(1, registeredApplications.size(), "Apps size from remote regions do not match");
         Application app = registeredApplications.iterator().next();
-        Assert.assertEquals("Added app did not return from remote registry", REMOTE_REGION_APP_NAME, app.getName());
-        Assert.assertEquals("Returned app did not have the instance", 1, app.getInstances().size());
+        assertEquals(REMOTE_REGION_APP_NAME, app.getName(), "Added app did not return from remote registry");
+        assertEquals(1, app.getInstances().size(), "Returned app did not have the instance");
     }
 
     @Test
-    public void testGetAppsDeltaFromAllRemoteRegions() throws Exception {
+    void getAppsDeltaFromAllRemoteRegions() throws Exception {
         registerInstanceLocally(createLocalInstance(LOCAL_REGION_INSTANCE_2_HOSTNAME)); /// local delta
         waitForDeltaToBeRetrieved();
         Applications appDelta = registry.getApplicationDeltasFromMultipleRegions(null);
         List<Application> registeredApplications = appDelta.getRegisteredApplications();
-        Assert.assertEquals("Apps size from remote regions do not match", 2, registeredApplications.size());
+        assertEquals(2, registeredApplications.size(), "Apps size from remote regions do not match");
         Application localApplication = null;
         Application remApplication = null;
         for (Application registeredApplication : registeredApplications) {
@@ -58,22 +61,24 @@ public class InstanceRegistryTest extends AbstractTester {
                 remApplication = registeredApplication;
             }
         }
-        Assert.assertNotNull("Did not find local registry app in delta.", localApplication);
-        Assert.assertEquals("Local registry app instance count in delta not as expected.", 1,
-                localApplication.getInstances().size());
-        Assert.assertNotNull("Did not find remote registry app in delta", remApplication);
-        Assert.assertEquals("Remote registry app instance count  in delta not as expected.", 1,
-                remApplication.getInstances().size());
+        assertNotNull(localApplication, "Did not find local registry app in delta.");
+        assertEquals(1,
+                localApplication.getInstances().size(),
+                "Local registry app instance count in delta not as expected.");
+        assertNotNull(remApplication, "Did not find remote registry app in delta");
+        assertEquals(1,
+                remApplication.getInstances().size(),
+                "Remote registry app instance count  in delta not as expected.");
     }
 
     @Test
-    public void testAppsHashCodeAfterRefresh() throws InterruptedException {
-        Assert.assertEquals("UP_1_", registry.getApplicationsFromAllRemoteRegions().getAppsHashCode());
+    void appsHashCodeAfterRefresh() throws InterruptedException {
+        assertEquals("UP_1_", registry.getApplicationsFromAllRemoteRegions().getAppsHashCode());
 
         registerInstanceLocally(createLocalInstance(LOCAL_REGION_INSTANCE_2_HOSTNAME));
         waitForDeltaToBeRetrieved();
 
-        Assert.assertEquals("UP_2_", registry.getApplicationsFromAllRemoteRegions().getAppsHashCode());
+        assertEquals("UP_2_", registry.getApplicationsFromAllRemoteRegions().getAppsHashCode());
     }
 
     private void waitForDeltaToBeRetrieved() throws InterruptedException {
@@ -90,25 +95,25 @@ public class InstanceRegistryTest extends AbstractTester {
     }
 
     @Test
-    public void testGetAppsFromLocalRegionOnly() throws Exception {
+    void getAppsFromLocalRegionOnly() throws Exception {
         registerInstanceLocally(createLocalInstance(LOCAL_REGION_INSTANCE_1_HOSTNAME));
 
         Applications apps = registry.getApplicationsFromLocalRegionOnly();
         List<Application> registeredApplications = apps.getRegisteredApplications();
-        Assert.assertEquals("Apps size from local region do not match", 1, registeredApplications.size());
+        assertEquals(1, registeredApplications.size(), "Apps size from local region do not match");
         Application app = registeredApplications.iterator().next();
-        Assert.assertEquals("Added app did not return from local registry", LOCAL_REGION_APP_NAME, app.getName());
-        Assert.assertEquals("Returned app did not have the instance", 1, app.getInstances().size());
+        assertEquals(LOCAL_REGION_APP_NAME, app.getName(), "Added app did not return from local registry");
+        assertEquals(1, app.getInstances().size(), "Returned app did not have the instance");
     }
 
     @Test
-    public void testGetAppsFromBothRegions() throws Exception {
+    void getAppsFromBothRegions() throws Exception {
         registerInstanceLocally(createRemoteInstance(LOCAL_REGION_INSTANCE_2_HOSTNAME));
         registerInstanceLocally(createLocalInstance(LOCAL_REGION_INSTANCE_1_HOSTNAME));
 
         Applications apps = registry.getApplicationsFromAllRemoteRegions();
         List<Application> registeredApplications = apps.getRegisteredApplications();
-        Assert.assertEquals("Apps size from both regions do not match", 2, registeredApplications.size());
+        assertEquals(2, registeredApplications.size(), "Apps size from both regions do not match");
         Application locaApplication = null;
         Application remApplication = null;
         for (Application registeredApplication : registeredApplications) {
@@ -119,17 +124,19 @@ public class InstanceRegistryTest extends AbstractTester {
                 remApplication = registeredApplication;
             }
         }
-        Assert.assertNotNull("Did not find local registry app", locaApplication);
-        Assert.assertEquals("Local registry app instance count not as expected.", 1,
-                locaApplication.getInstances().size());
-        Assert.assertNotNull("Did not find remote registry app", remApplication);
-        Assert.assertEquals("Remote registry app instance count not as expected.", 2,
-                remApplication.getInstances().size());
+        assertNotNull(locaApplication, "Did not find local registry app");
+        assertEquals(1,
+                locaApplication.getInstances().size(),
+                "Local registry app instance count not as expected.");
+        assertNotNull(remApplication, "Did not find remote registry app");
+        assertEquals(2,
+                remApplication.getInstances().size(),
+                "Remote registry app instance count not as expected.");
 
     }
 
     @Test
-    public void testStatusOverrideSetAndRemoval() throws Exception {
+    void statusOverrideSetAndRemoval() throws Exception {
         InstanceInfo seed = createLocalInstance(LOCAL_REGION_INSTANCE_1_HOSTNAME);
         seed.setLastDirtyTimestamp(100l);
 
@@ -162,7 +169,7 @@ public class InstanceRegistryTest extends AbstractTester {
     }
 
     @Test
-    public void testStatusOverrideWithRenewAppliedToAReplica() throws Exception {
+    void statusOverrideWithRenewAppliedToAReplica() throws Exception {
         InstanceInfo seed = createLocalInstance(LOCAL_REGION_INSTANCE_1_HOSTNAME);
         seed.setLastDirtyTimestamp(100l);
 
@@ -200,7 +207,7 @@ public class InstanceRegistryTest extends AbstractTester {
     }
 
     @Test
-    public void testStatusOverrideStartingStatus() throws Exception {
+    void statusOverrideStartingStatus() throws Exception {
         // Regular registration first
         InstanceInfo myInstance = createLocalInstance(LOCAL_REGION_INSTANCE_1_HOSTNAME);
         registerInstanceLocally(myInstance);
@@ -219,7 +226,7 @@ public class InstanceRegistryTest extends AbstractTester {
     }
 
     @Test
-    public void testStatusOverrideWithExistingLeaseUp() throws Exception {
+    void statusOverrideWithExistingLeaseUp() throws Exception {
         // Without an override we expect to get the existing UP lease when we re-register with OUT_OF_SERVICE.
         // First, we are "up".
         InstanceInfo myInstance = createLocalInstance(LOCAL_REGION_INSTANCE_1_HOSTNAME);
@@ -238,7 +245,7 @@ public class InstanceRegistryTest extends AbstractTester {
     }
 
     @Test
-    public void testStatusOverrideWithExistingLeaseOutOfService() throws Exception {
+    void statusOverrideWithExistingLeaseOutOfService() throws Exception {
         // Without an override we expect to get the existing OUT_OF_SERVICE lease when we re-register with UP.
         // First, we are "out of service".
         InstanceInfo myInstance = createLocalOutOfServiceInstance(LOCAL_REGION_INSTANCE_1_HOSTNAME);
@@ -257,7 +264,7 @@ public class InstanceRegistryTest extends AbstractTester {
     }
 
     @Test
-    public void testEvictionTaskCompensationTime() throws Exception {
+    void evictionTaskCompensationTime() throws Exception {
         long evictionTaskPeriodNanos = serverConfig.getEvictionIntervalTimerInMs() * 1000000;
 
         AbstractInstanceRegistry.EvictionTask testTask = spy(registry.new EvictionTask());
@@ -275,45 +282,45 @@ public class InstanceRegistryTest extends AbstractTester {
     }
 
     @Test
-    public void testCircularQueue() throws Exception {
+    void circularQueue() throws Exception {
         CircularQueue<Integer> queue = new CircularQueue<>(5);
 
-        Assert.assertEquals(0, queue.size());
-        Assert.assertNull(queue.peek());
-        Assert.assertEquals(Collections.emptyList(), new ArrayList<>(queue));
+        assertEquals(0, queue.size());
+        assertNull(queue.peek());
+        assertEquals(Collections.emptyList(), new ArrayList<>(queue));
 
         queue.add(1);
         queue.add(2);
         queue.add(3);
         queue.add(4);
 
-        Assert.assertEquals(4, queue.size());
-        Assert.assertEquals(Arrays.asList(1, 2, 3, 4), new ArrayList<>(queue));
+        assertEquals(4, queue.size());
+        assertEquals(Arrays.asList(1, 2, 3, 4), new ArrayList<>(queue));
 
         queue.offer(5);
 
-        Assert.assertEquals(5, queue.size());
-        Assert.assertEquals(Arrays.asList(1, 2, 3, 4, 5), new ArrayList<>(queue));
+        assertEquals(5, queue.size());
+        assertEquals(Arrays.asList(1, 2, 3, 4, 5), new ArrayList<>(queue));
 
         queue.offer(6);
 
-        Assert.assertEquals(5, queue.size());
-        Assert.assertEquals(Arrays.asList(2, 3, 4, 5, 6), new ArrayList<>(queue));
+        assertEquals(5, queue.size());
+        assertEquals(Arrays.asList(2, 3, 4, 5, 6), new ArrayList<>(queue));
 
         Integer poll = queue.poll();
 
-        Assert.assertEquals(4, queue.size());
-        Assert.assertEquals((Object) 2, poll);
-        Assert.assertEquals(Arrays.asList(3, 4, 5, 6), new ArrayList<>(queue));
+        assertEquals(4, queue.size());
+        assertEquals((Object) 2, poll);
+        assertEquals(Arrays.asList(3, 4, 5, 6), new ArrayList<>(queue));
 
         queue.add(7);
 
-        Assert.assertEquals(5, queue.size());
-        Assert.assertEquals(Arrays.asList(3, 4, 5, 6, 7), new ArrayList<>(queue));
+        assertEquals(5, queue.size());
+        assertEquals(Arrays.asList(3, 4, 5, 6, 7), new ArrayList<>(queue));
 
         queue.clear();
 
-        Assert.assertEquals(0, queue.size());
-        Assert.assertEquals(Collections.emptyList(), new ArrayList<>(queue));
+        assertEquals(0, queue.size());
+        assertEquals(Collections.emptyList(), new ArrayList<>(queue));
     }
 }

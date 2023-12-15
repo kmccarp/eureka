@@ -15,8 +15,8 @@
  */
 package com.netflix.eureka.registry;
 
-import javax.inject.Inject;
-import javax.ws.rs.core.MediaType;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.core.MediaType;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -162,8 +162,10 @@ public class RemoteRegionRegistry implements LookupService<String> {
             if (fetchRegistry()) {
                 this.readyForServingData = true;
             } else {
-                logger.warn("Failed to fetch remote registry. This means this eureka server is not ready for serving "
-                        + "traffic.");
+                logger.warn("""
+                        Failed to fetch remote registry. This means this eureka server is not ready for serving \
+                        traffic.\
+                        """);
             }
         } catch (Throwable e) {
             logger.error("Problem fetching registry information :", e);
@@ -177,8 +179,10 @@ public class RemoteRegionRegistry implements LookupService<String> {
                     if (fetchRegistry()) {
                         readyForServingData = true;
                     } else {
-                        logger.warn("Failed to fetch remote registry. This means this eureka server is not "
-                                + "ready for serving traffic.");
+                        logger.warn("""
+                                Failed to fetch remote registry. This means this eureka server is not \
+                                ready for serving traffic.\
+                                """);
                     }
                 } catch (Throwable e) {
                     logger.error(
@@ -274,8 +278,10 @@ public class RemoteRegionRegistry implements LookupService<String> {
         }
 
         if (delta == null) {
-            logger.warn("The server does not allow the delta revision to be applied because it is not "
-                    + "safe. Hence got the full registry.");
+            logger.warn("""
+                    The server does not allow the delta revision to be applied because it is not \
+                    safe. Hence got the full registry.\
+                    """);
             return storeFullRegistry();
         } else {
             String reconcileHashCode = "";

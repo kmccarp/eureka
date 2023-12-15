@@ -26,8 +26,8 @@ import com.netflix.discovery.shared.transport.EurekaArchaius2TransportConfig;
 import com.netflix.discovery.shared.transport.EurekaTransportConfig;
 import com.netflix.discovery.shared.transport.jersey.Jersey1DiscoveryClientOptionalArgs;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 final class InternalEurekaClientModule extends AbstractModule {
 

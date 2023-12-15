@@ -359,8 +359,10 @@ public class PeerEurekaNode {
     private void syncInstancesIfTimestampDiffers(String appName, String id, InstanceInfo info, InstanceInfo infoFromPeer) {
         try {
             if (infoFromPeer != null) {
-                logger.warn("Peer wants us to take the instance information from it, since the timestamp differs,"
-                        + "Id : {} My Timestamp : {}, Peer's timestamp: {}", id, info.getLastDirtyTimestamp(), infoFromPeer.getLastDirtyTimestamp());
+                logger.warn("""
+                        Peer wants us to take the instance information from it, since the timestamp differs,\
+                        Id : {} My Timestamp : {}, Peer's timestamp: {}\
+                        """, id, info.getLastDirtyTimestamp(), infoFromPeer.getLastDirtyTimestamp());
 
                 if (infoFromPeer.getOverriddenStatus() != null && !InstanceStatus.UNKNOWN.equals(infoFromPeer.getOverriddenStatus())) {
                     logger.warn("Overridden Status info -id {}, mine {}, peer's {}", id, info.getOverriddenStatus(), infoFromPeer.getOverriddenStatus());

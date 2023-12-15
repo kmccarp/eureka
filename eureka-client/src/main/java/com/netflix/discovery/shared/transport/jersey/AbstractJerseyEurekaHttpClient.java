@@ -15,9 +15,9 @@ import com.sun.jersey.api.client.WebResource.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.Response.Status;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;

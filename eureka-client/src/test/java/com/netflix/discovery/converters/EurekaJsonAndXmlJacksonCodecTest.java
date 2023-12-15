@@ -17,12 +17,12 @@ import com.netflix.discovery.shared.Application;
 import com.netflix.discovery.shared.Applications;
 import com.netflix.discovery.util.EurekaEntityComparators;
 import com.netflix.discovery.util.InstanceInfoGenerator;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Tomasz Bak
@@ -33,12 +33,12 @@ public class EurekaJsonAndXmlJacksonCodecTest {
     private final Iterator<InstanceInfo> infoIterator = infoGenerator.serviceIterator();
 
     @Test
-    public void testAmazonInfoEncodeDecodeWithJson() throws Exception {
+    void amazonInfoEncodeDecodeWithJson() throws Exception {
         doAmazonInfoEncodeDecodeTest(new EurekaJsonJacksonCodec());
     }
 
     @Test
-    public void testAmazonInfoEncodeDecodeWithXml() throws Exception {
+    void amazonInfoEncodeDecodeWithXml() throws Exception {
         doAmazonInfoEncodeDecodeTest(new EurekaXmlJacksonCodec());
     }
 
@@ -51,12 +51,12 @@ public class EurekaJsonAndXmlJacksonCodecTest {
     }
 
     @Test
-    public void testAmazonInfoCompactEncodeDecodeWithJson() throws Exception {
+    void amazonInfoCompactEncodeDecodeWithJson() throws Exception {
         doAmazonInfoCompactEncodeDecodeTest(new EurekaJsonJacksonCodec(KeyFormatter.defaultKeyFormatter(), true));
     }
 
     @Test
-    public void testAmazonInfoCompactEncodeDecodeWithXml() throws Exception {
+    void amazonInfoCompactEncodeDecodeWithXml() throws Exception {
         doAmazonInfoCompactEncodeDecodeTest(new EurekaXmlJacksonCodec(KeyFormatter.defaultKeyFormatter(), true));
     }
 
@@ -70,12 +70,12 @@ public class EurekaJsonAndXmlJacksonCodecTest {
     }
 
     @Test
-    public void testMyDataCenterInfoEncodeDecodeWithJson() throws Exception {
+    void myDataCenterInfoEncodeDecodeWithJson() throws Exception {
         doMyDataCenterInfoEncodeDecodeTest(new EurekaJsonJacksonCodec());
     }
 
     @Test
-    public void testMyDataCenterInfoEncodeDecodeWithXml() throws Exception {
+    void myDataCenterInfoEncodeDecodeWithXml() throws Exception {
         doMyDataCenterInfoEncodeDecodeTest(new EurekaXmlJacksonCodec());
     }
 
@@ -93,12 +93,12 @@ public class EurekaJsonAndXmlJacksonCodecTest {
     }
 
     @Test
-    public void testLeaseInfoEncodeDecodeWithJson() throws Exception {
+    void leaseInfoEncodeDecodeWithJson() throws Exception {
         doLeaseInfoEncodeDecode(new EurekaJsonJacksonCodec());
     }
 
     @Test
-    public void testLeaseInfoEncodeDecodeWithXml() throws Exception {
+    void leaseInfoEncodeDecodeWithXml() throws Exception {
         doLeaseInfoEncodeDecode(new EurekaXmlJacksonCodec());
     }
 
@@ -111,12 +111,12 @@ public class EurekaJsonAndXmlJacksonCodecTest {
     }
 
     @Test
-    public void testInstanceInfoEncodeDecodeWithJson() throws Exception {
+    void instanceInfoEncodeDecodeWithJson() throws Exception {
         doInstanceInfoEncodeDecode(new EurekaJsonJacksonCodec());
     }
 
     @Test
-    public void testInstanceInfoEncodeDecodeWithXml() throws Exception {
+    void instanceInfoEncodeDecodeWithXml() throws Exception {
         doInstanceInfoEncodeDecode(new EurekaXmlJacksonCodec());
     }
 
@@ -129,12 +129,12 @@ public class EurekaJsonAndXmlJacksonCodecTest {
     }
 
     @Test
-    public void testInstanceInfoCompactEncodeDecodeWithJson() throws Exception {
+    void instanceInfoCompactEncodeDecodeWithJson() throws Exception {
         doInstanceInfoCompactEncodeDecode(new EurekaJsonJacksonCodec(KeyFormatter.defaultKeyFormatter(), true), true);
     }
 
     @Test
-    public void testInstanceInfoCompactEncodeDecodeWithXml() throws Exception {
+    void instanceInfoCompactEncodeDecodeWithXml() throws Exception {
         doInstanceInfoCompactEncodeDecode(new EurekaXmlJacksonCodec(KeyFormatter.defaultKeyFormatter(), true), false);
     }
 
@@ -155,7 +155,7 @@ public class EurekaJsonAndXmlJacksonCodecTest {
     }
 
     @Test
-    public void testInstanceInfoIgnoredFieldsAreFilteredOutDuringDeserializationProcessWithJson() throws Exception {
+    void instanceInfoIgnoredFieldsAreFilteredOutDuringDeserializationProcessWithJson() throws Exception {
         doInstanceInfoIgnoredFieldsAreFilteredOutDuringDeserializationProcess(
                 new EurekaJsonJacksonCodec(),
                 new EurekaJsonJacksonCodec(KeyFormatter.defaultKeyFormatter(), true)
@@ -163,7 +163,7 @@ public class EurekaJsonAndXmlJacksonCodecTest {
     }
 
     @Test
-    public void testInstanceInfoIgnoredFieldsAreFilteredOutDuringDeserializationProcessWithXml() throws Exception {
+    void instanceInfoIgnoredFieldsAreFilteredOutDuringDeserializationProcessWithXml() throws Exception {
         doInstanceInfoIgnoredFieldsAreFilteredOutDuringDeserializationProcess(
                 new EurekaXmlJacksonCodec(),
                 new EurekaXmlJacksonCodec(KeyFormatter.defaultKeyFormatter(), true)
@@ -195,12 +195,12 @@ public class EurekaJsonAndXmlJacksonCodecTest {
     }
 
     @Test
-    public void testInstanceInfoWithNoMetaEncodeDecodeWithJson() throws Exception {
+    void instanceInfoWithNoMetaEncodeDecodeWithJson() throws Exception {
         doInstanceInfoWithNoMetaEncodeDecode(new EurekaJsonJacksonCodec(), true);
     }
 
     @Test
-    public void testInstanceInfoWithNoMetaEncodeDecodeWithXml() throws Exception {
+    void instanceInfoWithNoMetaEncodeDecodeWithXml() throws Exception {
         doInstanceInfoWithNoMetaEncodeDecode(new EurekaXmlJacksonCodec(), false);
     }
 
@@ -220,12 +220,12 @@ public class EurekaJsonAndXmlJacksonCodecTest {
     }
 
     @Test
-    public void testApplicationEncodeDecodeWithJson() throws Exception {
+    void applicationEncodeDecodeWithJson() throws Exception {
         doApplicationEncodeDecode(new EurekaJsonJacksonCodec());
     }
 
     @Test
-    public void testApplicationEncodeDecodeWithXml() throws Exception {
+    void applicationEncodeDecodeWithXml() throws Exception {
         doApplicationEncodeDecode(new EurekaXmlJacksonCodec());
     }
 
@@ -240,12 +240,12 @@ public class EurekaJsonAndXmlJacksonCodecTest {
     }
 
     @Test
-    public void testApplicationsEncodeDecodeWithJson() throws Exception {
+    void applicationsEncodeDecodeWithJson() throws Exception {
         doApplicationsEncodeDecode(new EurekaJsonJacksonCodec());
     }
 
     @Test
-    public void testApplicationsEncodeDecodeWithXml() throws Exception {
+    void applicationsEncodeDecodeWithXml() throws Exception {
         doApplicationsEncodeDecode(new EurekaXmlJacksonCodec());
     }
 

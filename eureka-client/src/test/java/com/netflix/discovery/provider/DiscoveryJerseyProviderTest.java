@@ -16,7 +16,7 @@
 
 package com.netflix.discovery.provider;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -26,15 +26,15 @@ import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.converters.wrappers.CodecWrappers;
 import com.netflix.discovery.util.InstanceInfoGenerator;
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  */
-public class DiscoveryJerseyProviderTest {
+class DiscoveryJerseyProviderTest {
 
     private static final InstanceInfo INSTANCE = InstanceInfoGenerator.takeOne();
 
@@ -44,17 +44,17 @@ public class DiscoveryJerseyProviderTest {
     );
 
     @Test
-    public void testJsonEncodingDecoding() throws Exception {
+    void jsonEncodingDecoding() throws Exception {
         testEncodingDecoding(MediaType.APPLICATION_JSON_TYPE);
     }
 
     @Test
-    public void testXmlEncodingDecoding() throws Exception {
+    void xmlEncodingDecoding() throws Exception {
         testEncodingDecoding(MediaType.APPLICATION_XML_TYPE);
     }
 
     @Test
-    public void testDecodingWithUtf8CharsetExplicitlySet() throws Exception {
+    void decodingWithUtf8CharsetExplicitlySet() throws Exception {
         Map<String, String> params = new HashMap<>();
         params.put("charset", "UTF-8");
         testEncodingDecoding(new MediaType("application", "json", params));
@@ -77,7 +77,7 @@ public class DiscoveryJerseyProviderTest {
     }
 
     @Test
-    public void testNonUtf8CharsetIsNotAccepted() throws Exception {
+    void nonUtf8CharsetIsNotAccepted() throws Exception {
         Map<String, String> params = new HashMap<>();
         params.put("charset", "ISO-8859");
         MediaType mediaTypeWithNonSupportedCharset = new MediaType("application", "json", params);

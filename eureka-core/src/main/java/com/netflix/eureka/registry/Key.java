@@ -2,8 +2,8 @@ package com.netflix.eureka.registry;
 
 import com.netflix.appinfo.EurekaAccept;
 import com.netflix.eureka.Version;
+import jakarta.annotation.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.Arrays;
 
 public class Key {
@@ -86,8 +86,8 @@ public class Key {
 
     @Override
     public boolean equals(Object other) {
-        if (other instanceof Key) {
-            return getHashKey().equals(((Key) other).getHashKey());
+        if (other instanceof Key key) {
+            return getHashKey().equals(key.getHashKey());
         } else {
             return false;
         }

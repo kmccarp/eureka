@@ -16,21 +16,21 @@
 
 package com.netflix.discovery.shared.resolver;
 
-import java.net.URL;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import java.net.URL;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Tomasz Bak
  */
-public class StaticClusterResolverTest {
+class StaticClusterResolverTest {
 
     @Test
-    public void testClusterResolverFromURL() throws Exception {
+    void clusterResolverFromURL() throws Exception {
         verifyEqual(
                 StaticClusterResolver.fromURL("regionA", new URL("http://eureka.test:8080/eureka/v2/apps")),
                 new DefaultEndpoint("eureka.test", 8080, false, "/eureka/v2/apps")

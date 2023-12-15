@@ -18,33 +18,34 @@ package com.netflix.eureka.aws;
 
 import com.google.common.collect.Lists;
 import com.netflix.discovery.EurekaClientConfig;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
  * @author Joseph Witthuhn
  */
-public class EIPManagerTest {
+class EIPManagerTest {
     private EurekaClientConfig config = mock(EurekaClientConfig.class);
     private EIPManager eipManager;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         when(config.shouldUseDnsForFetchingServiceUrls()).thenReturn(Boolean.FALSE);
         eipManager = new EIPManager(null, config, null, null);
     }
 
     @Test
-    public void shouldFilterNonElasticNames() {
+    void shouldFilterNonElasticNames() {
         when(config.getRegion()).thenReturn("us-east-1");
         List<String> hosts = Lists.newArrayList("example.com", "ec2-1-2-3-4.compute.amazonaws.com", "5.6.7.8",
                 "ec2-101-202-33-44.compute.amazonaws.com");
@@ -57,7 +58,7 @@ public class EIPManagerTest {
     }
 
     @Test
-    public void shouldFilterNonElasticNamesInOtherRegion() {
+    void shouldFilterNonElasticNamesInOtherRegion() {
         when(config.getRegion()).thenReturn("eu-west-1");
         List<String> hosts = Lists.newArrayList("example.com", "ec2-1-2-3-4.eu-west-1.compute.amazonaws.com",
                 "5.6.7.8", "ec2-101-202-33-44.eu-west-1.compute.amazonaws.com");
@@ -69,12 +70,14 @@ public class EIPManagerTest {
         assertTrue(returnValue.contains("101.202.33.44"));
     }
 
-    @Test(expected = RuntimeException.class)
-    public void shouldThrowExceptionWhenNoElasticNames() {
-        when(config.getRegion()).thenReturn("eu-west-1");
-        List<String> hosts = Lists.newArrayList("example.com", "5.6.7.8");
-        when(config.getEurekaServerServiceUrls(any(String.class))).thenReturn(hosts);
+    @Test
+    void shouldThrowExceptionWhenNoElasticNames() {
+        assertThrows(RuntimeException.class, () -> {
+            when(config.getRegion()).thenReturn("eu-west-1");
+            List<String> hosts = Lists.newArrayList("example.com", "5.6.7.8");
+            when(config.getEurekaServerServiceUrls(any(String.class))).thenReturn(hosts);
 
-        eipManager.getCandidateEIPs("i-123", "eu-west-1a");
+            eipManager.getCandidateEIPs("i-123", "eu-west-1a");
+        });
     }
 }

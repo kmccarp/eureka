@@ -3,16 +3,18 @@ package com.netflix.discovery;
 import com.netflix.appinfo.AmazonInfo;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.config.ConfigurationManager;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * @author Nitesh Kant
  */
-public class InstanceRegionCheckerTest {
+class InstanceRegionCheckerTest {
 
     @Test
-    public void testDefaults() throws Exception {
+    void defaults() throws Exception {
         PropertyBasedAzToRegionMapper azToRegionMapper = new PropertyBasedAzToRegionMapper(
                 new DefaultEurekaClientConfig());
         InstanceRegionChecker checker = new InstanceRegionChecker(azToRegionMapper, "us-east-1");
@@ -22,11 +24,11 @@ public class InstanceRegionCheckerTest {
         InstanceInfo instanceInfo = InstanceInfo.Builder.newBuilder().setAppName("app").setDataCenterInfo(dcInfo).build();
         String instanceRegion = checker.getInstanceRegion(instanceInfo);
 
-        Assert.assertEquals("Invalid instance region.", "us-east-1", instanceRegion);
+        assertEquals("us-east-1", instanceRegion, "Invalid instance region.");
     }
 
     @Test
-    public void testDefaultOverride() throws Exception {
+    void defaultOverride() throws Exception {
         ConfigurationManager.getConfigInstance().setProperty("eureka.us-east-1.availabilityZones", "abc,def");
         PropertyBasedAzToRegionMapper azToRegionMapper = new PropertyBasedAzToRegionMapper(new DefaultEurekaClientConfig());
         InstanceRegionChecker checker = new InstanceRegionChecker(azToRegionMapper, "us-east-1");
@@ -37,11 +39,11 @@ public class InstanceRegionCheckerTest {
                 dcInfo).build();
         String instanceRegion = checker.getInstanceRegion(instanceInfo);
 
-        Assert.assertEquals("Invalid instance region.", "us-east-1", instanceRegion);
+        assertEquals("us-east-1", instanceRegion, "Invalid instance region.");
     }
 
     @Test
-    public void testInstanceWithNoAZ() throws Exception {
+    void instanceWithNoAZ() throws Exception {
         ConfigurationManager.getConfigInstance().setProperty("eureka.us-east-1.availabilityZones", "abc,def");
         PropertyBasedAzToRegionMapper azToRegionMapper = new PropertyBasedAzToRegionMapper(new DefaultEurekaClientConfig());
         InstanceRegionChecker checker = new InstanceRegionChecker(azToRegionMapper, "us-east-1");
@@ -52,11 +54,11 @@ public class InstanceRegionCheckerTest {
                 dcInfo).build();
         String instanceRegion = checker.getInstanceRegion(instanceInfo);
 
-        Assert.assertNull("Invalid instance region.", instanceRegion);
+        assertNull(instanceRegion, "Invalid instance region.");
     }
 
     @Test
-    public void testNotMappedAZ() throws Exception {
+    void notMappedAZ() throws Exception {
         ConfigurationManager.getConfigInstance().setProperty("eureka.us-east-1.availabilityZones", "abc,def");
         PropertyBasedAzToRegionMapper azToRegionMapper = new PropertyBasedAzToRegionMapper(new DefaultEurekaClientConfig());
         InstanceRegionChecker checker = new InstanceRegionChecker(azToRegionMapper, "us-east-1");
@@ -66,11 +68,11 @@ public class InstanceRegionCheckerTest {
         InstanceInfo instanceInfo = InstanceInfo.Builder.newBuilder().setAppName("abc").setDataCenterInfo(dcInfo).build();
         String instanceRegion = checker.getInstanceRegion(instanceInfo);
 
-        Assert.assertEquals("Invalid instance region.", "us-east-1", instanceRegion);
+        assertEquals("us-east-1", instanceRegion, "Invalid instance region.");
     }
 
     @Test
-    public void testNotMappedAZNotFollowingFormat() throws Exception {
+    void notMappedAZNotFollowingFormat() throws Exception {
         ConfigurationManager.getConfigInstance().setProperty("eureka.us-east-1.availabilityZones", "abc,def");
         PropertyBasedAzToRegionMapper azToRegionMapper = new PropertyBasedAzToRegionMapper(new DefaultEurekaClientConfig());
         InstanceRegionChecker checker = new InstanceRegionChecker(azToRegionMapper, "us-east-1");
@@ -80,6 +82,6 @@ public class InstanceRegionCheckerTest {
         InstanceInfo instanceInfo = InstanceInfo.Builder.newBuilder().setAppName("abc").setDataCenterInfo(dcInfo).build();
         String instanceRegion = checker.getInstanceRegion(instanceInfo);
 
-        Assert.assertNull("Invalid instance region.", instanceRegion);
+        assertNull(instanceRegion, "Invalid instance region.");
     }
 }

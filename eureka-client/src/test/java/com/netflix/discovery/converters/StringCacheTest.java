@@ -1,9 +1,9 @@
 package com.netflix.discovery.converters;
 
 import com.netflix.discovery.util.StringCache;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Tomasz Bak
@@ -13,7 +13,7 @@ public class StringCacheTest {
     public static final int CACHE_SIZE = 100000;
 
     @Test
-    public void testVerifyStringsAreGarbageCollectedIfNotReferenced() throws Exception {
+    void verifyStringsAreGarbageCollectedIfNotReferenced() throws Exception {
         StringCache cache = new StringCache();
         for (int i = 0; i < CACHE_SIZE; i++) {
             cache.cachedValueOf("id#" + i);

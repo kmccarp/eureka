@@ -1,7 +1,7 @@
 package com.netflix.eureka.transport;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response.Status;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.zip.GZIPOutputStream;
@@ -17,18 +17,18 @@ import com.netflix.eureka.cluster.PeerEurekaNode;
 import com.netflix.eureka.resources.ASGResource.ASGStatus;
 import com.netflix.eureka.resources.DefaultServerCodecs;
 import com.netflix.eureka.resources.ServerCodecs;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockserver.client.server.MockServerClient;
 import org.mockserver.junit.MockServerRule;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 import static org.mockserver.model.Header.header;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
@@ -52,22 +52,22 @@ public class Jersey2ReplicationClientTest {
     private final ServerCodecs serverCodecs = new DefaultServerCodecs(config);
     private final InstanceInfo instanceInfo = ClusterSampleData.newInstanceInfo(1);
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         replicationClient = Jersey2ReplicationClient.createReplicationClient(
                 config, serverCodecs, "http://localhost:" + serverMockRule.getHttpPort() + "/eureka/v2"
         );
     }
 
-    @After
-    public void tearDown() {
+    @AfterEach
+    void tearDown() {
         if (serverMockClient != null) {
             serverMockClient.reset();
         }
     }
 
     @Test
-    public void testRegistrationReplication() throws Exception {
+    void registrationReplication() throws Exception {
         serverMockClient.when(
                 request()
                         .withMethod("POST")
@@ -82,7 +82,7 @@ public class Jersey2ReplicationClientTest {
     }
 
     @Test
-    public void testCancelReplication() throws Exception {
+    void cancelReplication() throws Exception {
         serverMockClient.when(
                 request()
                         .withMethod("DELETE")
@@ -97,7 +97,7 @@ public class Jersey2ReplicationClientTest {
     }
 
     @Test
-    public void testHeartbeatReplicationWithNoResponseBody() throws Exception {
+    void heartbeatReplicationWithNoResponseBody() throws Exception {
         serverMockClient.when(
                 request()
                         .withMethod("PUT")
@@ -113,7 +113,7 @@ public class Jersey2ReplicationClientTest {
     }
 
     @Test
-    public void testHeartbeatReplicationWithResponseBody() throws Exception {
+    void heartbeatReplicationWithResponseBody() throws Exception {
         InstanceInfo remoteInfo = new InstanceInfo(this.instanceInfo);
         remoteInfo.setStatus(InstanceStatus.DOWN);
         byte[] responseBody = toGzippedJson(remoteInfo);
@@ -137,7 +137,7 @@ public class Jersey2ReplicationClientTest {
     }
 
     @Test
-    public void testAsgStatusUpdateReplication() throws Exception {
+    void asgStatusUpdateReplication() throws Exception {
         serverMockClient.when(
                 request()
                         .withMethod("PUT")
@@ -152,7 +152,7 @@ public class Jersey2ReplicationClientTest {
     }
 
     @Test
-    public void testStatusUpdateReplication() throws Exception {
+    void statusUpdateReplication() throws Exception {
         serverMockClient.when(
                 request()
                         .withMethod("PUT")
@@ -167,7 +167,7 @@ public class Jersey2ReplicationClientTest {
     }
 
     @Test
-    public void testDeleteStatusOverrideReplication() throws Exception {
+    void deleteStatusOverrideReplication() throws Exception {
         serverMockClient.when(
                 request()
                         .withMethod("DELETE")

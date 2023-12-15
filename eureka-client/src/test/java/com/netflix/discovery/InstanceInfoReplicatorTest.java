@@ -4,24 +4,22 @@ import com.netflix.appinfo.DataCenterInfo;
 import com.netflix.appinfo.HealthCheckHandler;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.appinfo.LeaseInfo;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * @author David Liu
  */
-public class InstanceInfoReplicatorTest {
+class InstanceInfoReplicatorTest {
 
     private final int burstSize = 2;
     private final int refreshRateSeconds = 2;
@@ -29,8 +27,8 @@ public class InstanceInfoReplicatorTest {
     private DiscoveryClient discoveryClient;
     private InstanceInfoReplicator replicator;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         discoveryClient = mock(DiscoveryClient.class);
 
         InstanceInfo.Builder builder = InstanceInfo.Builder.newBuilder()
@@ -51,13 +49,13 @@ public class InstanceInfoReplicatorTest {
         this.replicator = new InstanceInfoReplicator(discoveryClient, instanceInfo, refreshRateSeconds, burstSize);
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterEach
+    void tearDown() throws Exception {
         replicator.stop();
     }
 
     @Test
-    public void testOnDemandUpdate() throws Throwable {
+    void onDemandUpdate() throws Throwable {
         assertTrue(replicator.onDemandUpdate());
         Thread.sleep(10);  // give some time for execution
         assertTrue(replicator.onDemandUpdate());
@@ -70,7 +68,7 @@ public class InstanceInfoReplicatorTest {
     }
 
     @Test
-    public void testOnDemandUpdateRateLimiting() throws Throwable {
+    void onDemandUpdateRateLimiting() throws Throwable {
         assertTrue(replicator.onDemandUpdate());
         Thread.sleep(10);  // give some time for execution
         assertTrue(replicator.onDemandUpdate());
@@ -83,7 +81,7 @@ public class InstanceInfoReplicatorTest {
     }
 
     @Test
-    public void testOnDemandUpdateResetAutomaticRefresh() throws Throwable {
+    void onDemandUpdateResetAutomaticRefresh() throws Throwable {
         replicator.start(0);
         Thread.sleep(1000 * refreshRateSeconds / 2);
 
@@ -95,7 +93,7 @@ public class InstanceInfoReplicatorTest {
     }
 
     @Test
-    public void testOnDemandUpdateResetAutomaticRefreshWithInitialDelay() throws Throwable {
+    void onDemandUpdateResetAutomaticRefreshWithInitialDelay() throws Throwable {
         replicator.start(1000 * refreshRateSeconds);
 
         assertTrue(replicator.onDemandUpdate());

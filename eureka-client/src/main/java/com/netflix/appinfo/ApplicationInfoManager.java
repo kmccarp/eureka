@@ -16,8 +16,8 @@
 
 package com.netflix.appinfo;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -206,9 +206,9 @@ public class ApplicationInfoManager {
         }
 
         String newAddress;
-        if (config instanceof RefreshableInstanceConfig) {
+        if (config instanceof RefreshableInstanceConfig instanceConfig) {
             // Refresh data center info, and return up to date address
-            newAddress = ((RefreshableInstanceConfig) config).resolveDefaultAddress(true);
+            newAddress = instanceConfig.resolveDefaultAddress(true);
         } else {
             newAddress = config.getHostName(true);
         }
@@ -222,7 +222,7 @@ public class ApplicationInfoManager {
         if (config.getDataCenterInfo() instanceof AmazonInfo) {
             String newSpotInstanceAction = ((AmazonInfo) config.getDataCenterInfo()).get(AmazonInfo.MetaDataKey.spotInstanceAction);
             if (newSpotInstanceAction != null && !newSpotInstanceAction.equals(existingSpotInstanceAction)) {
-                logger.info(String.format("The spot instance termination action changed from: %s => %s",
+                logger.info("The spot instance termination action changed from: %s => %s".formatted(
                         existingSpotInstanceAction,
                         newSpotInstanceAction));
                 updateInstanceInfo(null , null );

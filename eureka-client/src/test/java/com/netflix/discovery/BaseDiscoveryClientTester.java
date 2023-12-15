@@ -5,9 +5,9 @@ import com.netflix.appinfo.InstanceInfo;
 import com.netflix.appinfo.LeaseInfo;
 import com.netflix.discovery.junit.resource.DiscoveryClientResource;
 import com.netflix.discovery.shared.Application;
+import jakarta.annotation.Nullable;
 import org.junit.Rule;
 
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 

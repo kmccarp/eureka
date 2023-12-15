@@ -51,14 +51,14 @@ public class ApplicationsJacksonBuilder {
         }
         if (fieldName.startsWith("version")) {
             try {
-                version = value instanceof Number ? ((Number) value).longValue() : Long.parseLong((String) value);
+                version = value instanceof Number n ? n.longValue() : Long.parseLong((String) value);
             } catch (Exception e) {
                 version = -1;
                 logger.warn("Cannot parse version number {}; setting it to default == -1", value);
             }
         } else if (fieldName.startsWith("apps")) {
-            if (value instanceof String) {
-                appsHashCode = (String) value;
+            if (value instanceof String string) {
+                appsHashCode = string;
             } else {
                 logger.warn("appsHashCode field is not a string, but {}", value.getClass());
             }

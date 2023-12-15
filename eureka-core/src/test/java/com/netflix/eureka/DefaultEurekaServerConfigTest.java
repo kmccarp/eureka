@@ -4,16 +4,20 @@ import java.util.Map;
 import java.util.Set;
 
 import com.netflix.config.ConfigurationManager;
-import org.junit.Assert;
-import org.junit.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Nitesh Kant
  */
-public class DefaultEurekaServerConfigTest {
+class DefaultEurekaServerConfigTest {
 
     @Test
-    public void testRemoteRegionUrlsWithName2Regions() throws Exception {
+    void remoteRegionUrlsWithName2Regions() throws Exception {
         String region1 = "myregion1";
         String region1url = "http://local:888/eee";
         String region2 = "myregion2";
@@ -25,16 +29,16 @@ public class DefaultEurekaServerConfigTest {
         DefaultEurekaServerConfig config = new DefaultEurekaServerConfig();
         Map<String, String> remoteRegionUrlsWithName = config.getRemoteRegionUrlsWithName();
 
-        Assert.assertEquals("Unexpected remote region url count.", 2, remoteRegionUrlsWithName.size());
-        Assert.assertTrue("Remote region 1 not found.", remoteRegionUrlsWithName.containsKey(region1));
-        Assert.assertTrue("Remote region 2 not found.", remoteRegionUrlsWithName.containsKey(region2));
-        Assert.assertEquals("Unexpected remote region 1 url.", region1url, remoteRegionUrlsWithName.get(region1));
-        Assert.assertEquals("Unexpected remote region 2 url.", region2url, remoteRegionUrlsWithName.get(region2));
+        assertEquals(2, remoteRegionUrlsWithName.size(), "Unexpected remote region url count.");
+        assertTrue(remoteRegionUrlsWithName.containsKey(region1), "Remote region 1 not found.");
+        assertTrue(remoteRegionUrlsWithName.containsKey(region2), "Remote region 2 not found.");
+        assertEquals(region1url, remoteRegionUrlsWithName.get(region1), "Unexpected remote region 1 url.");
+        assertEquals(region2url, remoteRegionUrlsWithName.get(region2), "Unexpected remote region 2 url.");
 
     }
 
     @Test
-    public void testRemoteRegionUrlsWithName1Region() throws Exception {
+    void remoteRegionUrlsWithName1Region() throws Exception {
         String region1 = "myregion1";
         String region1url = "http://local:888/eee";
         ConfigurationManager.getConfigInstance().setProperty("eureka.remoteRegionUrlsWithName", region1
@@ -42,33 +46,33 @@ public class DefaultEurekaServerConfigTest {
         DefaultEurekaServerConfig config = new DefaultEurekaServerConfig();
         Map<String, String> remoteRegionUrlsWithName = config.getRemoteRegionUrlsWithName();
 
-        Assert.assertEquals("Unexpected remote region url count.", 1, remoteRegionUrlsWithName.size());
-        Assert.assertTrue("Remote region 1 not found.", remoteRegionUrlsWithName.containsKey(region1));
-        Assert.assertEquals("Unexpected remote region 1 url.", region1url, remoteRegionUrlsWithName.get(region1));
+        assertEquals(1, remoteRegionUrlsWithName.size(), "Unexpected remote region url count.");
+        assertTrue(remoteRegionUrlsWithName.containsKey(region1), "Remote region 1 not found.");
+        assertEquals(region1url, remoteRegionUrlsWithName.get(region1), "Unexpected remote region 1 url.");
 
     }
 
     @Test
-    public void testGetGlobalAppWhiteList() throws Exception {
+    void getGlobalAppWhiteList() throws Exception {
         String whitelistApp = "myapp";
         ConfigurationManager.getConfigInstance().setProperty("eureka.remoteRegion.global.appWhiteList", whitelistApp);
         DefaultEurekaServerConfig config = new DefaultEurekaServerConfig();
         Set<String> globalList = config.getRemoteRegionAppWhitelist(null);
-        Assert.assertNotNull("Global whitelist is null.", globalList);
-        Assert.assertEquals("Global whitelist not as expected.", 1, globalList.size());
-        Assert.assertEquals("Global whitelist not as expected.", whitelistApp, globalList.iterator().next());
+        assertNotNull(globalList, "Global whitelist is null.");
+        assertEquals(1, globalList.size(), "Global whitelist not as expected.");
+        assertEquals(whitelistApp, globalList.iterator().next(), "Global whitelist not as expected.");
     }
 
     @Test
-    public void testGetRegionAppWhiteList() throws Exception {
+    void getRegionAppWhiteList() throws Exception {
         String globalWhiteListApp = "myapp";
         String regionWhiteListApp = "myapp";
         ConfigurationManager.getConfigInstance().setProperty("eureka.remoteRegion.global.appWhiteList", globalWhiteListApp);
         ConfigurationManager.getConfigInstance().setProperty("eureka.remoteRegion.region1.appWhiteList", regionWhiteListApp);
         DefaultEurekaServerConfig config = new DefaultEurekaServerConfig();
         Set<String> regionList = config.getRemoteRegionAppWhitelist(null);
-        Assert.assertNotNull("Region whitelist is null.", regionList);
-        Assert.assertEquals("Region whitelist not as expected.", 1, regionList.size());
-        Assert.assertEquals("Region whitelist not as expected.", regionWhiteListApp, regionList.iterator().next());
+        assertNotNull(regionList, "Region whitelist is null.");
+        assertEquals(1, regionList.size(), "Region whitelist not as expected.");
+        assertEquals(regionWhiteListApp, regionList.iterator().next(), "Region whitelist not as expected.");
     }
 }

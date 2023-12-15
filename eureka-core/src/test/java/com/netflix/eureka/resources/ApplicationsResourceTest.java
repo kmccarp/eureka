@@ -10,11 +10,11 @@ import com.netflix.discovery.shared.Applications;
 import com.netflix.discovery.util.InstanceInfoGenerator;
 import com.netflix.eureka.AbstractTester;
 import com.netflix.eureka.Version;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -22,12 +22,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * @author David Liu
  */
-public class ApplicationsResourceTest extends AbstractTester {
+class ApplicationsResourceTest extends AbstractTester {
     private ApplicationsResource applicationsResource;
     private Applications testApplications;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         InstanceInfoGenerator instanceInfos = InstanceInfoGenerator.newBuilder(20, 6).build();
@@ -43,7 +43,7 @@ public class ApplicationsResourceTest extends AbstractTester {
     }
 
     @Test
-    public void testFullAppsGetJson() throws Exception {
+    void fullAppsGetJson() throws Exception {
         Response response = applicationsResource.getContainers(
                 Version.V2.name(),
                 MediaType.APPLICATION_JSON,
@@ -65,7 +65,7 @@ public class ApplicationsResourceTest extends AbstractTester {
     }
 
     @Test
-    public void testFullAppsGetGzipJsonHeaderType() throws Exception {
+    void fullAppsGetGzipJsonHeaderType() throws Exception {
         Response response = applicationsResource.getContainers(
                 Version.V2.name(),
                 MediaType.APPLICATION_JSON,
@@ -80,7 +80,7 @@ public class ApplicationsResourceTest extends AbstractTester {
     }
 
     @Test
-    public void testFullAppsGetGzipXmlHeaderType() throws Exception {
+    void fullAppsGetGzipXmlHeaderType() throws Exception {
         Response response = applicationsResource.getContainers(
                 Version.V2.name(),
                 MediaType.APPLICATION_XML,
@@ -95,7 +95,7 @@ public class ApplicationsResourceTest extends AbstractTester {
     }
 
     @Test
-    public void testMiniAppsGet() throws Exception {
+    void miniAppsGet() throws Exception {
         Response response = applicationsResource.getContainers(
                 Version.V2.name(),
                 MediaType.APPLICATION_JSON,

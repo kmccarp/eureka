@@ -7,17 +7,18 @@ import com.netflix.appinfo.providers.EurekaInstanceConfigFactory;
 import com.netflix.archaius.guice.ArchaiusModule;
 import com.netflix.governator.InjectorBuilder;
 import com.netflix.governator.LifecycleInjector;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author David Liu
  */
-public class EurekaClientModuleConfigurationTest {
+class EurekaClientModuleConfigurationTest {
 
     @Test
-    public void testBindEurekaInstanceConfigFactory() {
+    void bindEurekaInstanceConfigFactory() {
         final EurekaInstanceConfigFactory mockFactory = Mockito.mock(EurekaInstanceConfigFactory.class);
         final EurekaInstanceConfig mockConfig = Mockito.mock(EurekaInstanceConfig.class);
         final ApplicationInfoManager mockInfoManager = Mockito.mock(ApplicationInfoManager.class);
@@ -46,6 +47,6 @@ public class EurekaClientModuleConfigurationTest {
                 .createInjector();
 
         EurekaInstanceConfig config = injector.getInstance(EurekaInstanceConfig.class);
-        Assert.assertEquals(mockConfig, config);
+        assertEquals(mockConfig, config);
     }
 }

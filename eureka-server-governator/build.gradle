@@ -10,11 +10,13 @@ dependencies {
     compile "com.sun.jersey:jersey-servlet:${jerseyVersion}"
     compile "com.sun.jersey.contribs:jersey-guice:${jerseyVersion}"
     compile 'org.slf4j:slf4j-log4j12:1.6.1'
+    compileOnly "org.glassfish.jaxb:jaxb-runtime:4.0.4"
     runtimeOnly 'org.codehaus.jettison:jettison:1.2'
     providedCompile "javax.servlet:servlet-api:${servletVersion}"
 
     testCompile project(':eureka-test-utils')
-    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'org.mockito:mockito-core:4.11.0'
+    testImplementation "org.glassfish.jaxb:jaxb-runtime:4.0.4"
     testCompile "org.eclipse.jetty:jetty-server:${jetty_version}"
     testCompile "org.eclipse.jetty:jetty-webapp:${jetty_version}"
 }

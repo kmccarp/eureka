@@ -57,8 +57,8 @@ import com.netflix.servo.monitor.Stopwatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import static com.netflix.eureka.Names.METRIC_REGISTRY_PREFIX;
 
@@ -297,8 +297,10 @@ public class PeerAwareInstanceRegistryImpl extends AbstractInstanceRegistry impl
                             continue;
                         }
                         peerHostName = peerInstanceInfo.getHostName();
-                        logger.info("Trying to send heartbeat for the eureka server at {} to make sure the " +
-                                "network channels are open", peerHostName);
+                        logger.info("""
+                                Trying to send heartbeat for the eureka server at {} to make sure the \
+                                network channels are open\
+                                """, peerHostName);
                         // Only try to contact the eureka nodes that are in this instance's registry - because
                         // the other instances may be legitimately down
                         if (peerHostName.equalsIgnoreCase(new URI(node.getServiceUrl()).getHost())) {

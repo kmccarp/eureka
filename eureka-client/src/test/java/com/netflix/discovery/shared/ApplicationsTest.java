@@ -1,11 +1,11 @@
 package com.netflix.discovery.shared;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
@@ -16,8 +16,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import com.google.common.collect.Iterables;
@@ -33,10 +32,10 @@ import com.netflix.discovery.InstanceRegionChecker;
 import com.netflix.discovery.InstanceRegionCheckerTest;
 import com.netflix.discovery.PropertyBasedAzToRegionMapper;
 
-public class ApplicationsTest {
+class ApplicationsTest {
 
     @Test
-    public void testVersionAndAppHash() {
+    void versionAndAppHash() {
         Applications apps = new Applications();
         assertEquals(-1L, (long)apps.getVersion());
         assertNull(apps.getAppsHashCode());
@@ -46,14 +45,14 @@ public class ApplicationsTest {
         assertEquals(101L, (long)apps.getVersion());
         assertEquals("UP_5_DOWN_6_", apps.getAppsHashCode());
     }
-    
+
     /**
      * Test that instancesMap in Application and shuffleVirtualHostNameMap in
      * Applications are correctly updated when the last instance is removed from
      * an application and shuffleInstances has been run.
      */
     @Test
-    public void shuffleVirtualHostNameMapLastInstanceTest() {
+    void shuffleVirtualHostNameMapLastInstanceTest() {
         DataCenterInfo myDCI = new DataCenterInfo() {
             public DataCenterInfo.Name getName() {
                 return DataCenterInfo.Name.MyOwn;
@@ -87,7 +86,7 @@ public class ApplicationsTest {
      * an application and shuffleInstances has been run.
      */
     @Test
-    public void shuffleSecureVirtualHostNameMapLastInstanceTest() {
+    void shuffleSecureVirtualHostNameMapLastInstanceTest() {
         DataCenterInfo myDCI = new DataCenterInfo() {
             public DataCenterInfo.Name getName() {
                 return DataCenterInfo.Name.MyOwn;
@@ -121,14 +120,14 @@ public class ApplicationsTest {
 
         assertNull(application.getByInstanceId("test.hostname"));
     }
-    
+
     /**
      * Test that instancesMap in Application and shuffleVirtualHostNameMap in
      * Applications are correctly updated when the last instance is removed from
      * an application and shuffleInstances has been run.
      */
     @Test
-    public void shuffleRemoteRegistryTest() throws Exception {
+    void shuffleRemoteRegistryTest() throws Exception {
         AmazonInfo ai1 = AmazonInfo.Builder.newBuilder()
                 .addMetadata(MetaDataKey.availabilityZone, "us-east-1a")
                 .build();
@@ -180,7 +179,7 @@ public class ApplicationsTest {
     }
 
     @Test
-    public void testInfoDetailApplications(){
+    void infoDetailApplications(){
 
         DataCenterInfo myDCI = new DataCenterInfo() {
             public DataCenterInfo.Name getName() {
@@ -205,17 +204,17 @@ public class ApplicationsTest {
         applications.addApplication(application);
 
         List<InstanceInfo> instanceInfos = application.getInstances();
-        Assert.assertEquals(1, instanceInfos.size());
-        Assert.assertTrue(instanceInfos.contains(instanceInfo));
+        assertEquals(1, instanceInfos.size());
+        assertTrue(instanceInfos.contains(instanceInfo));
 
         List<Application> appsList = applications.getRegisteredApplications();
-        Assert.assertEquals(1, appsList.size());
-        Assert.assertTrue(appsList.contains(application));
-        Assert.assertEquals(application, applications.getRegisteredApplications(application.getName()));
+        assertEquals(1, appsList.size());
+        assertTrue(appsList.contains(application));
+        assertEquals(application, applications.getRegisteredApplications(application.getName()));
     }
 
     @Test
-    public void testRegisteredApplications() {
+    void registeredApplications() {
         DataCenterInfo myDCI = new DataCenterInfo() {
             public DataCenterInfo.Name getName() {
                 return DataCenterInfo.Name.MyOwn;
@@ -236,13 +235,13 @@ public class ApplicationsTest {
         applications.addApplication(application);
         
         List<Application> appsList = applications.getRegisteredApplications();
-        Assert.assertEquals(1, appsList.size());
-        Assert.assertTrue(appsList.contains(application));
-        Assert.assertEquals(application, applications.getRegisteredApplications(application.getName()));
+        assertEquals(1, appsList.size());
+        assertTrue(appsList.contains(application));
+        assertEquals(application, applications.getRegisteredApplications(application.getName()));
     }
-    
+
     @Test
-    public void testRegisteredApplicationsConstructor() {
+    void registeredApplicationsConstructor() {
         DataCenterInfo myDCI = new DataCenterInfo() {
             public DataCenterInfo.Name getName() {
                 return DataCenterInfo.Name.MyOwn;
@@ -262,20 +261,20 @@ public class ApplicationsTest {
         Applications applications = new Applications("UP_1_", -1L, Arrays.asList(application));
         
         List<Application> appsList = applications.getRegisteredApplications();
-        Assert.assertEquals(1, appsList.size());
-        Assert.assertTrue(appsList.contains(application));
-        Assert.assertEquals(application, applications.getRegisteredApplications(application.getName()));
+        assertEquals(1, appsList.size());
+        assertTrue(appsList.contains(application));
+        assertEquals(application, applications.getRegisteredApplications(application.getName()));
     }
-    
+
     @Test
-    public void testApplicationsHashAndVersion() {
+    void applicationsHashAndVersion() {
         Applications applications = new Applications("appsHashCode", 1L, Collections.emptyList());
         assertEquals(1L, (long)applications.getVersion());
         assertEquals("appsHashCode", applications.getAppsHashCode());
-    }   
-    
+    }
+
     @Test
-    public void testPopulateInstanceCount() {
+    void populateInstanceCount() {
         DataCenterInfo myDCI = new DataCenterInfo() {
             public DataCenterInfo.Name getName() {
                 return DataCenterInfo.Name.MyOwn;
@@ -303,9 +302,9 @@ public class ApplicationsTest {
         assertEquals(1, instanceCountMap.get(InstanceStatus.UP.name()).get());
         
     }
-    
+
     @Test
-    public void testGetNextIndex() {
+    void getNextIndex() {
         DataCenterInfo myDCI = new DataCenterInfo() {
             public DataCenterInfo.Name getName() {
                 return DataCenterInfo.Name.MyOwn;
@@ -332,9 +331,9 @@ public class ApplicationsTest {
         assertEquals(0L, applications.getNextIndex("securetest.testname:7102", true).get());
         assertNotSame(applications.getNextIndex("test.testname:1", false), applications.getNextIndex("securetest.testname:7102", true));
     }
-    
+
     @Test
-    public void testReconcileHashcode() {
+    void reconcileHashcode() {
         DataCenterInfo myDCI = new DataCenterInfo() {
             public DataCenterInfo.Name getName() {
                 return DataCenterInfo.Name.MyOwn;
@@ -362,9 +361,9 @@ public class ApplicationsTest {
         assertFalse(hashCode.isEmpty());
         assertEquals("UP_1_", hashCode);
     }
-    
+
     @Test
-    public void testInstanceFiltering() {
+    void instanceFiltering() {
         DataCenterInfo myDCI = new DataCenterInfo() {
             public DataCenterInfo.Name getName() {
                 return DataCenterInfo.Name.MyOwn;

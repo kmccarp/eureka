@@ -1,14 +1,14 @@
 package com.netflix.discovery.shared.transport.jersey;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.shared.resolver.DefaultEndpoint;
 import com.netflix.discovery.shared.transport.EurekaHttpResponse;
 import com.netflix.discovery.shared.transport.TransportClientFactory;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.UUID;
 
@@ -32,22 +32,22 @@ public class UnexpectedContentTypeTest {
     protected static final String CLIENT_APP_NAME = "unexpectedContentTypeTest";
     private JerseyApplicationClient jerseyHttpClient;
 
-    @Rule
-    public WireMockRule wireMockRule = new WireMockRule(wireMockConfig().dynamicPort().dynamicHttpsPort()); // No-args constructor defaults to port 8080
+    @RegisterExtension
+    public WireMockExtension wireMockRule = WireMockExtension.newInstance().options(wireMockConfig().dynamicPort().dynamicHttpsPort()).build(); // No-args constructor defaults to port 8080
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         TransportClientFactory clientFactory = JerseyEurekaHttpClientFactory.newBuilder()
                 .withClientName(CLIENT_APP_NAME)
                 .build();
 
-        String uri = String.format("http://localhost:%s/v2/", wireMockRule.port());
+        String uri = "http://localhost:%s/v2/".formatted(wireMockRule.port());
 
         jerseyHttpClient = (JerseyApplicationClient) clientFactory.newClient(new DefaultEndpoint(uri));
     }
 
     @Test
-    public void testSendHeartBeatReceivesUnexpectedHtmlResponse() {
+    void sendHeartBeatReceivesUnexpectedHtmlResponse() {
         long lastDirtyTimestamp = System.currentTimeMillis();
         String uuid = UUID.randomUUID().toString();
 
@@ -74,8 +74,8 @@ public class UnexpectedContentTypeTest {
         assertThat(response.getEntity()).as("instance info").isNull();
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterEach
+    void tearDown() throws Exception {
         if (jerseyHttpClient != null) {
             jerseyHttpClient.shutdown();
         }

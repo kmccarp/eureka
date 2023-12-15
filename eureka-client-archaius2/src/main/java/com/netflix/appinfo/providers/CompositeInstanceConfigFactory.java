@@ -15,8 +15,8 @@ import com.netflix.discovery.internal.util.InternalPrefixedConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 
@@ -37,7 +37,7 @@ import java.net.URL;
  * regardless of what the automatic environment detection says.
  *
  * Why define the {@link com.netflix.appinfo.providers.EurekaInstanceConfigFactory} instead
- * of using {@link javax.inject.Provider} instead? Provider does not work due to the fact that
+ * of using {@link jakarta.inject.Provider} instead? Provider does not work due to the fact that
  * Guice treats Providers specially.
  *
  * @author David Liu

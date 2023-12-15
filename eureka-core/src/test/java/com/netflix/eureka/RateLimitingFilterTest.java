@@ -16,9 +16,9 @@
 
 package com.netflix.eureka;
 
-import javax.servlet.FilterChain;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import com.netflix.appinfo.AbstractEurekaIdentity;
 import com.netflix.appinfo.ApplicationInfoManager;
@@ -26,13 +26,13 @@ import com.netflix.appinfo.EurekaClientIdentity;
 import com.netflix.appinfo.MyDataCenterInstanceConfig;
 import com.netflix.config.ConfigurationManager;
 import com.netflix.eureka.util.EurekaMonitors;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -42,8 +42,8 @@ import static org.mockito.Mockito.when;
 /**
  * @author Tomasz Bak
  */
-@RunWith(MockitoJUnitRunner.class)
-public class RateLimitingFilterTest {
+@ExtendWith(MockitoExtension.class)
+class RateLimitingFilterTest {
 
     private static final String FULL_FETCH = "base/apps";
     private static final String DELTA_FETCH = "base/apps/delta";
@@ -63,8 +63,8 @@ public class RateLimitingFilterTest {
 
     private RateLimitingFilter filter;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         RateLimitingFilter.reset();
 
         ConfigurationManager.getConfigInstance().setProperty("eureka.rateLimiter.privilegedClients", PYTHON_CLIENT);
@@ -83,7 +83,7 @@ public class RateLimitingFilterTest {
     }
 
     @Test
-    public void testPrivilegedClientAlwaysServed() throws Exception {
+    void privilegedClientAlwaysServed() throws Exception {
         whenRequest(FULL_FETCH, PYTHON_CLIENT);
         filter.doFilter(request, response, filterChain);
 
@@ -98,7 +98,7 @@ public class RateLimitingFilterTest {
     }
 
     @Test
-    public void testStandardClientsThrottlingEnforceable() throws Exception {
+    void standardClientsThrottlingEnforceable() throws Exception {
         ConfigurationManager.getConfigInstance().setProperty("eureka.rateLimiter.throttleStandardClients", true);
 
         // Custom clients will go up to the window limit
@@ -112,12 +112,12 @@ public class RateLimitingFilterTest {
         long rateLimiterCounter = EurekaMonitors.RATE_LIMITED.getCount();
         filter.doFilter(request, response, filterChain);
 
-        assertEquals("Expected rate limiter counter increase", rateLimiterCounter + 1, EurekaMonitors.RATE_LIMITED.getCount());
+        assertEquals(rateLimiterCounter + 1, EurekaMonitors.RATE_LIMITED.getCount(), "Expected rate limiter counter increase");
         verify(response, times(1)).setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
     }
 
     @Test
-    public void testCustomClientShedding() throws Exception {
+    void customClientShedding() throws Exception {
         // Custom clients will go up to the window limit
         whenRequest(FULL_FETCH, CUSTOM_CLIENT);
         filter.doFilter(request, response, filterChain);
@@ -129,12 +129,12 @@ public class RateLimitingFilterTest {
         long rateLimiterCounter = EurekaMonitors.RATE_LIMITED.getCount();
         filter.doFilter(request, response, filterChain);
 
-        assertEquals("Expected rate limiter counter increase", rateLimiterCounter + 1, EurekaMonitors.RATE_LIMITED.getCount());
+        assertEquals(rateLimiterCounter + 1, EurekaMonitors.RATE_LIMITED.getCount(), "Expected rate limiter counter increase");
         verify(response, times(1)).setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
     }
 
     @Test
-    public void testCustomClientThrottlingCandidatesCounter() throws Exception {
+    void customClientThrottlingCandidatesCounter() throws Exception {
         ConfigurationManager.getConfigInstance().setProperty("eureka.rateLimiter.enabled", false);
 
         // Custom clients will go up to the window limit
@@ -149,7 +149,7 @@ public class RateLimitingFilterTest {
         long rateLimiterCounter = EurekaMonitors.RATE_LIMITED_CANDIDATES.getCount();
         filter.doFilter(request, response, filterChain);
 
-        assertEquals("Expected rate limiter counter increase", rateLimiterCounter + 1, EurekaMonitors.RATE_LIMITED_CANDIDATES.getCount());
+        assertEquals(rateLimiterCounter + 1, EurekaMonitors.RATE_LIMITED_CANDIDATES.getCount(), "Expected rate limiter counter increase");
         // We just test the counter
         verify(response, times(0)).setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
     }

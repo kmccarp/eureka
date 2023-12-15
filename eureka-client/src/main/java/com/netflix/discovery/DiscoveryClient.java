@@ -42,16 +42,16 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javax.annotation.Nullable;
-import javax.annotation.PreDestroy;
-import javax.inject.Provider;
-import javax.inject.Singleton;
+import jakarta.inject.Provider;
+import jakarta.inject.Singleton;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.Response.Status;
 
 import com.netflix.discovery.shared.resolver.EndpointRandomizer;
 import com.netflix.discovery.shared.resolver.ResolverUtils;
+import jakarta.annotation.Nullable;
+import jakarta.annotation.PreDestroy;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -743,8 +743,10 @@ public class DiscoveryClient implements EurekaClient {
         } else {
             applications = remoteRegionVsApps.get(region);
             if (null == applications) {
-                logger.debug("No applications are defined for region {}, so returning an empty instance list for vip "
-                        + "address {}.", region, vipAddress);
+                logger.debug("""
+                        No applications are defined for region {}, so returning an empty instance list for vip \
+                        address {}.\
+                        """, region, vipAddress);
                 return Collections.emptyList();
             }
         }
@@ -1138,8 +1140,10 @@ public class DiscoveryClient implements EurekaClient {
         }
 
         if (delta == null) {
-            logger.warn("The server does not allow the delta revision to be applied because it is not safe. "
-                    + "Hence got the full registry.");
+            logger.warn("""
+                    The server does not allow the delta revision to be applied because it is not safe. \
+                    Hence got the full registry.\
+                    """);
             getAndStoreFullRegistry();
         } else if (fetchRegistryGeneration.compareAndSet(currentUpdateGeneration, currentUpdateGeneration + 1)) {
             logger.debug("Got delta update with apps hashcode {}", delta.getAppsHashCode());
@@ -1518,8 +1522,10 @@ public class DiscoveryClient implements EurekaClient {
                             instanceRegionChecker.getAzToRegionMapper().setRegionsToFetch(remoteRegions);
                             remoteRegionsModified = true;
                         } else {
-                            logger.info("Remote regions to fetch modified concurrently," +
-                                    " ignoring change from {} to {}", currentRemoteRegions, latestRemoteRegions);
+                            logger.info("""
+                                    Remote regions to fetch modified concurrently,\
+                                     ignoring change from {} to {}\
+                                    """, currentRemoteRegions, latestRemoteRegions);
                         }
                     }
                 } else {

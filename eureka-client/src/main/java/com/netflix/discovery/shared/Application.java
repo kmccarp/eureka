@@ -16,7 +16,6 @@
 
 package com.netflix.discovery.shared;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -42,6 +41,7 @@ import com.netflix.discovery.util.StringCache;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import jakarta.annotation.Nullable;
 
 /**
  * The application class holds the list of instances for a particular

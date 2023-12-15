@@ -14,13 +14,13 @@ import com.netflix.discovery.shared.transport.ClusterSampleData;
 import com.netflix.eureka.EurekaServerConfig;
 import com.netflix.eureka.registry.PeerAwareInstanceRegistry;
 import com.netflix.eureka.resources.DefaultServerCodecs;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author Tomasz Bak
  */
-public class PeerEurekaNodesTest {
+class PeerEurekaNodesTest {
 
     private static final String PEER_EUREKA_URL_A = "http://a.eureka.test";
     private static final String PEER_EUREKA_URL_B = "http://b.eureka.test";
@@ -40,7 +40,7 @@ public class PeerEurekaNodesTest {
     private final TestablePeerEurekaNodes peerEurekaNodes = new TestablePeerEurekaNodes(registry, ClusterSampleData.newEurekaServerConfig());
 
     @Test
-    public void testInitialStartupShutdown() throws Exception {
+    void initialStartupShutdown() throws Exception {
         peerEurekaNodes.withPeerUrls(PEER_EUREKA_URL_A);
 
         // Start
@@ -55,7 +55,7 @@ public class PeerEurekaNodesTest {
     }
 
     @Test
-    public void testReloadWithNoPeerChange() throws Exception {
+    void reloadWithNoPeerChange() throws Exception {
         // Start
         peerEurekaNodes.withPeerUrls(PEER_EUREKA_URL_A);
         peerEurekaNodes.start();
@@ -66,7 +66,7 @@ public class PeerEurekaNodesTest {
     }
 
     @Test
-    public void testReloadWithPeerUpdates() throws Exception {
+    void reloadWithPeerUpdates() throws Exception {
         // Start
         peerEurekaNodes.withPeerUrls(PEER_EUREKA_URL_A);
         peerEurekaNodes.start();

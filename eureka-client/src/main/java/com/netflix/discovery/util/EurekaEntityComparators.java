@@ -30,8 +30,8 @@ public final class EurekaEntityComparators {
         if (first.getClass() != second.getClass()) {
             return false;
         }
-        if (first instanceof AmazonInfo) {
-            return equal((AmazonInfo) first, (AmazonInfo) second);
+        if (first instanceof AmazonInfo info) {
+            return equal(info, (AmazonInfo) second);
         }
         return first.getName() == second.getName();
     }
@@ -56,8 +56,8 @@ public final class EurekaEntityComparators {
         if (first.getClass() != second.getClass()) {
             return false;
         }
-        if (first instanceof AmazonInfo) {
-            return subsetOf((AmazonInfo) first, (AmazonInfo) second);
+        if (first instanceof AmazonInfo info) {
+            return subsetOf(info, (AmazonInfo) second);
         }
         return first.getName() == second.getName();
     }

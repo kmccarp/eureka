@@ -1,6 +1,6 @@
 package com.netflix.discovery;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,20 +16,20 @@ import com.netflix.discovery.shared.transport.SimpleEurekaHttpServer;
 import com.netflix.discovery.util.InstanceInfoGenerator;
 import com.netflix.eventbus.spi.EventBus;
 import com.netflix.eventbus.spi.Subscribe;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.netflix.discovery.shared.transport.EurekaHttpResponse.anEurekaHttpResponse;
 import static com.netflix.discovery.util.EurekaEntityFunctions.toApplications;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
@@ -52,20 +52,20 @@ public class DiscoveryClientEventBusTest {
     /**
      * Share server stub by all tests.
      */
-    @BeforeClass
-    public static void setUpClass() throws IOException {
+    @BeforeAll
+    static void setUpClass() throws IOException {
         eurekaHttpServer = new SimpleEurekaHttpServer(requestHandler);
     }
 
-    @AfterClass
-    public static void tearDownClass() throws Exception {
+    @AfterAll
+    static void tearDownClass() throws Exception {
         if (eurekaHttpServer != null) {
             eurekaHttpServer.shutdown();
         }
     }
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         reset(requestHandler);
         when(requestHandler.register(any(InstanceInfo.class))).thenReturn(EurekaHttpResponse.status(204));
         when(requestHandler.cancel(anyString(), anyString())).thenReturn(EurekaHttpResponse.status(200));
@@ -75,7 +75,7 @@ public class DiscoveryClientEventBusTest {
     }
 
     @Test
-    public void testStatusChangeEvent() throws Exception {
+    void statusChangeEvent() throws Exception {
         final CountDownLatch eventLatch = new CountDownLatch(1);
         final List<StatusChangeEvent> receivedEvents = new ArrayList<>();
         EventBus eventBus = discoveryClientResource.getEventBus();
@@ -99,7 +99,7 @@ public class DiscoveryClientEventBusTest {
     }
 
     @Test
-    public void testCacheRefreshEvent() throws Exception {
+    void cacheRefreshEvent() throws Exception {
         InstanceInfoGenerator instanceGen = InstanceInfoGenerator.newBuilder(2, "testApp").build();
 
         // Initial full fetch

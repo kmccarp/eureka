@@ -16,24 +16,24 @@
 
 package com.netflix.discovery.util;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Tomasz Bak
  */
-public class RateLimiterTest {
+class RateLimiterTest {
 
     private static final long START = 1000000;
     private static final int BURST_SIZE = 2;
     private static final int AVERAGE_RATE = 10;
 
     @Test
-    public void testEvenLoad() {
+    void evenLoad() {
         RateLimiter secondLimiter = new RateLimiter(TimeUnit.SECONDS);
         long secondStep = 1000 / AVERAGE_RATE;
         testEvenLoad(secondLimiter, START, BURST_SIZE, AVERAGE_RATE, secondStep);
@@ -51,7 +51,7 @@ public class RateLimiterTest {
     }
 
     @Test
-    public void testBursts() {
+    void bursts() {
         RateLimiter secondLimiter = new RateLimiter(TimeUnit.SECONDS);
         long secondStep = 1000 / AVERAGE_RATE;
         testBursts(secondLimiter, START, BURST_SIZE, AVERAGE_RATE, secondStep);

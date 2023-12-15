@@ -1,8 +1,8 @@
 package com.netflix.appinfo;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
+import jakarta.inject.Singleton;
 
 import com.netflix.discovery.CommonConstants;
 import org.slf4j.Logger;
@@ -86,8 +86,8 @@ public class Ec2EurekaArchaius2InstanceConfig extends EurekaArchaius2InstanceCon
     
     @Override
     public String getHostName(boolean refresh) {
-        if (refresh && this.amazonInfoHolder instanceof RefreshableAmazonInfoProvider) {
-            ((RefreshableAmazonInfoProvider)amazonInfoHolder).refresh();
+        if (refresh && this.amazonInfoHolder instanceof RefreshableAmazonInfoProvider provider) {
+            provider.refresh();
         }
         return amazonInfoHolder.get().get(MetaDataKey.publicHostname);
     }
@@ -111,8 +111,8 @@ public class Ec2EurekaArchaius2InstanceConfig extends EurekaArchaius2InstanceCon
      */
     @Deprecated
     public synchronized void refreshAmazonInfo() {
-        if (this.amazonInfoHolder instanceof RefreshableAmazonInfoProvider) {
-            ((RefreshableAmazonInfoProvider)amazonInfoHolder).refresh();
+        if (this.amazonInfoHolder instanceof RefreshableAmazonInfoProvider provider) {
+            provider.refresh();
         }
     }
 

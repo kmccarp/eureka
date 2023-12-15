@@ -5,24 +5,24 @@ import com.netflix.appinfo.InstanceInfo.PortType;
 import com.netflix.config.ConcurrentCompositeConfiguration;
 import com.netflix.config.ConfigurationManager;
 import com.netflix.discovery.util.InstanceInfoGenerator;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import static com.netflix.appinfo.InstanceInfo.Builder.newBuilder;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 /**
  * Created by jzarfoss on 2/12/14.
  */
-public class InstanceInfoTest {
-    @After
-    public void tearDown() throws Exception {
+class InstanceInfoTest {
+    @AfterEach
+    void tearDown() throws Exception {
         ((ConcurrentCompositeConfiguration) ConfigurationManager.getConfigInstance()).clearOverrideProperty("NETFLIX_APP_GROUP");
         ((ConcurrentCompositeConfiguration) ConfigurationManager.getConfigInstance()).clearOverrideProperty("eureka.appGroup");
     }
@@ -30,7 +30,7 @@ public class InstanceInfoTest {
     // contrived test to check copy constructor and verify behavior of builder for InstanceInfo
 
     @Test
-    public void testCopyConstructor() {
+    void copyConstructor() {
 
         DataCenterInfo myDCI = new DataCenterInfo() {
 
@@ -45,7 +45,7 @@ public class InstanceInfoTest {
         InstanceInfo smallII2 = new InstanceInfo(smallII1);
 
         assertNotSame(smallII1, smallII2);
-        Assert.assertEquals(smallII1, smallII2);
+        assertEquals(smallII1, smallII2);
 
 
         InstanceInfo fullII1 = newBuilder().setMetadata(null)
@@ -64,29 +64,29 @@ public class InstanceInfoTest {
         InstanceInfo fullII2 = new InstanceInfo(fullII1);
 
         assertNotSame(fullII1, fullII2);
-        Assert.assertEquals(fullII1, fullII2);
+        assertEquals(fullII1, fullII2);
     }
 
     @Test
-    public void testAppGroupNameSystemProp() throws Exception {
+    void appGroupNameSystemProp() throws Exception {
         String appGroup = "testAppGroupSystemProp";
         ((ConcurrentCompositeConfiguration) ConfigurationManager.getConfigInstance()).setOverrideProperty("NETFLIX_APP_GROUP",
                 appGroup);
         MyDataCenterInstanceConfig config = new MyDataCenterInstanceConfig();
-        Assert.assertEquals("Unexpected app group name", appGroup, config.getAppGroupName());
+        assertEquals(appGroup, config.getAppGroupName(), "Unexpected app group name");
     }
 
     @Test
-    public void testAppGroupName() throws Exception {
+    void appGroupName() throws Exception {
         String appGroup = "testAppGroup";
         ((ConcurrentCompositeConfiguration) ConfigurationManager.getConfigInstance()).setOverrideProperty("eureka.appGroup",
                 appGroup);
         MyDataCenterInstanceConfig config = new MyDataCenterInstanceConfig();
-        Assert.assertEquals("Unexpected app group name", appGroup, config.getAppGroupName());
+        assertEquals(appGroup, config.getAppGroupName(), "Unexpected app group name");
     }
 
     @Test
-    public void testHealthCheckSetContainsValidUrlEntries() throws Exception {
+    void healthCheckSetContainsValidUrlEntries() throws Exception {
         Builder builder = newBuilder()
                 .setAppName("test")
                 .setNamespace("eureka.")
@@ -107,7 +107,7 @@ public class InstanceInfoTest {
     }
 
     @Test
-    public void testNullUrlEntries() throws Exception {
+    void nullUrlEntries() throws Exception {
         Builder builder = newBuilder()
                 .setAppName("test")
                 .setNamespace("eureka.")
@@ -127,7 +127,7 @@ public class InstanceInfoTest {
     }
 
     @Test
-    public void testGetIdWithInstanceIdUsed() {
+    void getIdWithInstanceIdUsed() {
         InstanceInfo baseline = InstanceInfoGenerator.takeOne();
         String dataCenterInfoId = ((UniqueIdentifier) baseline.getDataCenterInfo()).getId();
         assertThat(baseline.getInstanceId(), is(baseline.getId()));
@@ -143,7 +143,7 @@ public class InstanceInfoTest {
 
     // test case for backwards compatibility
     @Test
-    public void testGetIdWithInstanceIdNotUsed() {
+    void getIdWithInstanceIdNotUsed() {
         InstanceInfo baseline = InstanceInfoGenerator.takeOne();
         // override the sid with ""
         InstanceInfo instanceInfo1 = new InstanceInfo.Builder(baseline).setInstanceId("").build();

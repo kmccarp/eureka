@@ -11,11 +11,11 @@ import com.netflix.discovery.util.InstanceInfoGenerator;
 import com.netflix.eureka.AbstractTester;
 import com.netflix.eureka.Version;
 import com.netflix.eureka.registry.Key;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -23,13 +23,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * @author David Liu
  */
-public class AbstractVIPResourceTest extends AbstractTester {
+class AbstractVIPResourceTest extends AbstractTester {
     private String vipName;
     private AbstractVIPResource resource;
     private Application testApplication;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         InstanceInfoGenerator instanceInfos = InstanceInfoGenerator.newBuilder(6, 1).build();
@@ -54,7 +54,7 @@ public class AbstractVIPResourceTest extends AbstractTester {
     }
 
     @Test
-    public void testFullVipGet() throws Exception {
+    void fullVipGet() throws Exception {
         Response response = resource.getVipResponse(
                 Version.V2.name(),
                 vipName,
@@ -72,7 +72,7 @@ public class AbstractVIPResourceTest extends AbstractTester {
     }
 
     @Test
-    public void testMiniVipGet() throws Exception {
+    void miniVipGet() throws Exception {
         Response response = resource.getVipResponse(
                 Version.V2.name(),
                 vipName,

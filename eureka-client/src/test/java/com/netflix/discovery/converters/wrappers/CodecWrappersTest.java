@@ -1,29 +1,31 @@
 package com.netflix.discovery.converters.wrappers;
 
-import junit.framework.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 /**
  * @author David Liu
  */
-public class CodecWrappersTest {
+class CodecWrappersTest {
 
     private static String testWrapperName = "FOO_WRAPPER";
 
     @Test
-    public void testRegisterNewWrapper() {
-        Assert.assertNull(CodecWrappers.getEncoder(testWrapperName));
-        Assert.assertNull(CodecWrappers.getDecoder(testWrapperName));
+    void registerNewWrapper() {
+        assertNull(CodecWrappers.getEncoder(testWrapperName));
+        assertNull(CodecWrappers.getDecoder(testWrapperName));
 
         CodecWrappers.registerWrapper(new TestWrapper());
 
-        Assert.assertNotNull(CodecWrappers.getEncoder(testWrapperName));
-        Assert.assertNotNull(CodecWrappers.getDecoder(testWrapperName));
+        assertNotNull(CodecWrappers.getEncoder(testWrapperName));
+        assertNotNull(CodecWrappers.getDecoder(testWrapperName));
     }
 
     private final class TestWrapper implements CodecWrapper {

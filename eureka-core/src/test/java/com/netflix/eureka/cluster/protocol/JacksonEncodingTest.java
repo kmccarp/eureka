@@ -2,22 +2,21 @@ package com.netflix.eureka.cluster.protocol;
 
 import com.netflix.discovery.converters.EurekaJacksonCodec;
 import com.netflix.discovery.shared.transport.ClusterSampleData;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Tomasz Bak
  */
-public class JacksonEncodingTest {
+class JacksonEncodingTest {
 
     private final EurekaJacksonCodec jacksonCodec = new EurekaJacksonCodec();
 
     @Test
-    public void testReplicationInstanceEncoding() throws Exception {
+    void replicationInstanceEncoding() throws Exception {
         ReplicationInstance replicationInstance = ClusterSampleData.newReplicationInstance();
 
         // Encode / decode
@@ -28,7 +27,7 @@ public class JacksonEncodingTest {
     }
 
     @Test
-    public void testReplicationInstanceResponseEncoding() throws Exception {
+    void replicationInstanceResponseEncoding() throws Exception {
         ReplicationInstanceResponse replicationInstanceResponse = ClusterSampleData.newReplicationInstanceResponse(true);
 
         // Encode / decode
@@ -39,7 +38,7 @@ public class JacksonEncodingTest {
     }
 
     @Test
-    public void testReplicationListEncoding() throws Exception {
+    void replicationListEncoding() throws Exception {
         ReplicationList replicationList = new ReplicationList();
         replicationList.addReplicationInstance(ClusterSampleData.newReplicationInstance());
 
@@ -51,7 +50,7 @@ public class JacksonEncodingTest {
     }
 
     @Test
-    public void testReplicationListResponseEncoding() throws Exception {
+    void replicationListResponseEncoding() throws Exception {
         ReplicationListResponse replicationListResponse = new ReplicationListResponse();
         replicationListResponse.addResponse(ClusterSampleData.newReplicationInstanceResponse(false));
 

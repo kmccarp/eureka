@@ -16,7 +16,7 @@
 
 package com.netflix.discovery.shared.transport;
 
-import javax.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.HttpHeaders;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -48,18 +48,18 @@ import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.netflix.discovery.shared.transport.EurekaHttpResponse.anEurekaHttpResponse;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.timeout;
@@ -70,7 +70,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author Tomasz Bak
  */
-public class EurekaHttpClientsTest {
+class EurekaHttpClientsTest {
 
     private static final InstanceInfo MY_INSTANCE = InstanceInfoGenerator.newBuilder(1, "myApp").build().first();
     private final EurekaInstanceConfig instanceConfig = mock(EurekaInstanceConfig.class);
@@ -93,8 +93,8 @@ public class EurekaHttpClientsTest {
 
     private final InstanceInfoGenerator instanceGen = InstanceInfoGenerator.newBuilder(2, 1).build();
 
-    @Before
-    public void setUp() throws IOException {
+    @BeforeEach
+    void setUp() throws IOException {
         clientConfig = mock(EurekaClientConfig.class);
         transportConfig = mock(EurekaTransportConfig.class);
         randomizer = ResolverUtils::randomize;
@@ -120,8 +120,8 @@ public class EurekaHttpClientsTest {
                 ));
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterEach
+    void tearDown() throws Exception {
         if (writeServer != null) {
             writeServer.shutdown();
         }
@@ -134,7 +134,7 @@ public class EurekaHttpClientsTest {
     }
 
     @Test
-    public void testCanonicalClient() throws Exception {
+    void canonicalClient() throws Exception {
         Applications apps = instanceGen.toApplications();
 
         when(writeRequestHandler.getApplications()).thenReturn(
@@ -152,7 +152,7 @@ public class EurekaHttpClientsTest {
     }
 
     @Test
-    public void testCompositeBootstrapResolver() throws Exception {
+    void compositeBootstrapResolver() throws Exception {
         Applications applications = InstanceInfoGenerator.newBuilder(5, "eurekaWrite", "someOther").build().toApplications();
         Applications applications2 = InstanceInfoGenerator.newBuilder(2, "eurekaWrite", "someOther").build().toApplications();
         String vipAddress = applications.getRegisteredApplications("eurekaWrite").getInstances().get(0).getVIPAddress();
@@ -214,7 +214,7 @@ public class EurekaHttpClientsTest {
     }
 
     @Test
-    public void testCanonicalResolver() throws Exception {
+    void canonicalResolver() throws Exception {
         when(clientConfig.getEurekaServerURLContext()).thenReturn("context");
         when(clientConfig.getRegion()).thenReturn("region");
 
@@ -272,7 +272,7 @@ public class EurekaHttpClientsTest {
     }
 
     @Test
-    public void testAddingAdditionalFilters() throws Exception {
+    void addingAdditionalFilters() throws Exception {
         TestFilter testFilter = new TestFilter();
         Collection<ClientFilter> additionalFilters = Arrays.<ClientFilter>asList(testFilter);
 

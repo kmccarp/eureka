@@ -1,26 +1,26 @@
 package com.netflix.eureka.resources;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.appinfo.InstanceInfo.InstanceStatus;
 import com.netflix.eureka.AbstractTester;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-public class InstanceResourceTest extends AbstractTester {
+class InstanceResourceTest extends AbstractTester {
 
     private final InstanceInfo testInstanceInfo = createLocalInstance(LOCAL_REGION_INSTANCE_1_HOSTNAME);
     private ApplicationResource applicationResource;
     private InstanceResource instanceResource;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         applicationResource = new ApplicationResource(testInstanceInfo.getAppName(), serverContext.getServerConfig(), serverContext.getRegistry());
@@ -28,19 +28,19 @@ public class InstanceResourceTest extends AbstractTester {
     }
 
     @Test
-    public void testStatusOverrideReturnsNotFoundErrorCodeIfInstanceNotRegistered() throws Exception {
+    void statusOverrideReturnsNotFoundErrorCodeIfInstanceNotRegistered() throws Exception {
         Response response = instanceResource.statusUpdate(InstanceStatus.OUT_OF_SERVICE.name(), "false", "0");
         assertThat(response.getStatus(), is(equalTo(Status.NOT_FOUND.getStatusCode())));
     }
 
     @Test
-    public void testStatusOverrideDeleteReturnsNotFoundErrorCodeIfInstanceNotRegistered() throws Exception {
+    void statusOverrideDeleteReturnsNotFoundErrorCodeIfInstanceNotRegistered() throws Exception {
         Response response = instanceResource.deleteStatusUpdate(InstanceStatus.OUT_OF_SERVICE.name(), "false", "0");
         assertThat(response.getStatus(), is(equalTo(Status.NOT_FOUND.getStatusCode())));
     }
 
     @Test
-    public void testStatusOverrideDeleteIsAppliedToRegistry() throws Exception {
+    void statusOverrideDeleteIsAppliedToRegistry() throws Exception {
         // Override instance status
         registry.register(testInstanceInfo, false);
         registry.statusUpdate(testInstanceInfo.getAppName(), testInstanceInfo.getId(), InstanceStatus.OUT_OF_SERVICE, "0", false);
@@ -54,7 +54,7 @@ public class InstanceResourceTest extends AbstractTester {
     }
 
     @Test
-    public void testStatusOverrideDeleteIsAppliedToRegistryAndProvidedStatusIsSet() throws Exception {
+    void statusOverrideDeleteIsAppliedToRegistryAndProvidedStatusIsSet() throws Exception {
         // Override instance status
         registry.register(testInstanceInfo, false);
         registry.statusUpdate(testInstanceInfo.getAppName(), testInstanceInfo.getId(), InstanceStatus.OUT_OF_SERVICE, "0", false);

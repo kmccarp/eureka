@@ -16,20 +16,22 @@ import com.netflix.discovery.EurekaClientConfig;
 import com.netflix.discovery.shared.transport.jersey.TransportClientFactories;
 import com.netflix.governator.InjectorBuilder;
 import com.netflix.governator.LifecycleInjector;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * @author David Liu
  */
-public class EurekaModuleTest {
+class EurekaModuleTest {
 
     private LifecycleInjector injector;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         ConfigurationManager.getConfigInstance().setProperty("eureka.region", "default");
         ConfigurationManager.getConfigInstance().setProperty("eureka.shouldFetchRegistry", "false");
         ConfigurationManager.getConfigInstance().setProperty("eureka.registration.enabled", "false");
@@ -48,8 +50,8 @@ public class EurekaModuleTest {
                 .createInjector();
     }
 
-    @After
-    public void tearDown() {
+    @AfterEach
+    void tearDown() {
         if (injector != null) {
             injector.shutdown();
         }
@@ -58,24 +60,24 @@ public class EurekaModuleTest {
 
     @SuppressWarnings("deprecation")
     @Test
-    public void testDI() {
+    void dI() {
         InstanceInfo instanceInfo = injector.getInstance(InstanceInfo.class);
-        Assert.assertEquals(ApplicationInfoManager.getInstance().getInfo(), instanceInfo);
+        assertEquals(ApplicationInfoManager.getInstance().getInfo(), instanceInfo);
 
         EurekaClient eurekaClient = injector.getInstance(EurekaClient.class);
         DiscoveryClient discoveryClient = injector.getInstance(DiscoveryClient.class);
 
-        Assert.assertEquals(DiscoveryManager.getInstance().getEurekaClient(), eurekaClient);
-        Assert.assertEquals(DiscoveryManager.getInstance().getDiscoveryClient(), discoveryClient);
-        Assert.assertEquals(eurekaClient, discoveryClient);
+        assertEquals(DiscoveryManager.getInstance().getEurekaClient(), eurekaClient);
+        assertEquals(DiscoveryManager.getInstance().getDiscoveryClient(), discoveryClient);
+        assertEquals(eurekaClient, discoveryClient);
 
         EurekaClientConfig eurekaClientConfig = injector.getInstance(EurekaClientConfig.class);
-        Assert.assertEquals(DiscoveryManager.getInstance().getEurekaClientConfig(), eurekaClientConfig);
+        assertEquals(DiscoveryManager.getInstance().getEurekaClientConfig(), eurekaClientConfig);
 
         EurekaInstanceConfig eurekaInstanceConfig = injector.getInstance(EurekaInstanceConfig.class);
-        Assert.assertEquals(DiscoveryManager.getInstance().getEurekaInstanceConfig(), eurekaInstanceConfig);
+        assertEquals(DiscoveryManager.getInstance().getEurekaInstanceConfig(), eurekaInstanceConfig);
 
         Binding<TransportClientFactories> binding = injector.getExistingBinding(Key.get(TransportClientFactories.class));
-        Assert.assertNull(binding);  // no bindings so defaulting to default of jersey1
+        assertNull(binding);  // no bindings so defaulting to default of jersey1
     }
 }

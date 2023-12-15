@@ -30,15 +30,17 @@ dependencies {
     // Prefered jackson Stax serializer. Default Oracle has issues (adds empty namespace) and is slower
     compileOnly "com.fasterxml.woodstox:woodstox-core:${woodstoxVersion}"
 
+    compileOnly "org.glassfish.jaxb:jaxb-runtime:4.0.4"
+
     runtimeOnly "org.codehaus.jettison:jettison:${jettisonVersion}"
 
     testCompile project(':eureka-test-utils')
-    testCompile "junit:junit:${junit_version}"
     testCompile 'org.mortbay.jetty:jetty:6.1H.22'
+    testImplementation "jakarta.inject:jakarta.inject-api:2.0.1.MR"
+    testImplementation "org.glassfish.jaxb:jaxb-runtime:4.0.4"
     testCompile "org.mockito:mockito-inline:${mockitoVersion}"
     testCompile "org.mock-server:mockserver-netty:${mockserverVersion}"
     testCompile "com.netflix.governator:governator:${governatorVersion}"
-    testCompile "com.github.tomakehurst:wiremock-jre8:2.25.1"
+    testCompile "com.github.tomakehurst:wiremock-jre8:2.35.1"
     testCompile "org.assertj:assertj-core:3.11.1"
-    testCompile "javax.servlet:javax.servlet-api:4.0.1"
 }

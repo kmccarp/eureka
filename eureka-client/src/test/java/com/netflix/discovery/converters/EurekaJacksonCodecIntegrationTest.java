@@ -12,9 +12,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import org.junit.Test;
-
 import com.netflix.discovery.shared.Applications;
+import org.junit.jupiter.api.Test;
 
 /**
  * this integration test parses the response of a Eureka discovery server,
@@ -23,8 +22,8 @@ import com.netflix.discovery.shared.Applications;
  * tests below are @Ignore'd.
  *
  */
-@org.junit.Ignore
-public class EurekaJacksonCodecIntegrationTest {
+@org.junit.jupiter.api.Disabled
+class EurekaJacksonCodecIntegrationTest {
     private static final int UNREASONABLE_TIMEOUT_MS = 500;
     private final EurekaJacksonCodec codec = new EurekaJacksonCodec("", "");
 
@@ -34,7 +33,7 @@ public class EurekaJacksonCodecIntegrationTest {
      * @throws Exception
      */
     @Test
-    public void testRealDecode() throws Exception {
+    void realDecode() throws Exception {
         Applications applications;
         File localDiscovery = new File("/var/folders/6j/qy6n1npj11x5j2j_9ng2wzmw0000gp/T/discovery-data-6054758555577530004.json"); //downloadRegistration(System.getProperty("discovery.url"));
         long testStart = System.currentTimeMillis();
@@ -49,10 +48,10 @@ public class EurekaJacksonCodecIntegrationTest {
         System.out.println("test time: " 
                 + " et: " + (System.currentTimeMillis() - testStart));
     }
-    
-    
+
+
     @Test
-    public void testCuriosity() {
+    void curiosity() {
         char[] arr1 = "test".toCharArray();
         char[] arr2 = new char[] {'t', 'e', 's', 't'};
         
@@ -66,7 +65,7 @@ public class EurekaJacksonCodecIntegrationTest {
      * @throws Exception
      */
     @Test
-    public void testDecodeTimeout() throws Exception {
+    void decodeTimeout() throws Exception {
         ExecutorService executor = Executors.newFixedThreadPool(5);
         File localDiscovery = downloadRegistration(System.getProperty("discovery.url"));
         Callable<Applications> task = () -> {

@@ -1,7 +1,7 @@
 package com.netflix.eureka.transport;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response.Status;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;

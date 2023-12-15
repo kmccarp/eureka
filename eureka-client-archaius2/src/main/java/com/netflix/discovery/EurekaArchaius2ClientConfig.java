@@ -11,7 +11,7 @@ import com.netflix.archaius.api.annotations.ConfigurationSource;
 import com.netflix.discovery.internal.util.InternalPrefixedConfig;
 import com.netflix.discovery.shared.transport.EurekaTransportConfig;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 import static com.netflix.discovery.PropertyBasedClientConfigConstants.*;
 
@@ -151,7 +151,7 @@ public class EurekaArchaius2ClientConfig implements EurekaClientConfig {
     }
 
     public String[] getAvailabilityZones(String region) {
-        return prefixedConfig.getString(String.format("%s." + CONFIG_AVAILABILITY_ZONE_PREFIX, region), DEFAULT_ZONE).split(",");
+        return prefixedConfig.getString(("%s." + CONFIG_AVAILABILITY_ZONE_PREFIX).formatted(region), DEFAULT_ZONE).split(",");
     }
 
     public List<String> getEurekaServerServiceUrls(String myZone) {

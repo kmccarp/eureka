@@ -26,21 +26,21 @@ import com.netflix.discovery.EurekaNamespace;
 import com.netflix.governator.guice.BootstrapBinder;
 import com.netflix.governator.guice.BootstrapModule;
 import com.netflix.governator.guice.LifecycleInjector;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Tomasz Bak
  */
-public class DefaultEurekaClientConfigProviderTest {
+class DefaultEurekaClientConfigProviderTest {
 
     private static final String SERVICE_URI = "http://my.eureka.server:8080/";
 
     @Test
-    public void testNameSpaceInjection() throws Exception {
+    void nameSpaceInjection() throws Exception {
         ConfigurationManager.getConfigInstance().setProperty("testnamespace.serviceUrl.default", SERVICE_URI);
 
         Injector injector = LifecycleInjector.builder()
@@ -60,7 +60,7 @@ public class DefaultEurekaClientConfigProviderTest {
     }
 
     @Test
-    public void testURLSeparator() throws Exception {
+    void uRLSeparator() throws Exception {
         testURLSeparator(",");
         testURLSeparator(" ,");
         testURLSeparator(", ");

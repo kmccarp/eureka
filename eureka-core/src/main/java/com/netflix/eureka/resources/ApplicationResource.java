@@ -16,15 +16,15 @@
 
 package com.netflix.eureka.resources;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.HeaderParam;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 
 import com.netflix.appinfo.AmazonInfo;
 import com.netflix.appinfo.DataCenterInfo;
@@ -164,15 +164,14 @@ public class ApplicationResource {
 
         // handle cases where clients may be registering with bad DataCenterInfo with missing data
         DataCenterInfo dataCenterInfo = info.getDataCenterInfo();
-        if (dataCenterInfo instanceof UniqueIdentifier) {
-            String dataCenterInfoId = ((UniqueIdentifier) dataCenterInfo).getId();
+        if (dataCenterInfo instanceof UniqueIdentifier identifier) {
+            String dataCenterInfoId = identifier.getId();
             if (isBlank(dataCenterInfoId)) {
                 boolean experimental = "true".equalsIgnoreCase(serverConfig.getExperimental("registration.validation.dataCenterInfoId"));
                 if (experimental) {
                     String entity = "DataCenterInfo of type " + dataCenterInfo.getClass() + " must contain a valid id";
                     return Response.status(400).entity(entity).build();
-                } else if (dataCenterInfo instanceof AmazonInfo) {
-                    AmazonInfo amazonInfo = (AmazonInfo) dataCenterInfo;
+                } else if (dataCenterInfo instanceof AmazonInfo amazonInfo) {
                     String effectiveId = amazonInfo.get(AmazonInfo.MetaDataKey.instanceId);
                     if (effectiveId == null) {
                         amazonInfo.getMetadata().put(AmazonInfo.MetaDataKey.instanceId.getName(), info.getId());

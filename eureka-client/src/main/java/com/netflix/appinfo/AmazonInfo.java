@@ -273,8 +273,10 @@ public class AmazonInfo implements DataCenterInfo, UniqueIdentifier {
                         && config.shouldFailFastOnFirstLoad()
                         && !result.metadata.containsKey(MetaDataKey.instanceId.getName())) {
 
-                    logger.warn("Skipping the rest of AmazonInfo init as we were not able to load instanceId after " +
-                                    "the configured number of retries: {}, per fail fast configuration: {}",
+                    logger.warn("""
+                                    Skipping the rest of AmazonInfo init as we were not able to load instanceId after \
+                                    the configured number of retries: {}, per fail fast configuration: {}\
+                                    """,
                             config.getNumRetries(), config.shouldFailFastOnFirstLoad());
                     break;  // break out of loop and return whatever we have thus far
                 }

@@ -343,8 +343,7 @@ public class DeserializerStringCache implements Function<String, String> {
 
             @Override
             public boolean equals(Object other) {
-                if (other instanceof CharBuffer) {
-                    CharBuffer otherBuffer = (CharBuffer) other;
+                if (other instanceof CharBuffer otherBuffer) {
                     if (otherBuffer.length() == length) {
                         if (otherBuffer.variant() == variant) {
                             OfInt otherText = otherBuffer.chars();
@@ -430,8 +429,7 @@ public class DeserializerStringCache implements Function<String, String> {
 
             @Override
             public boolean equals(Object other) {
-                if (other instanceof CharBuffer) {
-                    CharBuffer otherBuffer = (CharBuffer) other;
+                if (other instanceof CharBuffer otherBuffer) {
                     if (otherBuffer.variant() == variant) {
                         int length = source.length();
                         if (otherBuffer.length() == length) {

@@ -1,7 +1,7 @@
 package com.netflix.appinfo.providers;
 
-import javax.inject.Singleton;
-import javax.inject.Provider;
+import jakarta.inject.Singleton;
+import jakarta.inject.Provider;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -61,17 +61,17 @@ public class EurekaConfigBasedInstanceInfoProvider implements Provider<InstanceI
             String instanceId = config.getInstanceId();
             if (instanceId == null || instanceId.isEmpty()) {
                 DataCenterInfo dataCenterInfo = config.getDataCenterInfo();
-                if (dataCenterInfo instanceof UniqueIdentifier) {
-                    instanceId = ((UniqueIdentifier) dataCenterInfo).getId();
+                if (dataCenterInfo instanceof UniqueIdentifier identifier) {
+                    instanceId = identifier.getId();
                 } else {
                     instanceId = config.getHostName(false);
                 }
             }
 
             String defaultAddress;
-            if (config instanceof RefreshableInstanceConfig) {
+            if (config instanceof RefreshableInstanceConfig instanceConfig) {
                 // Refresh AWS data center info, and return up to date address
-                defaultAddress = ((RefreshableInstanceConfig) config).resolveDefaultAddress(false);
+                defaultAddress = instanceConfig.resolveDefaultAddress(false);
             } else {
                 defaultAddress = config.getHostName(false);
             }
@@ -107,8 +107,10 @@ public class EurekaConfigBasedInstanceInfoProvider implements Provider<InstanceI
                 LOG.info("Setting initial instance status as: {}", initialStatus);
                 builder.setStatus(initialStatus);
             } else {
-                LOG.info("Setting initial instance status as: {}. This may be too early for the instance to advertise "
-                         + "itself as available. You would instead want to control this via a healthcheck handler.",
+                LOG.info("""
+                         Setting initial instance status as: {}. This may be too early for the instance to advertise \
+                         itself as available. You would instead want to control this via a healthcheck handler.\
+                         """,
                          InstanceStatus.UP);
             }
 

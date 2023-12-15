@@ -4,11 +4,11 @@ import com.netflix.appinfo.ApplicationInfoManager;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.config.DynamicPropertyFactory;
 import com.netflix.discovery.EurekaClient;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

@@ -5,10 +5,10 @@ import java.io.InputStream;
 import java.net.URL;
 
 import com.netflix.discovery.internal.util.AmazonInfoUtils;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -16,30 +16,30 @@ import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mockStatic;
 
-import static org.junit.Assert.assertEquals;
-
 
 /**
  * @author David Liu
  */
-public class AmazonInfoTest {
+class AmazonInfoTest {
     @Test
-    public void testExtractAccountId() throws Exception {
-        String json = "{\n" +
-                "  \"imageId\" : \"ami-someId\",\n" +
-                "  \"instanceType\" : \"m1.small\",\n" +
-                "  \"version\" : \"2000-00-00\",\n" +
-                "  \"architecture\" : \"x86_64\",\n" +
-                "  \"accountId\" : \"1111111111\",\n" +
-                "  \"instanceId\" : \"i-someId\",\n" +
-                "  \"billingProducts\" : null,\n" +
-                "  \"pendingTime\" : \"2000-00-00T00:00:00Z\",\n" +
-                "  \"availabilityZone\" : \"us-east-1c\",\n" +
-                "  \"region\" : \"us-east-1\",\n" +
-                "  \"kernelId\" : \"aki-someId\",\n" +
-                "  \"ramdiskId\" : null,\n" +
-                "  \"privateIp\" : \"1.1.1.1\"\n" +
-                "}";
+    void extractAccountId() throws Exception {
+        String json = """
+                {
+                  "imageId" : "ami-someId",
+                  "instanceType" : "m1.small",
+                  "version" : "2000-00-00",
+                  "architecture" : "x86_64",
+                  "accountId" : "1111111111",
+                  "instanceId" : "i-someId",
+                  "billingProducts" : null,
+                  "pendingTime" : "2000-00-00T00:00:00Z",
+                  "availabilityZone" : "us-east-1c",
+                  "region" : "us-east-1",
+                  "kernelId" : "aki-someId",
+                  "ramdiskId" : null,
+                  "privateIp" : "1.1.1.1"
+                }\
+                """;
 
         InputStream inputStream = new ByteArrayInputStream(json.getBytes());
         String accountId = AmazonInfo.MetaDataKey.accountId.read(inputStream);
@@ -48,7 +48,7 @@ public class AmazonInfoTest {
     }
 
     @Test
-    public void testExtractMacs_SingleMac() throws Exception {
+    void extractMacs_SingleMac() throws Exception {
         String body = "0d:c2:9a:3c:18:2b";
 
         InputStream inputStream = new ByteArrayInputStream(body.getBytes());
@@ -58,7 +58,7 @@ public class AmazonInfoTest {
     }
 
     @Test
-    public void testExtractMacs_MultipleMacs() throws Exception {
+    void extractMacs_MultipleMacs() throws Exception {
         String body = "0d:c2:9a:3c:18:2b\n4c:31:99:7e:26:d6";
 
         InputStream inputStream = new ByteArrayInputStream(body.getBytes());
@@ -68,7 +68,7 @@ public class AmazonInfoTest {
     }
 
     @Test
-    public void testExtractPublicIPv4s_SingleAddress() throws Exception {
+    void extractPublicIPv4s_SingleAddress() throws Exception {
         String body = "10.0.0.1";
 
         InputStream inputStream = new ByteArrayInputStream(body.getBytes());
@@ -78,7 +78,7 @@ public class AmazonInfoTest {
     }
 
     @Test
-    public void testExtractPublicIPv4s_MultipleAddresses() throws Exception {
+    void extractPublicIPv4s_MultipleAddresses() throws Exception {
         String body = "10.0.0.1\n10.0.0.2";
 
         InputStream inputStream = new ByteArrayInputStream(body.getBytes());
@@ -88,7 +88,7 @@ public class AmazonInfoTest {
     }
 
     @Test
-    public void testAutoBuild() throws Exception {
+    void autoBuild() throws Exception {
         try (MockedStatic<AmazonInfoUtils> mockUtils = mockStatic(AmazonInfoUtils.class)) {
             mockUtils.when(
                     () -> AmazonInfoUtils.readEc2MetadataUrl(any(AmazonInfo.MetaDataKey.class), any(URL.class), anyInt(), anyInt())

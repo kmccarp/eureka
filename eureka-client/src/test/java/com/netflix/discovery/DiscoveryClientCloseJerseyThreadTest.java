@@ -1,18 +1,19 @@
 package com.netflix.discovery;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Set;
-import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-public class DiscoveryClientCloseJerseyThreadTest extends AbstractDiscoveryClientTester {
+class DiscoveryClientCloseJerseyThreadTest extends AbstractDiscoveryClientTester {
 
     private static final String JERSEY_THREAD_NAME = "Eureka-JerseyClient-Conn-Cleaner";
     private static final String APACHE_THREAD_NAME = "Apache-HttpClient-Conn-Cleaner";
 
     @Test
-    public void testThreadCount() throws InterruptedException {
+    void threadCount() throws InterruptedException {
         assertThat(containsClientThread(), equalTo(true));
         client.shutdown();
         // Give up control for cleaner thread to die

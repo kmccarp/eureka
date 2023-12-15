@@ -5,22 +5,22 @@ import com.netflix.appinfo.InstanceInfo;
 import com.netflix.appinfo.MyDataCenterInfo;
 import com.netflix.discovery.EurekaClientConfig;
 import com.netflix.discovery.util.InstanceInfoGenerator;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
  * @author David Liu
  */
-public class ConfigClusterResolverTest {
+class ConfigClusterResolverTest {
 
     private final EurekaClientConfig clientConfig = mock(EurekaClientConfig.class);
     private final List<String> endpointsC = Arrays.asList(
@@ -37,8 +37,8 @@ public class ConfigClusterResolverTest {
     );
     private ConfigClusterResolver resolver;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         when(clientConfig.shouldUseDnsForFetchingServiceUrls()).thenReturn(false);
         when(clientConfig.getRegion()).thenReturn("us-east-1");
         when(clientConfig.getAvailabilityZones("us-east-1")).thenReturn(new String[]{"us-east-1c", "us-east-1d", "us-east-1e"});
@@ -54,7 +54,7 @@ public class ConfigClusterResolverTest {
     }
 
     @Test
-    public void testReadFromConfig() {
+    void readFromConfig() {
         List<AwsEndpoint> endpoints = resolver.getClusterEndpoints();
         assertThat(endpoints.size(), equalTo(6));
 

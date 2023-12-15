@@ -24,18 +24,18 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 import com.netflix.eureka.util.batcher.TaskProcessor.ProcessingResult;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Tomasz Bak
  */
-public class TaskDispatchersTest {
+class TaskDispatchersTest {
 
     private static final long SERVER_UNAVAILABLE_SLEEP_TIME_MS = 1000;
     private static final long RETRY_SLEEP_TIME_MS = 100;
@@ -48,15 +48,15 @@ public class TaskDispatchersTest {
 
     private TaskDispatcher<Integer, ProcessingResult> dispatcher;
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterEach
+    void tearDown() throws Exception {
         if (dispatcher != null) {
             dispatcher.shutdown();
         }
     }
 
     @Test
-    public void testSingleTaskDispatcher() throws Exception {
+    void singleTaskDispatcher() throws Exception {
         dispatcher = TaskDispatchers.createNonBatchingTaskDispatcher(
                 "TEST",
                 MAX_BUFFER_SIZE,
@@ -73,7 +73,7 @@ public class TaskDispatchersTest {
     }
 
     @Test
-    public void testBatchingDispatcher() throws Exception {
+    void batchingDispatcher() throws Exception {
         dispatcher = TaskDispatchers.createBatchingTaskDispatcher(
                 "TEST",
                 MAX_BUFFER_SIZE,
@@ -92,7 +92,7 @@ public class TaskDispatchersTest {
     }
 
     @Test
-    public void testTasksAreDistributedAcrossAllWorkerThreads() throws Exception {
+    void tasksAreDistributedAcrossAllWorkerThreads() throws Exception {
         int threadCount = 3;
         CountingTaskProcessor countingProcessor = new CountingTaskProcessor();
 

@@ -1,16 +1,14 @@
 package com.netflix.discovery.converters;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.appinfo.InstanceInfo.ActionType;
@@ -18,6 +16,7 @@ import com.netflix.discovery.shared.Application;
 import com.netflix.discovery.shared.Applications;
 import com.netflix.discovery.util.EurekaEntityComparators;
 import com.netflix.discovery.util.InstanceInfoGenerator;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Tomasz Bak
@@ -60,7 +59,7 @@ public class EurekaJacksonCodecTest {
     private final EurekaJacksonCodec codec = new EurekaJacksonCodec();
 
     @Test
-    public void testInstanceInfoJacksonEncodeDecode() throws Exception {
+    void instanceInfoJacksonEncodeDecode() throws Exception {
         // Encode
         ByteArrayOutputStream captureStream = new ByteArrayOutputStream();
         codec.writeTo(INSTANCE_INFO_1_A1, captureStream);
@@ -74,7 +73,7 @@ public class EurekaJacksonCodecTest {
     }
 
     @Test
-    public void testInstanceInfoJacksonEncodeDecodeWithoutMetaData() throws Exception {
+    void instanceInfoJacksonEncodeDecodeWithoutMetaData() throws Exception {
         InstanceInfo noMetaDataInfo = InstanceInfoGenerator.newBuilder(1, 1).withMetaData(false).build().serviceIterator().next();
 
         // Encode
@@ -90,7 +89,7 @@ public class EurekaJacksonCodecTest {
     }
 
     @Test
-    public void testInstanceInfoXStreamEncodeJacksonDecode() throws Exception {
+    void instanceInfoXStreamEncodeJacksonDecode() throws Exception {
         InstanceInfo original = INSTANCE_INFO_1_A1;
 
         // Encode
@@ -106,7 +105,7 @@ public class EurekaJacksonCodecTest {
     }
 
     @Test
-    public void testInstanceInfoJacksonEncodeXStreamDecode() throws Exception {
+    void instanceInfoJacksonEncodeXStreamDecode() throws Exception {
         // Encode
         ByteArrayOutputStream captureStream = new ByteArrayOutputStream();
         codec.writeTo(INSTANCE_INFO_1_A1, captureStream);
@@ -120,7 +119,7 @@ public class EurekaJacksonCodecTest {
     }
 
     @Test
-    public void testApplicationJacksonEncodeDecode() throws Exception {
+    void applicationJacksonEncodeDecode() throws Exception {
         // Encode
         ByteArrayOutputStream captureStream = new ByteArrayOutputStream();
         codec.writeTo(APPLICATION_1, captureStream);
@@ -134,7 +133,7 @@ public class EurekaJacksonCodecTest {
     }
 
     @Test
-    public void testApplicationXStreamEncodeJacksonDecode() throws Exception {
+    void applicationXStreamEncodeJacksonDecode() throws Exception {
         Application original = APPLICATION_1;
 
         // Encode
@@ -150,7 +149,7 @@ public class EurekaJacksonCodecTest {
     }
 
     @Test
-    public void testApplicationJacksonEncodeXStreamDecode() throws Exception {
+    void applicationJacksonEncodeXStreamDecode() throws Exception {
         // Encode
         ByteArrayOutputStream captureStream = new ByteArrayOutputStream();
         codec.writeTo(APPLICATION_1, captureStream);
@@ -164,7 +163,7 @@ public class EurekaJacksonCodecTest {
     }
 
     @Test
-    public void testApplicationsJacksonEncodeDecode() throws Exception {
+    void applicationsJacksonEncodeDecode() throws Exception {
         // Encode
         ByteArrayOutputStream captureStream = new ByteArrayOutputStream();
         codec.writeTo(APPLICATIONS, captureStream);
@@ -178,7 +177,7 @@ public class EurekaJacksonCodecTest {
     }
 
     @Test
-    public void testApplicationsXStreamEncodeJacksonDecode() throws Exception {
+    void applicationsXStreamEncodeJacksonDecode() throws Exception {
         Applications original = APPLICATIONS;
 
         // Encode
@@ -194,7 +193,7 @@ public class EurekaJacksonCodecTest {
     }
 
     @Test
-    public void testApplicationsJacksonEncodeXStreamDecode() throws Exception {
+    void applicationsJacksonEncodeXStreamDecode() throws Exception {
         // Encode
         ByteArrayOutputStream captureStream = new ByteArrayOutputStream();
         codec.writeTo(APPLICATIONS, captureStream);
@@ -208,7 +207,7 @@ public class EurekaJacksonCodecTest {
     }
 
     @Test
-    public void testJacksonWriteToString() throws Exception {
+    void jacksonWriteToString() throws Exception {
         String jsonValue = codec.writeToString(INSTANCE_INFO_1_A1);
         InstanceInfo decoded = codec.readValue(InstanceInfo.class, new ByteArrayInputStream(jsonValue.getBytes(Charset.defaultCharset())));
 
@@ -216,7 +215,7 @@ public class EurekaJacksonCodecTest {
     }
 
     @Test
-    public void testJacksonWrite() throws Exception {
+    void jacksonWrite() throws Exception {
         // Encode
         ByteArrayOutputStream captureStream = new ByteArrayOutputStream();
         codec.writeTo(INSTANCE_INFO_1_A1, captureStream);

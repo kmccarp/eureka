@@ -3,24 +3,25 @@ package com.netflix.discovery;
 import java.util.UUID;
 
 import com.netflix.appinfo.ApplicationInfoManager;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import com.netflix.appinfo.DataCenterInfo;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.appinfo.MyDataCenterInstanceConfig;
 import com.netflix.config.ConfigurationManager;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Nitesh Kant
  */
-public class DiscoveryClientDisableRegistryTest {
+class DiscoveryClientDisableRegistryTest {
 
     private EurekaClient client;
     private MockRemoteEurekaServer mockLocalEurekaServer;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         mockLocalEurekaServer = new MockRemoteEurekaServer();
         mockLocalEurekaServer.start();
 
@@ -46,8 +47,8 @@ public class DiscoveryClientDisableRegistryTest {
     }
 
     @Test
-    public void testDisableFetchRegistry() throws Exception {
-        Assert.assertFalse("Registry fetch disabled but eureka server recieved a registry fetch.",
-                mockLocalEurekaServer.isSentRegistry());
+    void disableFetchRegistry() throws Exception {
+        assertFalse(mockLocalEurekaServer.isSentRegistry(),
+                "Registry fetch disabled but eureka server recieved a registry fetch.");
     }
 }

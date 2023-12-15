@@ -37,8 +37,8 @@ public class MonitoredConnectionManager extends ThreadSafeClientConnManager {
     }
 
     void initMonitors(String name) {
-        if (this.pool instanceof NamedConnectionPool) {
-            ((NamedConnectionPool) this.pool).initMonitors(name);
+        if (this.pool instanceof NamedConnectionPool namedConnectionPool) {
+            namedConnectionPool.initMonitors(name);
         }
     }
 

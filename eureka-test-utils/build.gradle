@@ -1,5 +1,8 @@
 dependencies {
     compile project(':eureka-core')
-    compile "junit:junit:${junit_version}"
     compile "org.mockito:mockito-core:${mockitoVersion}"
+
+    compileOnly "org.glassfish.jaxb:jaxb-runtime:4.0.4"
+
+    testImplementation "org.glassfish.jaxb:jaxb-runtime:4.0.4"
 }

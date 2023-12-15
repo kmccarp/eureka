@@ -43,7 +43,7 @@ public class ThresholdLevelsMetric {
         this.levels = levels;
         this.gauges = new LongGauge[levels.length];
         for (int i = 0; i < levels.length; i++) {
-            String name = prefix + String.format("%05d", levels[i]);
+            String name = prefix + "%05d".formatted(levels[i]);
             MonitorConfig config = new MonitorConfig.Builder(name)
                     .withTag("class", owner.getClass().getName())
                     .build();

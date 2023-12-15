@@ -16,10 +16,10 @@
 
 package com.netflix.discovery.shared.dns;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 import com.netflix.discovery.endpoint.DnsResolver;
+import jakarta.annotation.Nullable;
 
 /**
  * @author Tomasz Bak

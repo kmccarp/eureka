@@ -76,8 +76,8 @@ public class EurekaJerseyClientImpl implements EurekaJerseyClient {
 
         final Object connectionManager =
                 jerseyClientConfig.getProperty(ApacheHttpClient4Config.PROPERTY_CONNECTION_MANAGER);
-        if (connectionManager instanceof MonitoredConnectionManager) {
-            ((MonitoredConnectionManager) connectionManager).shutdown();
+        if (connectionManager instanceof MonitoredConnectionManager manager) {
+            manager.shutdown();
         }
     }
 

@@ -16,7 +16,6 @@
 
 package com.netflix.discovery.shared;
 
-import javax.annotation.Nullable;
 import java.util.AbstractQueue;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,6 +44,7 @@ import com.netflix.discovery.InstanceRegionChecker;
 import com.netflix.discovery.provider.Serializer;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import jakarta.annotation.Nullable;
 
 /**
  * The class that wraps all the registry information returned by eureka server.

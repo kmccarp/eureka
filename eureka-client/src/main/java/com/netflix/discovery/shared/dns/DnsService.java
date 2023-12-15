@@ -16,7 +16,8 @@
 
 package com.netflix.discovery.shared.dns;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
+
 import java.util.List;
 
 /**

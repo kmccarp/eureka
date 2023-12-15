@@ -16,7 +16,6 @@
 
 package com.netflix.eureka.registry;
 
-import javax.annotation.Nullable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.AbstractQueue;
@@ -56,6 +55,7 @@ import com.netflix.eureka.registry.rule.InstanceStatusOverrideRule;
 import com.netflix.eureka.resources.ServerCodecs;
 import com.netflix.eureka.util.MeasuredRate;
 import com.netflix.servo.annotations.DataSourceType;
+import jakarta.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -212,8 +212,10 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                 // this is a > instead of a >= because if the timestamps are equal, we still take the remote transmitted
                 // InstanceInfo instead of the server local copy.
                 if (existingLastDirtyTimestamp > registrationLastDirtyTimestamp) {
-                    logger.warn("There is an existing lease and the existing lease's dirty timestamp {} is greater" +
-                            " than the one that is being registered {}", existingLastDirtyTimestamp, registrationLastDirtyTimestamp);
+                    logger.warn("""
+                            There is an existing lease and the existing lease's dirty timestamp {} is greater\
+                             than the one that is being registered {}\
+                            """, existingLastDirtyTimestamp, registrationLastDirtyTimestamp);
                     logger.warn("Using the existing instanceInfo instead of the new instanceInfo as the registrant");
                     registrant = existingLease.getHolder();
                 }
@@ -238,8 +240,10 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                     registrant.getAppName() + "(" + registrant.getId() + ")"));
             // This is where the initial state transfer of overridden status happens
             if (!InstanceStatus.UNKNOWN.equals(registrant.getOverriddenStatus())) {
-                logger.debug("Found overridden status {} for instance {}. Checking to see if needs to be add to the "
-                                + "overrides", registrant.getOverriddenStatus(), registrant.getId());
+                logger.debug("""
+                                Found overridden status {} for instance {}. Checking to see if needs to be add to the \
+                                overrides\
+                                """, registrant.getOverriddenStatus(), registrant.getId());
                 if (!overriddenInstanceStatusMap.containsKey(registrant.getId())) {
                     logger.info("Not found overridden id {} and hence adding it", registrant.getId());
                     overriddenInstanceStatusMap.put(registrant.getId(), registrant.getOverriddenStatus());
@@ -366,15 +370,19 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                 InstanceStatus overriddenInstanceStatus = this.getOverriddenInstanceStatus(
                         instanceInfo, leaseToRenew, isReplication);
                 if (overriddenInstanceStatus == InstanceStatus.UNKNOWN) {
-                    logger.info("Instance status UNKNOWN possibly due to deleted override for instance {}"
-                            + "; re-register required", instanceInfo.getId());
+                    logger.info("""
+                            Instance status UNKNOWN possibly due to deleted override for instance {}\
+                            ; re-register required\
+                            """, instanceInfo.getId());
                     RENEW_NOT_FOUND.increment(isReplication);
                     return false;
                 }
                 if (!instanceInfo.getStatus().equals(overriddenInstanceStatus)) {
                     logger.info(
-                            "The instance status {} is different from overridden instance status {} for instance {}. "
-                                    + "Hence setting the status to overridden status", instanceInfo.getStatus().name(),
+                            """
+                            The instance status {} is different from overridden instance status {} for instance {}. \
+                            Hence setting the status to overridden status\
+                            """, instanceInfo.getStatus().name(),
                                     overriddenInstanceStatus.name(),
                                     instanceInfo.getId());
                     instanceInfo.setStatusWithoutDirty(overriddenInstanceStatus);
@@ -781,8 +789,10 @@ public abstract class AbstractInstanceRegistry implements InstanceRegistry {
                                 appInstanceTillNow.addInstance(instanceInfo);
                             }
                         } else {
-                            logger.debug("Application {} not fetched from the remote region {} as there exists a "
-                                            + "whitelist and this app is not in the whitelist.",
+                            logger.debug("""
+                                            Application {} not fetched from the remote region {} as there exists a \
+                                            whitelist and this app is not in the whitelist.\
+                                            """,
                                     application.getName(), remoteRegion);
                         }
                     }

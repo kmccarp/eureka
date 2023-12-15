@@ -14,15 +14,15 @@ import com.netflix.eureka.cluster.TestableHttpReplicationClient.RequestType;
 import com.netflix.eureka.cluster.protocol.ReplicationInstance;
 import com.netflix.eureka.cluster.protocol.ReplicationList;
 import com.netflix.eureka.resources.ASGResource.ASGStatus;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
@@ -30,7 +30,7 @@ import static org.mockito.Mockito.verify;
 /**
  * @author Tomasz Bak
  */
-public class PeerEurekaNodeTest {
+class PeerEurekaNodeTest {
 
     private static final int BATCH_SIZE = 10;
     private static final long MAX_BATCHING_DELAY_MS = 10;
@@ -42,21 +42,21 @@ public class PeerEurekaNodeTest {
     private final InstanceInfo instanceInfo = ClusterSampleData.newInstanceInfo(1);
     private PeerEurekaNode peerEurekaNode;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         httpReplicationClient.withNetworkStatusCode(200);
         httpReplicationClient.withBatchReply(200);
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterEach
+    void tearDown() throws Exception {
         if (peerEurekaNode != null) {
             peerEurekaNode.shutDown();
         }
     }
 
     @Test
-    public void testRegistrationBatchReplication() throws Exception {
+    void registrationBatchReplication() throws Exception {
         createPeerEurekaNode().register(instanceInfo);
 
         ReplicationInstance replicationInstance = expectSingleBatchRequest();
@@ -64,7 +64,7 @@ public class PeerEurekaNodeTest {
     }
 
     @Test
-    public void testCancelBatchReplication() throws Exception {
+    void cancelBatchReplication() throws Exception {
         createPeerEurekaNode().cancel(instanceInfo.getAppName(), instanceInfo.getId());
 
         ReplicationInstance replicationInstance = expectSingleBatchRequest();
@@ -72,7 +72,7 @@ public class PeerEurekaNodeTest {
     }
 
     @Test
-    public void testHeartbeatBatchReplication() throws Throwable {
+    void heartbeatBatchReplication() throws Throwable {
         createPeerEurekaNode().heartbeat(instanceInfo.getAppName(), instanceInfo.getId(), instanceInfo, null, false);
 
         ReplicationInstance replicationInstance = expectSingleBatchRequest();
@@ -80,7 +80,7 @@ public class PeerEurekaNodeTest {
     }
 
     @Test
-    public void testHeartbeatReplicationFailure() throws Throwable {
+    void heartbeatReplicationFailure() throws Throwable {
         httpReplicationClient.withNetworkStatusCode(200, 200);
         httpReplicationClient.withBatchReply(404); // Not found, to trigger registration
         createPeerEurekaNode().heartbeat(instanceInfo.getAppName(), instanceInfo.getId(), instanceInfo, null, false);
@@ -95,7 +95,7 @@ public class PeerEurekaNodeTest {
     }
 
     @Test
-    public void testHeartbeatWithInstanceInfoFromPeer() throws Throwable {
+    void heartbeatWithInstanceInfoFromPeer() throws Throwable {
         InstanceInfo instanceInfoFromPeer = ClusterSampleData.newInstanceInfo(2);
 
         httpReplicationClient.withNetworkStatusCode(200);
@@ -111,7 +111,7 @@ public class PeerEurekaNodeTest {
     }
 
     @Test
-    public void testAsgStatusUpdate() throws Throwable {
+    void asgStatusUpdate() throws Throwable {
         createPeerEurekaNode().statusUpdate(instanceInfo.getASGName(), ASGStatus.DISABLED);
 
         Object newAsgStatus = expectRequestType(RequestType.AsgStatusUpdate);
@@ -119,7 +119,7 @@ public class PeerEurekaNodeTest {
     }
 
     @Test
-    public void testStatusUpdateBatchReplication() throws Throwable {
+    void statusUpdateBatchReplication() throws Throwable {
         createPeerEurekaNode().statusUpdate(instanceInfo.getAppName(), instanceInfo.getId(), InstanceStatus.DOWN, instanceInfo);
 
         ReplicationInstance replicationInstance = expectSingleBatchRequest();
@@ -127,7 +127,7 @@ public class PeerEurekaNodeTest {
     }
 
     @Test
-    public void testDeleteStatusOverrideBatchReplication() throws Throwable {
+    void deleteStatusOverrideBatchReplication() throws Throwable {
         createPeerEurekaNode().deleteStatusOverride(instanceInfo.getAppName(), instanceInfo.getId(), instanceInfo);
 
         ReplicationInstance replicationInstance = expectSingleBatchRequest();

@@ -1,10 +1,14 @@
 package com.netflix.discovery;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
 import com.google.inject.util.Providers;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.netflix.appinfo.AmazonInfo;
 import com.netflix.appinfo.ApplicationInfoManager;
 import com.netflix.appinfo.DataCenterInfo;
@@ -14,9 +18,9 @@ import com.netflix.config.ConfigurationManager;
 import com.netflix.discovery.shared.Application;
 import com.netflix.discovery.shared.Applications;
 import com.netflix.discovery.shared.resolver.ResolverUtils;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
+import jakarta.annotation.Nullable;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Nitesh Kant
@@ -78,30 +82,30 @@ public class BackUpRegistryTest {
         );
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterEach
+    void tearDown() throws Exception {
         client.shutdown();
         ConfigurationManager.getConfigInstance().clear();
     }
 
     @Test
-    public void testLocalOnly() throws Exception {
+    void localOnly() throws Exception {
         setUp(false);
         Applications applications = client.getApplications();
         List<Application> registeredApplications = applications.getRegisteredApplications();
         System.out.println("***" + registeredApplications);
-        Assert.assertNotNull("Local region apps not found.", registeredApplications);
-        Assert.assertEquals("Local apps size not as expected.", 1, registeredApplications.size());
-        Assert.assertEquals("Local region apps not present.", LOCAL_REGION_APP_NAME, registeredApplications.get(0).getName());
+        assertNotNull(registeredApplications, "Local region apps not found.");
+        assertEquals(1, registeredApplications.size(), "Local apps size not as expected.");
+        assertEquals(LOCAL_REGION_APP_NAME, registeredApplications.get(0).getName(), "Local region apps not present.");
     }
 
     @Test
-    public void testRemoteEnabledButLocalOnlyQueried() throws Exception {
+    void remoteEnabledButLocalOnlyQueried() throws Exception {
         setUp(true);
         Applications applications = client.getApplications();
         List<Application> registeredApplications = applications.getRegisteredApplications();
-        Assert.assertNotNull("Local region apps not found.", registeredApplications);
-        Assert.assertEquals("Local apps size not as expected.", 2, registeredApplications.size()); // Remote region comes with no instances.
+        assertNotNull(registeredApplications, "Local region apps not found.");
+        assertEquals(2, registeredApplications.size(), "Local apps size not as expected."); // Remote region comes with no instances.
         Application localRegionApp = null;
         Application remoteRegionApp = null;
         for (Application registeredApplication : registeredApplications) {
@@ -111,26 +115,26 @@ public class BackUpRegistryTest {
                 remoteRegionApp = registeredApplication;
             }
         }
-        Assert.assertNotNull("Local region apps not present.", localRegionApp);
-        Assert.assertTrue("Remote region instances returned for local query.", null == remoteRegionApp || remoteRegionApp.getInstances().isEmpty());
+        assertNotNull(localRegionApp, "Local region apps not present.");
+        assertTrue(null == remoteRegionApp || remoteRegionApp.getInstances().isEmpty(), "Remote region instances returned for local query.");
     }
 
     @Test
-    public void testRemoteEnabledAndQueried() throws Exception {
+    void remoteEnabledAndQueried() throws Exception {
         setUp(true);
         Applications applications = client.getApplicationsForARegion(REMOTE_REGION);
         List<Application> registeredApplications = applications.getRegisteredApplications();
-        Assert.assertNotNull("Remote region apps not found.", registeredApplications);
-        Assert.assertEquals("Remote apps size not as expected.", 1, registeredApplications.size());
-        Assert.assertEquals("Remote region apps not present.", REMOTE_REGION_APP_NAME, registeredApplications.get(0).getName());
+        assertNotNull(registeredApplications, "Remote region apps not found.");
+        assertEquals(1, registeredApplications.size(), "Remote apps size not as expected.");
+        assertEquals(REMOTE_REGION_APP_NAME, registeredApplications.get(0).getName(), "Remote region apps not present.");
     }
 
     @Test
-    public void testAppsHashCode() throws Exception {
+    void appsHashCode() throws Exception {
         setUp(true);
         Applications applications = client.getApplications();
 
-        Assert.assertEquals("UP_1_", applications.getAppsHashCode());
+        assertEquals("UP_1_", applications.getAppsHashCode());
     }
 
     private void setupBackupMock() {

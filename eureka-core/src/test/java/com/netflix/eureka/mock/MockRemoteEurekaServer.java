@@ -1,11 +1,11 @@
 package com.netflix.eureka.mock;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
@@ -15,13 +15,16 @@ import com.netflix.discovery.converters.jackson.EurekaJsonJacksonCodec;
 import com.netflix.discovery.shared.Application;
 import com.netflix.discovery.shared.Applications;
 import com.netflix.eureka.*;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.rules.ExternalResource;
 import org.mortbay.jetty.Request;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.servlet.FilterHolder;
 import org.mortbay.jetty.servlet.ServletHandler;
 
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -52,8 +55,8 @@ public class MockRemoteEurekaServer extends ExternalResource {
         handler.addFilterWithMapping(RateLimitingFilter.class, "/*", 1).setFilter(new RateLimitingFilter(serverContext));
         server = new Server(port);
         server.addHandler(handler);
-        System.out.println(String.format(
-                "Created eureka server mock with applications map %s and applications delta map %s",
+        System.out.println(
+                "Created eureka server mock with applications map %s and applications delta map %s".formatted(
                 stringifyAppMap(applicationMap), stringifyAppMap(applicationDeltaMap)));
     }
 
@@ -64,11 +67,9 @@ public class MockRemoteEurekaServer extends ExternalResource {
 
     @Override
     protected void after() {
-        try {
+        Assertions.assertDoesNotThrow(() -> {
             stop();
-        } catch (Exception e) {
-            Assert.fail(e.getMessage());
-        }
+        });
     }
 
     public void start() throws Exception {
@@ -95,7 +96,7 @@ public class MockRemoteEurekaServer extends ExternalResource {
     private static String stringifyAppMap(Map<String, Application> applicationMap) {
         StringBuilder builder = new StringBuilder();
         for (Map.Entry<String, Application> entry : applicationMap.entrySet()) {
-            String entryAsString = String.format("{ name : %s , instance count: %d }", entry.getKey(),
+            String entryAsString = "{ name : %s , instance count: %d }".formatted(entry.getKey(),
                     entry.getValue().getInstances().size());
             builder.append(entryAsString);
         }
@@ -116,13 +117,13 @@ public class MockRemoteEurekaServer extends ExternalResource {
             String authVersion = request.getHeader(AbstractEurekaIdentity.AUTH_VERSION_HEADER_KEY);
             String authId = request.getHeader(AbstractEurekaIdentity.AUTH_ID_HEADER_KEY);
 
-            Assert.assertNotNull(authName);
-            Assert.assertNotNull(authVersion);
-            Assert.assertNotNull(authId);
+            assertNotNull(authName);
+            assertNotNull(authVersion);
+            assertNotNull(authId);
 
-            Assert.assertTrue(!authName.equals(ServerRequestAuthFilter.UNKNOWN));
-            Assert.assertTrue(!authVersion.equals(ServerRequestAuthFilter.UNKNOWN));
-            Assert.assertTrue(!authId.equals(ServerRequestAuthFilter.UNKNOWN));
+            assertNotEquals(ServerRequestAuthFilter.UNKNOWN, authName);
+            assertNotEquals(ServerRequestAuthFilter.UNKNOWN, authVersion);
+            assertNotEquals(ServerRequestAuthFilter.UNKNOWN, authId);
 
             for (FilterHolder filterHolder : this.getFilters()) {
                 filterHolder.getFilter().doFilter(request, response, new FilterChain() {

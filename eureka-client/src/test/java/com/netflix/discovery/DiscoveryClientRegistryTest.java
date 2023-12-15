@@ -1,6 +1,6 @@
 package com.netflix.discovery;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +16,11 @@ import com.netflix.discovery.shared.transport.EurekaHttpClient;
 import com.netflix.discovery.shared.transport.EurekaHttpResponse;
 import com.netflix.discovery.shared.transport.SimpleEurekaHttpServer;
 import com.netflix.discovery.util.InstanceInfoGenerator;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.netflix.discovery.shared.transport.EurekaHttpResponse.anEurekaHttpResponse;
 import static com.netflix.discovery.util.EurekaEntityFunctions.copyApplications;
@@ -31,10 +31,10 @@ import static com.netflix.discovery.util.EurekaEntityFunctions.toApplications;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.timeout;
@@ -64,20 +64,20 @@ public class DiscoveryClientRegistryTest {
     /**
      * Share server stub by all tests.
      */
-    @BeforeClass
-    public static void setUpClass() throws IOException {
+    @BeforeAll
+    static void setUpClass() throws IOException {
         eurekaHttpServer = new SimpleEurekaHttpServer(requestHandler);
     }
 
-    @AfterClass
-    public static void tearDownClass() throws Exception {
+    @AfterAll
+    static void tearDownClass() throws Exception {
         if (eurekaHttpServer != null) {
             eurekaHttpServer.shutdown();
         }
     }
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         reset(requestHandler);
         when(requestHandler.cancel(anyString(), anyString())).thenReturn(EurekaHttpResponse.status(200));
         when(requestHandler.getDelta()).thenReturn(
@@ -86,7 +86,7 @@ public class DiscoveryClientRegistryTest {
     }
 
     @Test
-    public void testGetByVipInLocalRegion() throws Exception {
+    void getByVipInLocalRegion() throws Exception {
         Applications applications = InstanceInfoGenerator.newBuilder(4, "app1", "app2").build().toApplications();
         InstanceInfo instance = applications.getRegisteredApplications("app1").getInstances().get(0);
 
@@ -100,7 +100,7 @@ public class DiscoveryClientRegistryTest {
     }
 
     @Test
-    public void testGetAllKnownRegions() throws Exception {
+    void getAllKnownRegions() throws Exception {
         prepareRemoteRegionRegistry();
 
         EurekaClient client = discoveryClientResource.getClient();
@@ -111,7 +111,7 @@ public class DiscoveryClientRegistryTest {
     }
 
     @Test
-    public void testAllAppsForRegions() throws Exception {
+    void allAppsForRegions() throws Exception {
         prepareRemoteRegionRegistry();
         EurekaClient client = discoveryClientResource.getClient();
 
@@ -123,7 +123,7 @@ public class DiscoveryClientRegistryTest {
     }
 
     @Test
-    public void testCacheRefreshSingleAppForLocalRegion() throws Exception {
+    void cacheRefreshSingleAppForLocalRegion() throws Exception {
         InstanceInfoGenerator instanceGen = InstanceInfoGenerator.newBuilder(2, "testApp").build();
         Applications initialApps = instanceGen.takeDelta(1);
         String vipAddress = initialApps.getRegisteredApplications().get(0).getInstances().get(0).getVIPAddress();
@@ -146,7 +146,7 @@ public class DiscoveryClientRegistryTest {
     }
 
     @Test
-    public void testEurekaClientPeriodicHeartbeat() throws Exception {
+    void eurekaClientPeriodicHeartbeat() throws Exception {
         DiscoveryClientResource registeringClientResource = discoveryClientResource.fork().withRegistration(true).withRegistryFetch(false).build();
         InstanceInfo instance = registeringClientResource.getMyInstanceInfo();
         when(requestHandler.register(any(InstanceInfo.class))).thenReturn(EurekaHttpResponse.status(204));
@@ -157,7 +157,7 @@ public class DiscoveryClientRegistryTest {
     }
 
     @Test
-    public void testEurekaClientPeriodicCacheRefresh() throws Exception {
+    void eurekaClientPeriodicCacheRefresh() throws Exception {
         InstanceInfoGenerator instanceGen = InstanceInfoGenerator.newBuilder(3, 1).build();
         Applications initialApps = instanceGen.takeDelta(1);
 
@@ -185,7 +185,7 @@ public class DiscoveryClientRegistryTest {
     }
 
     @Test
-    public void testGetInvalidVIP() throws Exception {
+    void getInvalidVIP() throws Exception {
         Applications applications = InstanceInfoGenerator.newBuilder(1, "testApp").build().toApplications();
         when(requestHandler.getApplications(TEST_REMOTE_REGION)).thenReturn(
                 anEurekaHttpResponse(200, applications).type(MediaType.APPLICATION_JSON_TYPE).build()
@@ -199,7 +199,7 @@ public class DiscoveryClientRegistryTest {
     }
 
     @Test
-    public void testGetInvalidVIPForRemoteRegion() throws Exception {
+    void getInvalidVIPForRemoteRegion() throws Exception {
         prepareRemoteRegionRegistry();
 
         EurekaClient client = discoveryClientResource.getClient();
@@ -208,7 +208,7 @@ public class DiscoveryClientRegistryTest {
     }
 
     @Test
-    public void testGetByVipInRemoteRegion() throws Exception {
+    void getByVipInRemoteRegion() throws Exception {
         prepareRemoteRegionRegistry();
 
         EurekaClient client = discoveryClientResource.getClient();
@@ -221,7 +221,7 @@ public class DiscoveryClientRegistryTest {
     }
 
     @Test
-    public void testAppsHashCodeAfterRefresh() throws Exception {
+    void appsHashCodeAfterRefresh() throws Exception {
         InstanceInfoGenerator instanceGen = InstanceInfoGenerator.newBuilder(2, "testApp").build();
 
         // Full fetch with one item
@@ -248,7 +248,7 @@ public class DiscoveryClientRegistryTest {
 
 
     @Test
-    public void testApplyDeltaWithBadInstanceInfoDataCenterInfoAsNull() throws Exception {
+    void applyDeltaWithBadInstanceInfoDataCenterInfoAsNull() throws Exception {
         InstanceInfoGenerator instanceGen = InstanceInfoGenerator.newBuilder(2, "testApp").build();
 
         // Full fetch with one item
@@ -280,7 +280,7 @@ public class DiscoveryClientRegistryTest {
     }
 
     @Test
-    public void testEurekaClientPeriodicCacheRefreshForDelete() throws Exception {
+    void eurekaClientPeriodicCacheRefreshForDelete() throws Exception {
         InstanceInfoGenerator instanceGen = InstanceInfoGenerator.newBuilder(3, 1).build();
         Applications initialApps = instanceGen.takeDelta(2);
         Applications deltaForDelete = instanceGen.takeDeltaForDelete(true, 1);
@@ -298,7 +298,7 @@ public class DiscoveryClientRegistryTest {
     }
 
     @Test
-    public void testEurekaClientPeriodicCacheRefreshForDeleteAndNoApplication() throws Exception {
+    void eurekaClientPeriodicCacheRefreshForDeleteAndNoApplication() throws Exception {
         InstanceInfoGenerator instanceGen = InstanceInfoGenerator.newBuilder(3, 1).build();
         Applications initialApps = instanceGen.takeDelta(1);
         Applications deltaForDelete = instanceGen.takeDeltaForDelete(true, 1);

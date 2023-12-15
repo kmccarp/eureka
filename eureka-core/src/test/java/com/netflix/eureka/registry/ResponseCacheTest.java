@@ -7,24 +7,25 @@ import com.netflix.eureka.DefaultEurekaServerConfig;
 import com.netflix.eureka.EurekaServerConfig;
 import com.netflix.eureka.Version;
 import com.netflix.eureka.resources.DefaultServerCodecs;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
 /**
  * @author Nitesh Kant
  */
-public class ResponseCacheTest extends AbstractTester {
+class ResponseCacheTest extends AbstractTester {
 
     private static final String REMOTE_REGION = "myremote";
 
     private PeerAwareInstanceRegistry testRegistry;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         // create a new registry that is sync'ed up with the default registry in the AbstractTester,
@@ -43,19 +44,19 @@ public class ResponseCacheTest extends AbstractTester {
     }
 
     @Test
-    public void testInvalidate() throws Exception {
+    void invalidate() throws Exception {
         ResponseCacheImpl cache = (ResponseCacheImpl) testRegistry.getResponseCache();
         Key key = new Key(Key.EntityType.Application, REMOTE_REGION_APP_NAME,
                 Key.KeyType.JSON, Version.V1, EurekaAccept.full);
         String response = cache.get(key, false);
-        Assert.assertNotNull("Cache get returned null.", response);
+        assertNotNull(response, "Cache get returned null.");
 
         testRegistry.cancel(REMOTE_REGION_APP_NAME, REMOTE_REGION_INSTANCE_1_HOSTNAME, true);
-        Assert.assertNull("Cache after invalidate did not return null for write view.", cache.get(key, true));
+        assertNull(cache.get(key, true), "Cache after invalidate did not return null for write view.");
     }
 
     @Test
-    public void testInvalidateWithRemoteRegion() throws Exception {
+    void invalidateWithRemoteRegion() throws Exception {
         ResponseCacheImpl cache = (ResponseCacheImpl) testRegistry.getResponseCache();
         Key key = new Key(
                 Key.EntityType.Application,
@@ -63,14 +64,14 @@ public class ResponseCacheTest extends AbstractTester {
                 Key.KeyType.JSON, Version.V1, EurekaAccept.full, new String[]{REMOTE_REGION}
         );
 
-        Assert.assertNotNull("Cache get returned null.", cache.get(key, false));
+        assertNotNull(cache.get(key, false), "Cache get returned null.");
 
         testRegistry.cancel(REMOTE_REGION_APP_NAME, REMOTE_REGION_INSTANCE_1_HOSTNAME, true);
-        Assert.assertNull("Cache after invalidate did not return null.", cache.get(key));
+        assertNull(cache.get(key), "Cache after invalidate did not return null.");
     }
 
     @Test
-    public void testInvalidateWithMultipleRemoteRegions() throws Exception {
+    void invalidateWithMultipleRemoteRegions() throws Exception {
         ResponseCacheImpl cache = (ResponseCacheImpl) testRegistry.getResponseCache();
         Key key1 = new Key(
                 Key.EntityType.Application,
@@ -83,12 +84,12 @@ public class ResponseCacheTest extends AbstractTester {
                 Key.KeyType.JSON, Version.V1, EurekaAccept.full, new String[]{REMOTE_REGION}
         );
 
-        Assert.assertNotNull("Cache get returned null.", cache.get(key1, false));
-        Assert.assertNotNull("Cache get returned null.", cache.get(key2, false));
+        assertNotNull(cache.get(key1, false), "Cache get returned null.");
+        assertNotNull(cache.get(key2, false), "Cache get returned null.");
 
         testRegistry.cancel(REMOTE_REGION_APP_NAME, REMOTE_REGION_INSTANCE_1_HOSTNAME, true);
 
-        Assert.assertNull("Cache after invalidate did not return null.", cache.get(key1, true));
-        Assert.assertNull("Cache after invalidate did not return null.", cache.get(key2, true));
+        assertNull(cache.get(key1, true), "Cache after invalidate did not return null.");
+        assertNull(cache.get(key2, true), "Cache after invalidate did not return null.");
     }
 }

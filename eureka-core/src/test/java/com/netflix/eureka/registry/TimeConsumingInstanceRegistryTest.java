@@ -9,15 +9,16 @@ import com.netflix.eureka.test.async.executor.AsyncResult;
 import com.netflix.eureka.test.async.executor.AsyncSequentialExecutor;
 import com.netflix.eureka.test.async.executor.SequentialEvents;
 import com.netflix.eureka.test.async.executor.SingleEvent;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Time consuming test case for {@link InstanceRegistry}.
  *
  * @author neoremind
  */
-public class TimeConsumingInstanceRegistryTest extends AbstractTester {
+class TimeConsumingInstanceRegistryTest extends AbstractTester {
 
     /**
      * Verify the following behaviors, the test case will run for 2 minutes.
@@ -67,7 +68,7 @@ public class TimeConsumingInstanceRegistryTest extends AbstractTester {
      * Note that there is a thread retrieving and printing out registry status for debugging purpose.
      */
     @Test
-    public void testLeaseExpirationAndUpdateRenewalThreshold() throws InterruptedException {
+    void leaseExpirationAndUpdateRenewalThreshold() throws InterruptedException {
         final int registeredInstanceCount = 50;
         final int leaseDurationInSecs = 30;
 
@@ -89,10 +90,12 @@ public class TimeConsumingInstanceRegistryTest extends AbstractTester {
             buildEvents(5, 24, new SingleEvent.Action() {
                 @Override
                 public void execute() {
-                    System.out.println(String.format("isLeaseExpirationEnabled=%s, getNumOfRenewsInLastMin=%d, "
-                            + "getNumOfRenewsPerMinThreshold=%s, instanceNumberOfMYLOCALAPP=%d", registry.isLeaseExpirationEnabled(),
-                        registry.getNumOfRenewsInLastMin(), registry.getNumOfRenewsPerMinThreshold(),
-                        registry.getApplication(LOCAL_REGION_APP_NAME).getInstances().size()));
+                    System.out.println(("""
+                            isLeaseExpirationEnabled=%s, getNumOfRenewsInLastMin=%d, \
+                            getNumOfRenewsPerMinThreshold=%s, instanceNumberOfMYLOCALAPP=%d\
+                            """).formatted(registry.isLeaseExpirationEnabled(),
+                            registry.getNumOfRenewsInLastMin(), registry.getNumOfRenewsPerMinThreshold(),
+                            registry.getApplication(LOCAL_REGION_APP_NAME).getInstances().size()));
                 }
             })
         );
@@ -157,10 +160,10 @@ public class TimeConsumingInstanceRegistryTest extends AbstractTester {
         AsyncResult<AsyncSequentialExecutor.ResultStatus> remoteRegionAddMoreInstancesResult = executor.run(remoteRegionAddMoreInstancesEvents);
         AsyncResult<AsyncSequentialExecutor.ResultStatus> checkResult = executor.run(checkEvents);
 
-        Assert.assertEquals("Register application and instances failed", AsyncSequentialExecutor.ResultStatus.DONE, registerMyLocalAppAndInstancesResult.getResult());
-        Assert.assertEquals("Show registry status failed", AsyncSequentialExecutor.ResultStatus.DONE, showRegistryStatusEventResult.getResult());
-        Assert.assertEquals("Renew lease did not succeed", AsyncSequentialExecutor.ResultStatus.DONE, renewResult.getResult());
-        Assert.assertEquals("More instances are registered to remote region did not succeed", AsyncSequentialExecutor.ResultStatus.DONE, remoteRegionAddMoreInstancesResult.getResult());
-        Assert.assertEquals("Check failed", AsyncSequentialExecutor.ResultStatus.DONE, checkResult.getResult());
+        assertEquals(AsyncSequentialExecutor.ResultStatus.DONE, registerMyLocalAppAndInstancesResult.getResult(), "Register application and instances failed");
+        assertEquals(AsyncSequentialExecutor.ResultStatus.DONE, showRegistryStatusEventResult.getResult(), "Show registry status failed");
+        assertEquals(AsyncSequentialExecutor.ResultStatus.DONE, renewResult.getResult(), "Renew lease did not succeed");
+        assertEquals(AsyncSequentialExecutor.ResultStatus.DONE, remoteRegionAddMoreInstancesResult.getResult(), "More instances are registered to remote region did not succeed");
+        assertEquals(AsyncSequentialExecutor.ResultStatus.DONE, checkResult.getResult(), "Check failed");
     }
 }

@@ -1,14 +1,14 @@
 package com.netflix.eureka;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 import com.google.common.base.Strings;
@@ -59,8 +59,7 @@ public class ServerRequestAuthFilter implements Filter {
 
     protected void logAuth(ServletRequest request) {
         if (serverConfig.shouldLogIdentityHeaders()) {
-            if (request instanceof HttpServletRequest) {
-                HttpServletRequest httpRequest = (HttpServletRequest) request;
+            if (request instanceof HttpServletRequest httpRequest) {
 
                 String clientName = getHeader(httpRequest, AbstractEurekaIdentity.AUTH_NAME_HEADER_KEY);
                 String clientVersion = getHeader(httpRequest, AbstractEurekaIdentity.AUTH_VERSION_HEADER_KEY);

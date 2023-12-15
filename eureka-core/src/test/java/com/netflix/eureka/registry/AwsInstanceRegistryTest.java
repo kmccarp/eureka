@@ -9,16 +9,16 @@ import com.netflix.discovery.EurekaClient;
 import com.netflix.discovery.EurekaClientConfig;
 import com.netflix.eureka.EurekaServerConfig;
 import com.netflix.eureka.resources.ServerCodecs;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 /**
  * Created by Nikos Michalakis on 7/14/16.
  */
-public class AwsInstanceRegistryTest extends InstanceRegistryTest {
+class AwsInstanceRegistryTest extends InstanceRegistryTest {
 
     @Test
-    public void testOverridesWithAsgEnabledThenDisabled() {
+    void overridesWithAsgEnabledThenDisabled() {
         // Regular registration first
         InstanceInfo myInstance = createLocalUpInstanceWithAsg(LOCAL_REGION_INSTANCE_1_HOSTNAME);
         registerInstanceLocally(myInstance);

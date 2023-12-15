@@ -13,11 +13,11 @@ import com.netflix.discovery.util.EurekaEntityComparators;
 import com.netflix.discovery.util.InstanceInfoGenerator;
 import com.netflix.eureka.AbstractTester;
 import com.netflix.eureka.Version;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -28,12 +28,12 @@ import static org.mockito.Mockito.when;
 /**
  * @author David Liu
  */
-public class ApplicationResourceTest extends AbstractTester {
+class ApplicationResourceTest extends AbstractTester {
     private ApplicationResource applicationResource;
     private Application testApplication;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         InstanceInfoGenerator instanceInfos = InstanceInfoGenerator.newBuilder(6, 1).build();
@@ -47,7 +47,7 @@ public class ApplicationResourceTest extends AbstractTester {
     }
 
     @Test
-    public void testFullAppGet() throws Exception {
+    void fullAppGet() throws Exception {
         Response response = applicationResource.getApplication(
                 Version.V2.name(),
                 MediaType.APPLICATION_JSON,
@@ -62,7 +62,7 @@ public class ApplicationResourceTest extends AbstractTester {
     }
 
     @Test
-    public void testMiniAppGet() throws Exception {
+    void miniAppGet() throws Exception {
         Response response = applicationResource.getApplication(
                 Version.V2.name(),
                 MediaType.APPLICATION_JSON,
@@ -83,14 +83,14 @@ public class ApplicationResourceTest extends AbstractTester {
     }
 
     @Test
-    public void testGoodRegistration() throws Exception {
+    void goodRegistration() throws Exception {
         InstanceInfo noIdInfo = InstanceInfoGenerator.takeOne();
         Response response = applicationResource.addInstance(noIdInfo, false+"");
         assertThat(response.getStatus(), is(204));
     }
 
     @Test
-    public void testBadRegistration() throws Exception {
+    void badRegistration() throws Exception {
         InstanceInfo instanceInfo = spy(InstanceInfoGenerator.takeOne());
         when(instanceInfo.getId()).thenReturn(null);
         Response response = applicationResource.addInstance(instanceInfo, false+"");
@@ -133,7 +133,7 @@ public class ApplicationResourceTest extends AbstractTester {
     }
 
     @Test
-    public void testBadRegistrationOfDataCenterInfo() throws Exception {
+    void badRegistrationOfDataCenterInfo() throws Exception {
         try {
             // test 400 when configured to return client error
             ConfigurationManager.getConfigInstance().setProperty("eureka.experimental.registration.validation.dataCenterInfoId", "true");

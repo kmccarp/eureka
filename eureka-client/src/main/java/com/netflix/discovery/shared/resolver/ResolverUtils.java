@@ -110,8 +110,8 @@ public final class ResolverUtils {
                                                      InstanceInfo instanceInfo) {
         String zone = null;
         DataCenterInfo dataCenterInfo = instanceInfo.getDataCenterInfo();
-        if (dataCenterInfo instanceof AmazonInfo) {
-            zone = ((AmazonInfo) dataCenterInfo).get(AmazonInfo.MetaDataKey.availabilityZone);
+        if (dataCenterInfo instanceof AmazonInfo info) {
+            zone = info.get(AmazonInfo.MetaDataKey.availabilityZone);
         } else {
             zone = instanceInfo.getMetadata().get("zone");
         }

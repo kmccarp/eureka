@@ -5,24 +5,24 @@ import com.netflix.discovery.shared.Applications;
 import com.netflix.discovery.shared.resolver.aws.ApplicationsResolver.ApplicationsSource;
 import com.netflix.discovery.shared.transport.EurekaTransportConfig;
 import com.netflix.discovery.util.InstanceInfoGenerator;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.eq;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
  * @author David Liu
  */
-public class ApplicationsResolverTest {
+class ApplicationsResolverTest {
 
     private final EurekaClientConfig clientConfig = mock(EurekaClientConfig.class);
     private final EurekaTransportConfig transportConfig = mock(EurekaTransportConfig.class);
@@ -32,8 +32,8 @@ public class ApplicationsResolverTest {
     private String vipAddress;
     private ApplicationsResolver resolver;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         when(clientConfig.getEurekaServerURLContext()).thenReturn("context");
         when(clientConfig.getRegion()).thenReturn("region");
         when(transportConfig.getApplicationsResolverDataStalenessThresholdSeconds()).thenReturn(1);
@@ -51,7 +51,7 @@ public class ApplicationsResolverTest {
     }
 
     @Test
-    public void testHappyCase() {
+    void happyCase() {
         when(applicationsSource.getApplications(anyInt(), eq(TimeUnit.SECONDS))).thenReturn(applications);
 
         List<AwsEndpoint> endpoints = resolver.getClusterEndpoints();
@@ -59,7 +59,7 @@ public class ApplicationsResolverTest {
     }
 
     @Test
-    public void testVipDoesNotExist() {
+    void vipDoesNotExist() {
         vipAddress = "doNotExist";
         when(transportConfig.getReadClusterVip()).thenReturn(vipAddress);
 
@@ -77,7 +77,7 @@ public class ApplicationsResolverTest {
     }
 
     @Test
-    public void testStaleData() {
+    void staleData() {
         when(applicationsSource.getApplications(anyInt(), eq(TimeUnit.SECONDS))).thenReturn(null);  // stale contract
 
         List<AwsEndpoint> endpoints = resolver.getClusterEndpoints();

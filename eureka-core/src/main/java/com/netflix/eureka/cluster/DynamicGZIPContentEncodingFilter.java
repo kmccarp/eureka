@@ -1,6 +1,6 @@
 package com.netflix.eureka.cluster;
 
-import javax.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.HttpHeaders;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;

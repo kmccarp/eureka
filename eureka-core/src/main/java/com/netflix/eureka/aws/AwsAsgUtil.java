@@ -31,8 +31,8 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -170,8 +170,10 @@ public class AwsAsgUtil implements AsgClient {
                 // a decision to call the disabled client during some sort of transitioning
                 // period, but no new values will be fetched while disabled.
 
-                logger.info(("'{}' is not cached at the moment and won't be fetched because querying AWS ASGs "
-                        + "has been disabled via the config, returning the fallback value."),
+                logger.info(("""
+                        '{}' is not cached at the moment and won't be fetched because querying AWS ASGs \
+                        has been disabled via the config, returning the fallback value.\
+                        """),
                             cacheKey);
 
                 return true;
@@ -468,8 +470,8 @@ public class AwsAsgUtil implements AsgClient {
         String localAccountId = null;
 
         DataCenterInfo dataCenterInfo = instanceInfo.getDataCenterInfo();
-        if (dataCenterInfo instanceof AmazonInfo) {
-            localAccountId = ((AmazonInfo) dataCenterInfo).get(MetaDataKey.accountId);
+        if (dataCenterInfo instanceof AmazonInfo info) {
+            localAccountId = info.get(MetaDataKey.accountId);
         }
 
         return localAccountId == null ? fallbackId : localAccountId;

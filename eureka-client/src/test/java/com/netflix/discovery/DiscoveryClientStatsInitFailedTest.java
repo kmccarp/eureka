@@ -1,41 +1,44 @@
 package com.netflix.discovery;
 
 import com.netflix.discovery.junit.resource.DiscoveryClientResource;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for DiscoveryClient stats reported when initial registry fetch fails.
  */
-public class DiscoveryClientStatsInitFailedTest extends BaseDiscoveryClientTester {
+class DiscoveryClientStatsInitFailedTest extends BaseDiscoveryClientTester {
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         setupProperties();
         populateRemoteRegistryAtStartup();
         setupDiscoveryClient();
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterEach
+    void tearDown() throws Exception {
         shutdownDiscoveryClient();
         DiscoveryClientResource.clearDiscoveryClientConfig();
     }
 
     @Test
-    public void testEmptyInitLocalRegistrySize() throws Exception {
-        Assert.assertTrue(client instanceof DiscoveryClient);
+    void emptyInitLocalRegistrySize() throws Exception {
+        assertTrue(client instanceof DiscoveryClient);
         DiscoveryClient clientImpl = (DiscoveryClient) client;
-        Assert.assertEquals(0, clientImpl.getStats().initLocalRegistrySize());
+        assertEquals(0, clientImpl.getStats().initLocalRegistrySize());
     }
 
     @Test
-    public void testInitFailed() throws Exception {
-        Assert.assertTrue(client instanceof DiscoveryClient);
+    void initFailed() throws Exception {
+        assertTrue(client instanceof DiscoveryClient);
         DiscoveryClient clientImpl = (DiscoveryClient) client;
-        Assert.assertFalse(clientImpl.getStats().initSucceeded());
+        assertFalse(clientImpl.getStats().initSucceeded());
     }
 
 }

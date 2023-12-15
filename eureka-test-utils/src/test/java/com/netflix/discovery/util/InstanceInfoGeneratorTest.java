@@ -19,19 +19,19 @@ package com.netflix.discovery.util;
 import java.util.Iterator;
 
 import com.netflix.appinfo.InstanceInfo;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Tomasz Bak
  */
-public class InstanceInfoGeneratorTest {
+class InstanceInfoGeneratorTest {
 
     @Test
-    public void testInstanceInfoStream() throws Exception {
+    void instanceInfoStream() throws Exception {
         Iterator<InstanceInfo> it = InstanceInfoGenerator.newBuilder(4, "app1", "app2").build().serviceIterator();
 
         assertThat(it.next().getAppName(), is(equalTo("APP1")));

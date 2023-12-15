@@ -1,11 +1,11 @@
 package com.netflix.discovery;
 
-import javax.annotation.Nullable;
 import java.util.Map;
 
 import com.netflix.appinfo.AmazonInfo;
 import com.netflix.appinfo.DataCenterInfo;
 import com.netflix.appinfo.InstanceInfo;
+import jakarta.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

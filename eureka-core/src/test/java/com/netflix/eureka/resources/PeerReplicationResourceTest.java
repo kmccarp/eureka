@@ -1,7 +1,7 @@
 package com.netflix.eureka.resources;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.shared.transport.ClusterSampleData;
@@ -12,15 +12,15 @@ import com.netflix.eureka.cluster.protocol.ReplicationInstance;
 import com.netflix.eureka.cluster.protocol.ReplicationInstanceResponse;
 import com.netflix.eureka.cluster.protocol.ReplicationList;
 import com.netflix.eureka.cluster.protocol.ReplicationListResponse;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.netflix.discovery.shared.transport.ClusterSampleData.newReplicationInstanceOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author Tomasz Bak
  */
-public class PeerReplicationResourceTest {
+class PeerReplicationResourceTest {
 
     private final ApplicationResource applicationResource = mock(ApplicationResource.class);
     private final InstanceResource instanceResource = mock(InstanceResource.class);
@@ -39,8 +39,8 @@ public class PeerReplicationResourceTest {
 
     private final InstanceInfo instanceInfo = ClusterSampleData.newInstanceInfo(0);
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         serverContext = mock(EurekaServerContext.class);
         when(serverContext.getServerConfig()).thenReturn(mock(EurekaServerConfig.class));
         peerReplicationResource = new PeerReplicationResource(serverContext) {
@@ -57,7 +57,7 @@ public class PeerReplicationResourceTest {
     }
 
     @Test
-    public void testRegisterBatching() throws Exception {
+    void registerBatching() throws Exception {
         ReplicationList replicationList = new ReplicationList(newReplicationInstanceOf(Action.Register, instanceInfo));
         Response response = peerReplicationResource.batchReplication(replicationList);
 
@@ -66,7 +66,7 @@ public class PeerReplicationResourceTest {
     }
 
     @Test
-    public void testCancelBatching() throws Exception {
+    void cancelBatching() throws Exception {
         when(instanceResource.cancelLease(anyString())).thenReturn(Response.ok().build());
 
         ReplicationList replicationList = new ReplicationList(newReplicationInstanceOf(Action.Cancel, instanceInfo));
@@ -77,7 +77,7 @@ public class PeerReplicationResourceTest {
     }
 
     @Test
-    public void testHeartbeat() throws Exception {
+    void heartbeat() throws Exception {
         when(instanceResource.renewLease(anyString(), anyString(), anyString(), anyString())).thenReturn(Response.ok().build());
 
         ReplicationInstance replicationInstance = newReplicationInstanceOf(Action.Heartbeat, instanceInfo);
@@ -91,9 +91,9 @@ public class PeerReplicationResourceTest {
                 Long.toString(replicationInstance.getLastDirtyTimestamp())
         );
     }
-    
+
     @Test
-    public void testConflictResponseReturnsTheInstanceInfoInTheResponseEntity() throws Exception {
+    void conflictResponseReturnsTheInstanceInfoInTheResponseEntity() throws Exception {
         when(instanceResource.renewLease(anyString(), anyString(), anyString(), anyString())).thenReturn(Response.status(Status.CONFLICT).entity(instanceInfo).build());
 
         ReplicationInstance replicationInstance = newReplicationInstanceOf(Action.Heartbeat, instanceInfo);
@@ -104,7 +104,7 @@ public class PeerReplicationResourceTest {
     }
 
     @Test
-    public void testStatusUpdate() throws Exception {
+    void statusUpdate() throws Exception {
         when(instanceResource.statusUpdate(anyString(), anyString(), anyString())).thenReturn(Response.ok().build());
 
         ReplicationInstance replicationInstance = newReplicationInstanceOf(Action.StatusUpdate, instanceInfo);
@@ -119,7 +119,7 @@ public class PeerReplicationResourceTest {
     }
 
     @Test
-    public void testDeleteStatusOverride() throws Exception {
+    void deleteStatusOverride() throws Exception {
         when(instanceResource.deleteStatusUpdate(anyString(), anyString(), anyString())).thenReturn(Response.ok().build());
 
         ReplicationInstance replicationInstance = newReplicationInstanceOf(Action.DeleteStatusOverride, instanceInfo);

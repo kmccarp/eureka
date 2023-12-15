@@ -375,8 +375,10 @@ public class EndpointUtils {
                 return i;
             }
         }
-        logger.warn("DISCOVERY: Could not pick a zone based on preferred zone settings. My zone - {}," +
-                " preferSameZone - {}. Defaulting to {}", myZone, preferSameZone, availZones[0]);
+        logger.warn("""
+                DISCOVERY: Could not pick a zone based on preferred zone settings. My zone - {},\
+                 preferSameZone - {}. Defaulting to {}\
+                """, myZone, preferSameZone, availZones[0]);
 
         return 0;
     }

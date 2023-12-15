@@ -21,19 +21,19 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import com.netflix.eureka.util.batcher.TaskProcessor.ProcessingResult;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Tomasz Bak
  */
-public class AcceptorExecutorTest {
+class AcceptorExecutorTest {
 
     private static final long SERVER_UNAVAILABLE_SLEEP_TIME_MS = 1000;
     private static final long RETRY_SLEEP_TIME_MS = 100;
@@ -44,21 +44,21 @@ public class AcceptorExecutorTest {
 
     private AcceptorExecutor<Integer, String> acceptorExecutor;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         acceptorExecutor = new AcceptorExecutor<>(
                 "TEST", MAX_BUFFER_SIZE, WORK_LOAD_SIZE, MAX_BATCHING_DELAY_MS,
                 SERVER_UNAVAILABLE_SLEEP_TIME_MS, RETRY_SLEEP_TIME_MS
         );
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterEach
+    void tearDown() throws Exception {
         acceptorExecutor.shutdown();
     }
 
     @Test
-    public void testTasksAreDispatchedToWorkers() throws Exception {
+    void tasksAreDispatchedToWorkers() throws Exception {
         acceptorExecutor.process(1, "Task1", System.currentTimeMillis() + 60 * 1000);
 
         TaskHolder<Integer, String> taskHolder = acceptorExecutor.requestWorkItem().poll(5, TimeUnit.SECONDS);
@@ -72,7 +72,7 @@ public class AcceptorExecutorTest {
     }
 
     @Test
-    public void testBatchSizeIsConstrainedByConfiguredMaxSize() throws Exception {
+    void batchSizeIsConstrainedByConfiguredMaxSize() throws Exception {
         for (int i = 0; i <= MAX_BUFFER_SIZE; i++) {
             acceptorExecutor.process(i, "Task" + i, System.currentTimeMillis() + 60 * 1000);
         }
@@ -82,7 +82,7 @@ public class AcceptorExecutorTest {
     }
 
     @Test
-    public void testNewTaskOverridesOldOne() throws Exception {
+    void newTaskOverridesOldOne() throws Exception {
         acceptorExecutor.process(1, "Task1", System.currentTimeMillis() + 60 * 1000);
         acceptorExecutor.process(1, "Task1.1", System.currentTimeMillis() + 60 * 1000);
 
@@ -91,7 +91,7 @@ public class AcceptorExecutorTest {
     }
 
     @Test
-    public void testRepublishedTaskIsHandledFirst() throws Exception {
+    void republishedTaskIsHandledFirst() throws Exception {
         acceptorExecutor.process(1, "Task1", System.currentTimeMillis() + 60 * 1000);
         acceptorExecutor.process(2, "Task2", System.currentTimeMillis() + 60 * 1000);
 
@@ -107,7 +107,7 @@ public class AcceptorExecutorTest {
     }
 
     @Test
-    public void testWhenBufferOverflowsOldestTasksAreRemoved() throws Exception {
+    void whenBufferOverflowsOldestTasksAreRemoved() throws Exception {
         for (int i = 0; i <= MAX_BUFFER_SIZE; i++) {
             acceptorExecutor.process(i, "Task" + i, System.currentTimeMillis() + 60 * 1000);
         }
@@ -118,7 +118,7 @@ public class AcceptorExecutorTest {
     }
 
     @Test
-    public void testTasksAreDelayToMaximizeBatchSize() throws Exception {
+    void tasksAreDelayToMaximizeBatchSize() throws Exception {
         BlockingQueue<List<TaskHolder<Integer, String>>> taskQueue = acceptorExecutor.requestWorkItems();
 
         acceptorExecutor.process(1, "Task1", System.currentTimeMillis() + 60 * 1000);

@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import com.netflix.discovery.shared.transport.EurekaHttpClient;
 import com.netflix.discovery.shared.transport.EurekaHttpClientFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -32,14 +32,14 @@ import static org.mockito.Mockito.when;
 /**
  * @author Tomasz Bak
  */
-public class SessionedEurekaHttpClientTest {
+class SessionedEurekaHttpClientTest {
 
     private final EurekaHttpClient firstClient = mock(EurekaHttpClient.class);
     private final EurekaHttpClient secondClient = mock(EurekaHttpClient.class);
     private final EurekaHttpClientFactory factory = mock(EurekaHttpClientFactory.class);
 
     @Test
-    public void testReconnectIsEnforcedAtConfiguredInterval() throws Exception {
+    void reconnectIsEnforcedAtConfiguredInterval() throws Exception {
         final AtomicReference<EurekaHttpClient> clientRef = new AtomicReference<>(firstClient);
         when(factory.newClient()).thenAnswer(new Answer<EurekaHttpClient>() {
             @Override

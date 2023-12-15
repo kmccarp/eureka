@@ -1,16 +1,14 @@
 package com.netflix.eureka.util;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.junit.Test;
 
 import com.netflix.appinfo.ApplicationInfoManager;
 import com.netflix.appinfo.InstanceInfo;
@@ -22,23 +20,24 @@ import com.netflix.eureka.EurekaServerContext;
 import com.netflix.eureka.cluster.PeerEurekaNode;
 import com.netflix.eureka.cluster.PeerEurekaNodes;
 import com.netflix.eureka.registry.PeerAwareInstanceRegistry;
+import org.junit.jupiter.api.Test;
 
-public class StatusUtilTest {
-    
+class StatusUtilTest {
+
     @Test
-    public void testGetStatusInfoHealthy() {
+    void getStatusInfoHealthy() {
         StatusUtil statusUtil = getStatusUtil(3, 3, 2);
         assertTrue(statusUtil.getStatusInfo().isHealthy());
     }
-    
+
     @Test
-    public void testGetStatusInfoUnhealthy() {
+    void getStatusInfoUnhealthy() {
         StatusUtil statusUtil = getStatusUtil(5, 3, 4);
         assertFalse(statusUtil.getStatusInfo().isHealthy());
     }
-    
+
     @Test
-    public void testGetStatusInfoUnsetHealth() {
+    void getStatusInfoUnsetHealth() {
         StatusUtil statusUtil = getStatusUtil(5, 3, -1);
         StatusInfo statusInfo = statusUtil.getStatusInfo();
         
@@ -111,7 +110,7 @@ public class StatusUtilTest {
         
         for (int i = 0; i < size; i++) {
             PeerEurekaNode mockNode = mock(PeerEurekaNode.class);
-            when(mockNode.getServiceUrl()).thenReturn(String.format("http://%d:8080/v2", i));
+            when(mockNode.getServiceUrl()).thenReturn("http://%d:8080/v2".formatted(i));
             nodes.add(mockNode);
         }
         

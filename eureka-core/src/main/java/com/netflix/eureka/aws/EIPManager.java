@@ -41,13 +41,13 @@ import com.netflix.discovery.endpoint.EndpointUtils;
 import com.netflix.eureka.EurekaServerConfig;
 import com.netflix.eureka.registry.PeerAwareInstanceRegistry;
 import com.netflix.servo.monitor.Monitors;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 /**
  * An AWS specific <em>elastic ip</em> binding utility for binding eureka
@@ -225,8 +225,10 @@ public class EIPManager implements AwsBinder {
                         break;
                     } else {
                         // The EIP is used by some other instance, hence skip it
-                        logger.warn("The selected EIP {} is associated with another instance {} according to AWS," +
-                                " hence skipping this", eipEntry, associatedInstanceId);
+                        logger.warn("""
+                                The selected EIP {} is associated with another instance {} according to AWS,\
+                                 hence skipping this\
+                                """, eipEntry, associatedInstanceId);
                     }
                 }
             } catch (Throwable t) {

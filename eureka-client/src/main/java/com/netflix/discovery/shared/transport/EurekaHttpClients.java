@@ -121,8 +121,10 @@ public final class EurekaHttpClients {
                         randomizer
                 );
             } else {
-                logger.warn("Cannot create a composite bootstrap resolver if registry fetch is disabled." +
-                        " Falling back to using a default bootstrap resolver.");
+                logger.warn("""
+                        Cannot create a composite bootstrap resolver if registry fetch is disabled.\
+                         Falling back to using a default bootstrap resolver.\
+                        """);
             }
         }
 
@@ -306,8 +308,8 @@ public final class EurekaHttpClients {
 
 
     static <T extends EurekaEndpoint> ClosableResolver<T> wrapClosable(final ClusterResolver<T> clusterResolver) {
-        if (clusterResolver instanceof ClosableResolver) {
-            return (ClosableResolver) clusterResolver;
+        if (clusterResolver instanceof ClosableResolver resolver) {
+            return resolver;
         }
 
         return new ClosableResolver<T>() {

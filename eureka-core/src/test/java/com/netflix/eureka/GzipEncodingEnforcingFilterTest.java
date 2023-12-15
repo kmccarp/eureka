@@ -16,30 +16,31 @@
 
 package com.netflix.eureka;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.Enumeration;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Kebe Liu
  */
-@RunWith(MockitoJUnitRunner.class)
-public class GzipEncodingEnforcingFilterTest {
+@ExtendWith(MockitoExtension.class)
+class GzipEncodingEnforcingFilterTest {
 
     private static final String ACCEPT_ENCODING_HEADER = "Accept-Encoding";
     @Mock
@@ -55,8 +56,8 @@ public class GzipEncodingEnforcingFilterTest {
 
     private GzipEncodingEnforcingFilter filter;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         filter = new GzipEncodingEnforcingFilter();
         filterChain = new FilterChain() {
             @Override
@@ -67,15 +68,15 @@ public class GzipEncodingEnforcingFilterTest {
     }
 
     @Test
-    public void testAlreadyGzip() throws Exception {
+    void alreadyGzip() throws Exception {
         gzipRequest();
         filter.doFilter(request, response, filterChain);
         Enumeration values = filteredRequest.getHeaders(ACCEPT_ENCODING_HEADER);
-        assertEquals("Expected Accept-Encoding null", null, values);
+        assertNull(values, "Expected Accept-Encoding null");
     }
 
     @Test
-    public void testForceGzip() throws Exception {
+    void forceGzip() throws Exception {
         noneGzipRequest();
         filter.doFilter(request, response, filterChain);
         String res = "";
@@ -83,11 +84,11 @@ public class GzipEncodingEnforcingFilterTest {
         while (values.hasMoreElements()) {
             res = res + values.nextElement() + "\n";
         }
-        assertEquals("Expected Accept-Encoding gzip", "gzip\n", res);
+        assertEquals("gzip\n", res, "Expected Accept-Encoding gzip");
     }
 
     @Test
-    public void testForceGzipOtherHeader() throws Exception {
+    void forceGzipOtherHeader() throws Exception {
         noneGzipRequest();
         when(request.getHeaders("Test")).thenReturn(new Enumeration() {
             private int c = 0;
@@ -109,7 +110,7 @@ public class GzipEncodingEnforcingFilterTest {
         while (values.hasMoreElements()) {
             res = res + values.nextElement() + "\n";
         }
-        assertEquals("Expected Test ok", "ok\n", res);
+        assertEquals("ok\n", res, "Expected Test ok");
     }
 
     private void gzipRequest() {
